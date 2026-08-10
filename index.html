@@ -25,6 +25,10 @@
     --namaz-bg: #0d1b2a;
     --namaz-accent: #d9b25f;
     --namaz-teal: #6fcfbd;
+    --pulse-bg: #150c0e;
+    --pulse-accent: #ef4444;
+    --quicklog-bg: #0f0f1a;
+    --quicklog-accent: #818cf8;
     --radius: 28px;
   }
 
@@ -146,12 +150,23 @@
 
   #kalorie { background: var(--kalorie-bg); --card-accent: var(--kalorie-accent); }
   #namaz { background: var(--namaz-bg); --card-accent: var(--namaz-teal); }
+  #pulse { background: var(--pulse-bg); --card-accent: var(--pulse-accent); }
+  #quicklog { background: var(--quicklog-bg); --card-accent: var(--quicklog-accent); }
 
   .icon {
     width: 72px;
     height: 72px;
     border-radius: 20px;
     display: block;
+  }
+
+  /* Pulse/Quick Log have no store-ready app icon yet, so their icon slot is a
+     tinted glyph rather than a real launcher-icon export. */
+  .icon-svg {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.06);
   }
 
   .card-head {
@@ -263,6 +278,30 @@
       </div>
       <h2>Kalorie</h2>
       <p class="desc">A fast calorie tracker &mdash; barcode scanning, a huge offline food database, and a contribution-grid streak heatmap.</p>
+      <span class="cta">In development</span>
+    </div>
+
+    <div id="pulse" class="card disabled">
+      <div class="card-head">
+        <div class="icon icon-svg" aria-hidden="true">
+          <svg width="36" height="36" viewBox="0 0 36 36" fill="none" stroke="#ef4444" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 18h6l3-9 6 18 3-9h10" /></svg>
+        </div>
+        <span class="badge soon">Coming soon</span>
+      </div>
+      <h2>Pulse</h2>
+      <p class="desc">Bluetooth heart-rate strap readout &mdash; a zone-coloured live rate, session min/max/average, and a five-minute graph.</p>
+      <span class="cta">In development</span>
+    </div>
+
+    <div id="quicklog" class="card disabled">
+      <div class="card-head">
+        <div class="icon icon-svg" aria-hidden="true">
+          <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#818cf8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9" /><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z" /></svg>
+        </div>
+        <span class="badge soon">Coming soon</span>
+      </div>
+      <h2>Quick Log</h2>
+      <p class="desc">Type or dictate a note and it lands in a Google Sheet, timestamped &mdash; multiple profiles, home-screen widgets.</p>
       <span class="cta">In development</span>
     </div>
 
