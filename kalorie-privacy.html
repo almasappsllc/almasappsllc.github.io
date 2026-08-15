@@ -15,7 +15,7 @@
 <body>
 
 <h1>Privacy Policy — Kalorie</h1>
-<p class="muted">Last updated: 9 August 2026</p>
+<p class="muted">Last updated: 14 August 2026</p>
 
 <p>
   Kalorie (“the app”) is developed by <strong>Almas Apps LLC</strong> (“we”, “us”).
@@ -26,9 +26,23 @@
 
 <h2>Information we collect</h2>
 <p>
-  <strong>None.</strong> The app has no user accounts, no sign-in, no analytics,
-  and no tracking. It does not contain any third-party tracking SDKs, and it
-  contains no advertising SDK and displays no ads.
+  <strong>None.</strong> The app has no user accounts, no sign-in, no analytics
+  of our own, and no tracking. It contains no advertising SDK and displays no
+  ads.
+</p>
+<p>
+  <strong>One third-party library in the app can collect, and it cannot
+  transmit — so we state it rather than round it down.</strong> Selling the
+  optional paid features requires Google’s Play Billing library, and every
+  published version of it brings Google’s own diagnostics transport
+  (<code>transport-backend-cct</code>) along with it. That transport asks for
+  the Internet permission at build time and <strong>this app refuses it</strong>
+  — the build’s manifest-merger report records the request as
+  <code>REJECTED</code> — so it has no socket to send anything through, whatever
+  it gathers. This is the reason the app’s own promise card says “nothing in it
+  can transmit” rather than “there is no such library in it”: the second
+  sentence stopped being true when the app became able to charge for anything,
+  and the first one is both stronger and checkable.
 </p>
 <p>
   If advertising is ever introduced, this page and the app’s Play Data safety
@@ -45,6 +59,23 @@
   because we do not operate any servers. The food database itself ships inside the
   app, so searching for a food never leaves your phone.
 </p>
+<p>
+  <strong>Android’s own automatic backup is switched off for this app, on
+  purpose.</strong> Android can normally copy an app’s private data to the
+  owner’s Google Drive, and can copy it to a new handset during a
+  phone-to-phone transfer — both without the app being involved and without
+  asking it. For a diary of what you eat and what you weigh, that is a copy
+  leaving your device by a route we neither control nor can see, so the app
+  declines it: it sets <code>allowBackup="false"</code> and excludes every data
+  domain from both cloud backup and device transfer.
+</p>
+<p>
+  The consequence is worth stating plainly, because it is a real cost and it
+  falls on you: <strong>replacing or wiping your phone loses your history
+  unless you have exported a backup file yourself.</strong> The app’s own
+  backup — below — is the way to carry it across, it is free, and it can run
+  automatically into a folder you choose.
+</p>
 
 <h2>No Internet access</h2>
 <p>
@@ -57,9 +88,11 @@
 
 <h2>Permissions we request</h2>
 <p>
-  <strong>Three.</strong> None of them is Internet, storage or location. This
-  section said “none” until 9 August 2026, which stopped being true when
-  barcode scanning and the fasting alert were added; it is corrected here.
+  <strong>Five.</strong> None of them is Internet, storage or location. This
+  section said “none” until 9 August 2026 and “three” until 14 August 2026;
+  each figure stopped being true when a feature was added — barcode scanning
+  and the fasting alert first, then the two that came with selling the paid
+  features — and each is corrected here rather than left to age.
 </p>
 <ul>
   <li>
@@ -80,11 +113,28 @@
     settings, re-books a single alarm, and does nothing else: it opens no
     database, starts no service, and collects nothing.
   </li>
+  <li>
+    <strong>Billing</strong> — lets the app ask the Google Play Store app, on
+    the same phone, whether you own the optional paid features. It is not a
+    network permission: it talks to another app on your device, and Play does
+    the rest under its own policy. There is no prompt for this one.
+  </li>
+  <li>
+    <strong>Network state</strong> — comes with Google’s billing library, which
+    the app cannot sell anything without. It allows reading <em>whether</em> a
+    connection exists; it does not allow using one, and this app has no
+    permission to use one. There is no prompt for this one either.
+  </li>
 </ul>
 <p>
   You can verify this list yourself against the installed app in Android’s
   Settings, or against the published package with
-  <code>aapt2 dump permissions</code>.
+  <code>aapt2 dump permissions</code>. One caveat worth stating, because we
+  found it ourselves: an app <em>installed from Play</em> also carries
+  <code>com.android.vending.CHECK_LICENSE</code>, which Google adds during
+  distribution and which appears in no file we build. It lets Play confirm the
+  app was obtained legitimately. So a phone may show six where our own package
+  shows five, and neither number is Internet.
 </p>
 
 <h2>Backups and exports — the only way data leaves</h2>
