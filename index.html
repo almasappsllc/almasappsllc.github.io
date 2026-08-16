@@ -29,6 +29,8 @@
     --pulse-accent: #ef4444;
     --quicklog-bg: #0f0f1a;
     --quicklog-accent: #818cf8;
+    --tally-bg: #0b1a20;
+    --tally-accent: #38bdf8;
     --radius: 28px;
   }
 
@@ -152,6 +154,7 @@
   #namaz { background: var(--namaz-bg); --card-accent: var(--namaz-teal); }
   #pulse { background: var(--pulse-bg); --card-accent: var(--pulse-accent); }
   #quicklog { background: var(--quicklog-bg); --card-accent: var(--quicklog-accent); }
+  #tally { background: var(--tally-bg); --card-accent: var(--tally-accent); }
 
   .icon {
     width: 72px;
@@ -221,6 +224,7 @@
 
   #kalorie .cta { color: var(--kalorie-accent); }
   #namaz .cta { color: var(--namaz-teal); }
+  #tally .cta { color: var(--tally-accent); }
 
   .card.disabled .cta { color: var(--text-dim); }
 
@@ -295,6 +299,19 @@
       <p class="desc">Bluetooth heart-rate strap readout &mdash; a zone-coloured live rate, session min/max/average, and a five-minute graph.</p>
       <span class="cta">In development</span>
       <a class="privacy-link" href="/pulse-privacy.html" target="_blank" rel="noopener">Privacy policy</a>
+    </div>
+
+    <div id="tally" class="card disabled">
+      <div class="card-head">
+        <div class="icon icon-svg" aria-hidden="true">
+          <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+        </div>
+        <span class="badge soon">Coming soon</span>
+      </div>
+      <h2>Tally</h2>
+      <p class="desc">A dead-simple checklist app to track your daily routines. Resets every night, exports to spreadsheets.</p>
+      <span class="cta">In development</span>
+      <a class="privacy-link" href="/tally-privacy.html" target="_blank" rel="noopener">Privacy policy</a>
     </div>
 
     <div id="quicklog" class="card disabled">
