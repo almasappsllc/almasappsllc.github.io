@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shia Namaz & Qibla - Fully Offline Prayer Times</title>
+  <meta name="description" content="A fast, fully offline Android app computing Shia (Ja'fari) prayer times on-device using GPS and local astronomy math. No internet required.">
+  <link rel="icon" href="data:image/png;base64,data:image/png;base64,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">
+  <style>
+    @font-face {
+      font-family: 'Nunito';
+      font-weight: 400 900;
+      font-display: swap;
+      src: local('Nunito');
+    }
+    :root {
+      --bg: #0b0d11;
+      --bg-alt: #101319;
+      --card-border: #22262f;
+      --text: #edf0f5;
+      --text-dim: #8b94a7;
+      --namaz-bg: #0d1b2a;
+      --namaz-accent: #d9b25f;
+      --namaz-teal: #6fcfbd;
+      --radius: 28px;
+    }
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Nunito', ui-rounded, 'Segoe UI', system-ui, -apple-system, Roboto, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      line-height: 1.6;
+    }
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 64px 20px 80px;
+      background: radial-gradient(800px 600px at 50% 0%, rgba(111, 207, 189, 0.08), transparent 70%), var(--bg);
+      min-height: 100vh;
+    }
+    header {
+      text-align: center;
+      max-width: 800px;
+      margin-bottom: 64px;
+    }
+    .app-icon {
+      width: 100px;
+      height: 100px;
+      border-radius: 24px;
+      margin-bottom: 24px;
+      box-shadow: 0 12px 32px rgba(0,0,0,0.3);
+    }
+    h1 {
+      font-size: 42px;
+      font-weight: 900;
+      margin: 0 0 16px;
+      letter-spacing: -0.02em;
+    }
+    .tagline {
+      font-size: 20px;
+      color: var(--text-dim);
+      margin: 0 0 32px;
+      font-weight: 600;
+    }
+    .play-badge {
+      display: inline-block;
+      transition: transform 0.2s ease;
+    }
+    .play-badge:hover {
+      transform: translateY(-4px);
+    }
+    .play-badge img {
+      height: 60px;
+    }
+    main {
+      width: 100%;
+      max-width: 1000px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px;
+    }
+    .feature-card {
+      background: var(--bg-alt);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      padding: 32px;
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+    .feature-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--namaz-teal);
+    }
+    .feature-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 16px;
+      background: rgba(111, 207, 189, 0.1);
+      color: var(--namaz-teal);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+    .feature-icon svg {
+      width: 24px;
+      height: 24px;
+    }
+    .feature-card h3 {
+      font-size: 20px;
+      font-weight: 800;
+      margin: 0 0 12px;
+      color: var(--text);
+    }
+    .feature-card p {
+      color: var(--text-dim);
+      margin: 0;
+      font-size: 15px;
+    }
+    .math-section {
+      width: 100%;
+      max-width: 1000px;
+      margin-top: 64px;
+      background: var(--namaz-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+    .math-section h2 {
+      margin: 0;
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--namaz-accent);
+    }
+    .math-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 24px;
+    }
+    .math-item h4 {
+      color: var(--text);
+      font-size: 18px;
+      margin: 0 0 8px;
+    }
+    .math-item p {
+      color: var(--text-dim);
+      margin: 0;
+      font-size: 15px;
+    }
+    .nav-links {
+      margin-top: 64px;
+      display: flex;
+      gap: 24px;
+      font-size: 15px;
+      font-weight: 700;
+    }
+    .nav-links a {
+      color: var(--text-dim);
+      text-decoration: underline;
+      text-decoration-color: var(--card-border);
+      text-underline-offset: 4px;
+      transition: color 0.2s ease;
+    }
+    .nav-links a:hover {
+      color: var(--text);
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <img src="data:image/png;base64,data:image/png;base64,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" alt="Shia Namaz Icon" class="app-icon">
+    <h1>Shia Namaz & Qibla</h1>
+    <p class="tagline">A fast, fully offline Android app computing Shia (Ja'fari) prayer times on-device using GPS and local astronomy math.</p>
+    <a href="https://play.google.com/store/apps/details?id=com.namaz.prayertimes" class="play-badge" target="_blank" rel="noopener">
+      <img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" alt="Get it on Google Play">
+    </a>
+  </header>
+
+  <main>
+    <div class="feature-card">
+      <div class="feature-icon">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+      </div>
+      <h3>100% Offline</h3>
+      <p>No internet connection is required. Computes times accurately directly on your device using your GPS coordinates.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+      </div>
+      <h3>Live Countdown</h3>
+      <p>Stay prepared with a precise live countdown to the next prayer, keeping you connected throughout the day.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><path d="m16.24 7.76-2.12 6.36-6.36 2.12 2.12-6.36 6.36-2.12z"></path></svg>
+      </div>
+      <h3>Qibla Compass</h3>
+      <p>A beautifully animated, true-north corrected Qibla compass to help you face the exact direction effortlessly.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+      </div>
+      <h3>Custom Alarms</h3>
+      <p>Set exact per-prayer notifications and alarms. Never miss a prayer with beautifully styled local alerts.</p>
+    </div>
+  </main>
+
+  <div class="math-section">
+    <h2>Shia-Specific Mathematics</h2>
+    <div class="math-grid">
+      <div class="math-item">
+        <h4>Maghrib ≠ Sunset</h4>
+        <p>Calculated precisely as 4° (Qom) or 4.5° (Tehran) below the horizon, usually 13–17 minutes after sunset.</p>
+      </div>
+      <div class="math-item">
+        <h4>Asr Calculation</h4>
+        <p>Uses shadow factor 1 according to the Ja'fari school of thought.</p>
+      </div>
+      <div class="math-item">
+        <h4>Shari'i Midnight</h4>
+        <p>Calculated accurately as the midpoint between Maghrib and the following day's Fajr.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="nav-links">
+    <a href="/index.html">← Back to Almas Apps</a>
+    <a href="https://shia-namaz.netlify.app/" target="_blank">Privacy Policy</a>
+  </div>
+
+</body>
+</html>
