@@ -1,0 +1,431 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Almas Apps &mdash; Testing</title>
+<meta name="description" content="Try Almas Apps before they're finished. Live builds have a QR code for quick install; in-development apps are listed for reference." />
+<meta name="robots" content="noindex" />
+<link rel="icon" href="data:image/png;base64,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" />
+<style>
+  @font-face {
+    font-family: 'Nunito';
+    font-weight: 400 900;
+    font-display: swap;
+    src: local('Nunito');
+  }
+
+  :root {
+    --bg: #0b0d11;
+    --card-border: #22262f;
+    --text: #edf0f5;
+    --text-dim: #8b94a7;
+    --kalorie-bg: #0c0e12;
+    --kalorie-accent: #ff9f45;
+    --namaz-bg: #0d1b2a;
+    --namaz-accent: #d9b25f;
+    --namaz-teal: #6fcfbd;
+    --pulse-bg: #150c0e;
+    --pulse-accent: #ef4444;
+    --quicklog-bg: #0f0f1a;
+    --quicklog-accent: #818cf8;
+    --tally-bg: #0b1a20;
+    --tally-accent: #38bdf8;
+    --game-bg: #091a14;
+    --game-accent: #10b981;
+    --cheapgas-bg: #1a1608;
+    --cheapgas-accent: #fbbf24;
+    --radius: 28px;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Nunito', ui-rounded, 'Segoe UI', system-ui, -apple-system, Roboto, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 64px 20px 40px;
+    background:
+      radial-gradient(720px 420px at 15% -10%, rgba(255, 159, 69, 0.10), transparent 60%),
+      radial-gradient(720px 420px at 85% 0%, rgba(111, 207, 189, 0.08), transparent 60%),
+      var(--bg);
+  }
+
+  .back-link {
+    align-self: flex-start;
+    max-width: 860px;
+    width: 100%;
+    margin: 0 auto 24px;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-dim);
+    text-decoration: none;
+  }
+
+  .back-link:hover { color: var(--text); }
+
+  .wordmark {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 10px;
+  }
+
+  .wordmark .mark {
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, var(--kalorie-accent), var(--namaz-teal));
+    flex-shrink: 0;
+  }
+
+  .wordmark h1 {
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: 0.01em;
+    margin: 0;
+  }
+
+  .badge-testing {
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    padding: 5px 10px;
+    border-radius: 999px;
+    background: rgba(216, 180, 254, 0.16);
+    color: #d8b4fe;
+  }
+
+  .tagline {
+    color: var(--text-dim);
+    font-size: 16px;
+    font-weight: 600;
+    text-align: center;
+    max-width: 520px;
+    margin: 0 0 48px;
+    line-height: 1.5;
+  }
+
+  main {
+    width: 100%;
+    max-width: 860px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+
+  @media (max-width: 640px) {
+    main { grid-template-columns: 1fr; }
+    body { padding: 48px 16px 32px; }
+  }
+
+  .card {
+    position: relative;
+    border-radius: var(--radius);
+    border: 1px solid var(--card-border);
+    padding: 28px 24px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  #kalorie { background: var(--kalorie-bg); --card-accent: var(--kalorie-accent); }
+  #namaz { background: var(--namaz-bg); --card-accent: var(--namaz-teal); }
+  #pulse { background: var(--pulse-bg); --card-accent: var(--pulse-accent); }
+  #quicklog { background: var(--quicklog-bg); --card-accent: var(--quicklog-accent); }
+  #tally { background: var(--tally-bg); --card-accent: var(--tally-accent); }
+  #game { background: var(--game-bg); --card-accent: var(--game-accent); }
+  #cheapgas { background: var(--cheapgas-bg); --card-accent: var(--cheapgas-accent); }
+
+  .icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 18px;
+    display: block;
+  }
+
+  .icon-svg {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.06);
+  }
+
+  .card-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .badge {
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    padding: 5px 10px;
+    border-radius: 999px;
+    white-space: nowrap;
+  }
+
+  .badge.live {
+    background: rgba(111, 207, 189, 0.16);
+    color: var(--namaz-teal);
+  }
+
+  .badge.soon {
+    background: rgba(255, 159, 69, 0.16);
+    color: var(--kalorie-accent);
+  }
+
+  .badge.test {
+    background: rgba(216, 180, 254, 0.16);
+    color: #d8b4fe;
+  }
+
+  .card h2 {
+    font-size: 20px;
+    font-weight: 800;
+    margin: 4px 0 0;
+  }
+
+  .card p.desc {
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--text-dim);
+    margin: 0;
+  }
+
+  .qr-block {
+    margin-top: auto;
+    padding-top: 14px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .qr-block img {
+    width: 84px;
+    height: 84px;
+    background: #fff;
+    border-radius: 10px;
+    padding: 6px;
+    flex-shrink: 0;
+  }
+
+  .qr-copy {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .qr-copy .qr-label {
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--card-accent, var(--text));
+  }
+
+  .qr-copy a.store-link {
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--text-dim);
+    text-decoration: underline;
+    text-decoration-color: var(--card-border);
+    text-underline-offset: 3px;
+  }
+
+  .qr-copy a.store-link:hover { color: var(--text); }
+
+  .no-build {
+    margin-top: auto;
+    padding-top: 14px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-dim);
+  }
+
+  .privacy-link {
+    align-self: flex-start;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-dim);
+    text-decoration: underline;
+    text-decoration-color: var(--card-border);
+    text-underline-offset: 3px;
+  }
+
+  .privacy-link:hover { color: var(--text); }
+
+  footer {
+    margin-top: 56px;
+    text-align: center;
+    color: var(--text-dim);
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  footer a {
+    color: var(--text-dim);
+    text-decoration: underline;
+    text-decoration-color: var(--card-border);
+    text-underline-offset: 3px;
+  }
+
+  footer a:hover { color: var(--text); }
+</style>
+<script data-goatcounter="https://almasapps.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
+</head>
+<body>
+
+  <a class="back-link" href="/">&larr; Back to Almas Apps</a>
+
+  <div class="wordmark">
+    <span class="mark" aria-hidden="true"></span>
+    <h1>Almas Apps</h1>
+    <span class="badge-testing">Testing</span>
+  </div>
+  <p class="tagline">Every app we&rsquo;re building, in whatever state it&rsquo;s in. Scan a QR code to install a live build, or check back later for the ones still in development.</p>
+
+  <main>
+    <div id="namaz" class="card">
+      <div class="card-head">
+        <img class="icon" src="data:image/png;base64,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" alt="Namaz app icon" width="64" height="64" />
+        <span class="badge live">Live on Google Play</span>
+      </div>
+      <h2>Namaz</h2>
+      <p class="desc">Shia (Ja&rsquo;fari) prayer times and Qibla compass, computed on-device from GPS.</p>
+      <div class="qr-block">
+        <img src="namaz-qr.svg" alt="QR code to install Namaz from Google Play" width="84" height="84" />
+        <div class="qr-copy">
+          <span class="qr-label">Scan to install</span>
+          <a class="store-link" href="https://play.google.com/store/apps/details?id=com.namaz.prayertimes" target="_blank" rel="noopener">Open in Google Play</a>
+        </div>
+      </div>
+      <a class="privacy-link" href="/namaz-privacy.html" target="_blank" rel="noopener">Privacy policy</a>
+    </div>
+
+    <div id="game" class="card">
+      <div class="card-head">
+        <img class="icon" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0iIzEwYjk4MSIvPjwvc3ZnPg==" alt="Game app icon" width="64" height="64" />
+        <span class="badge live">Live on Google Play</span>
+      </div>
+      <h2>Game</h2>
+      <p class="desc">A fast, focused sliding tile puzzle game. Reassemble the image and beat your high score.</p>
+      <div class="qr-block">
+        <img src="game-qr.svg" alt="QR code to install Game from Google Play" width="84" height="84" />
+        <div class="qr-copy">
+          <span class="qr-label">Scan to install</span>
+          <a class="store-link" href="https://play.google.com/store/apps/details?id=com.almasapps.game" target="_blank" rel="noopener">Open in Google Play</a>
+        </div>
+      </div>
+      <a class="privacy-link" href="/game-privacy.html" target="_blank" rel="noopener">Privacy policy</a>
+    </div>
+
+    <div id="kalorie" class="card">
+      <div class="card-head">
+        <img class="icon" src="data:image/png;base64,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" alt="Kalorie app icon" width="64" height="64" />
+        <span class="badge soon">Coming soon</span>
+      </div>
+      <h2>Kalorie</h2>
+      <p class="desc">A fast calorie tracker &mdash; barcode scanning, a huge offline food database, and a contribution-grid streak heatmap.</p>
+      <p class="no-build">No downloadable build yet.</p>
+      <a class="privacy-link" href="/kalorie-privacy.html" target="_blank" rel="noopener">Privacy policy</a>
+    </div>
+
+    <div id="pulse" class="card">
+      <div class="card-head">
+        <div class="icon icon-svg" aria-hidden="true">
+          <svg width="32" height="32" viewBox="0 0 36 36" fill="none" stroke="#ef4444" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 18h6l3-9 6 18 3-9h10" /></svg>
+        </div>
+        <span class="badge test">Testing</span>
+      </div>
+      <h2>Pulse</h2>
+      <p class="desc">Bluetooth heart-rate strap readout &mdash; a zone-coloured live rate, session min/max/average, and a five-minute graph.</p>
+      <div class="qr-block">
+        <img src="pulse-qr.svg" alt="QR code to install the Pulse test build" width="84" height="84" />
+        <div class="qr-copy">
+          <span class="qr-label">Scan to install</span>
+          <a class="store-link" href="https://play.google.com/store/apps/details?id=com.almasapps.pulse" target="_blank" rel="noopener">Open in Google Play</a>
+        </div>
+      </div>
+      <a class="privacy-link" href="/pulse-privacy.html" target="_blank" rel="noopener">Privacy policy</a>
+    </div>
+
+    <div id="tally" class="card">
+      <div class="card-head">
+        <div class="icon icon-svg" aria-hidden="true">
+          <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+        </div>
+        <span class="badge test">Testing</span>
+      </div>
+      <h2>Tally</h2>
+      <p class="desc">A dead-simple checklist app to track your daily routines. Resets every night, exports to spreadsheets.</p>
+      <div class="qr-block">
+        <img src="tally-qr.svg" alt="QR code to install the Tally test build" width="84" height="84" />
+        <div class="qr-copy">
+          <span class="qr-label">Scan to install</span>
+          <a class="store-link" href="https://play.google.com/store/apps/details?id=com.almasapps.tally" target="_blank" rel="noopener">Open in Google Play</a>
+        </div>
+      </div>
+      <a class="privacy-link" href="/tally-privacy.html" target="_blank" rel="noopener">Privacy policy</a>
+    </div>
+
+    <div id="quicklog" class="card">
+      <div class="card-head">
+        <div class="icon icon-svg" aria-hidden="true">
+          <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#818cf8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9" /><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z" /></svg>
+        </div>
+        <span class="badge test">Testing</span>
+      </div>
+      <h2>Quick Log</h2>
+      <p class="desc">Type or dictate a note and it lands in a Google Sheet, timestamped &mdash; multiple profiles, home-screen widgets.</p>
+      <div class="qr-block">
+        <img src="quicklog-qr.svg" alt="QR code to install the Quick Log test build" width="84" height="84" />
+        <div class="qr-copy">
+          <span class="qr-label">Scan to install</span>
+          <a class="store-link" href="https://play.google.com/store/apps/details?id=com.almasapps.quicklog" target="_blank" rel="noopener">Open in Google Play</a>
+        </div>
+      </div>
+      <a class="privacy-link" href="/quicklog-privacy.html" target="_blank" rel="noopener">Privacy policy</a>
+    </div>
+
+    <div id="cheapgas" class="card">
+      <div class="card-head">
+        <div class="icon icon-svg" aria-hidden="true">
+          <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 22V4a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v18"/><path d="M3 10h9"/><path d="M14 9V5a1 1 0 0 1 1-1h1.6l3.1 3.1a1 1 0 0 1 .3.7V16a1.5 1.5 0 0 1-3 0v-3a1 1 0 0 0-1-1h-1"/><path d="M2 22h13"/></svg>
+        </div>
+        <span class="badge test">Testing</span>
+      </div>
+      <h2>CheapGas</h2>
+      <p class="desc">Finds nearby gas stations and compares prices so you fill up at the cheapest one around.</p>
+      <div class="qr-block">
+        <img src="cheapgas-qr.svg" alt="QR code to install the CheapGas test build" width="84" height="84" />
+        <div class="qr-copy">
+          <span class="qr-label">Scan to install</span>
+          <a class="store-link" href="https://play.google.com/store/apps/details?id=com.almasapps.cheapgas" target="_blank" rel="noopener">Open in Google Play</a>
+        </div>
+      </div>
+      <a class="privacy-link" href="/cheapgas-privacy.html" target="_blank" rel="noopener">Privacy policy</a>
+    </div>
+  </main>
+
+  <footer>
+    &copy; 2026 Almas Apps &middot; <a href="mailto:almasappsllc@gmail.com">almasappsllc@gmail.com</a>
+  </footer>
+
+</body>
+</html>
