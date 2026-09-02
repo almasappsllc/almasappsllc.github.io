@@ -34,6 +34,8 @@
     --game-accent: #10b981;
     --cheapgas-bg: #1a1608;
     --cheapgas-accent: #fbbf24;
+    --sajda-bg: #0a1a17;
+    --sajda-accent: #2dd4bf;
     --radius: 28px;
   }
 
@@ -145,6 +147,7 @@
   #tally { background: var(--tally-bg); --card-accent: var(--tally-accent); }
   #game { background: var(--game-bg); --card-accent: var(--game-accent); }
   #cheapgas { background: var(--cheapgas-bg); --card-accent: var(--cheapgas-accent); }
+  #sajda { background: var(--sajda-bg); --card-accent: var(--sajda-accent); }
 
   .icon {
     width: 64px;
@@ -381,6 +384,25 @@
         </div>
       </div>
       <a class="privacy-link" href="/cheapgas-privacy.html" target="_blank" rel="noopener">Privacy policy</a>
+    </div>
+
+    <div id="sajda" class="card">
+      <div class="card-head">
+        <div class="icon icon-svg" aria-hidden="true">
+          <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#2dd4bf" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>
+        </div>
+        <span class="badge test">Testing</span>
+      </div>
+      <h2>Sajda</h2>
+      <p class="desc">Prayer times and Qibla direction, calculated on-device from your location &mdash; no internet permission, no accounts, no tracking. Works fully offline.</p>
+      <div class="qr-block">
+        <img src="sajda-qr.svg" alt="QR code to install the Sajda test build" width="84" height="84" />
+        <div class="qr-copy">
+          <span class="qr-label">Scan to install</span>
+          <a class="store-link" href="https://play.google.com/store/apps/details?id=com.almasapps.sajda" target="_blank" rel="noopener">Open in Google Play</a>
+        </div>
+      </div>
+      <a class="privacy-link" href="/sunni-namaz-privacy.html" target="_blank" rel="noopener">Privacy policy</a>
     </div>
   </main>
 
