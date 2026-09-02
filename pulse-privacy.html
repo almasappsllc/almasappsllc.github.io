@@ -15,7 +15,7 @@
 <body>
 
 <h1>Privacy Policy — Pulse</h1>
-<p class="muted">Last updated: August 10, 2026</p>
+<p class="muted">Last updated: September 2, 2026</p>
 
 <p>
   Pulse (“the app”) is developed by <strong>Almas Apps LLC</strong> (“we”, “us”).
@@ -24,7 +24,29 @@
 
 <h2>Health and Fitness Data</h2>
 <p>
-  The app connects to external Bluetooth Low Energy (BLE) heart rate monitors to display your real-time heart rate data. <strong>This data is processed entirely locally on your device.</strong> We do not collect, transmit, store, or share your personal health data with any external servers.
+  The app connects to external Bluetooth Low Energy (BLE) heart rate monitors to display your real-time heart rate data, and can record completed workouts (duration, time in heart-rate zones, average/min/max heart rate, an activity type and an optional note). <strong>All of it is processed and stored entirely locally on your device.</strong> We do not collect, transmit, store, or share your personal health data with any external servers. There is no account and no Pulse cloud.
+</p>
+
+<h2>Camera</h2>
+<p>
+  Pulse can estimate your heart rate from a fingertip held over the rear camera and flash. The camera is used <strong>as a sensor</strong>: frames are analysed in memory on your device to detect the pulse signal and are <strong>never saved, recorded, or uploaded</strong>. This feature is optional and only runs while its screen is open.
+</p>
+
+<h2>Data you choose to send elsewhere</h2>
+<p>
+  Nothing leaves your device unless you ask it to. Two features can, and both are off until you use them:
+</p>
+<ul>
+  <li><strong>Health Connect</strong> — if you turn it on and grant permission, completed workouts and heart-rate samples are written to Android's Health Connect on your device. Pulse only writes; it never reads your Health Connect data. What happens to it after that is governed by Health Connect and any other app you have granted access to.</li>
+  <li><strong>CSV export</strong> — you can export your own session history to a file you choose, through the system's save dialog. The file is written wherever you point it, and Pulse has no copy of it.</li>
+</ul>
+<p>
+  You can delete your entire on-device history at any time from Settings, and uninstalling the app removes it.
+</p>
+
+<h2>Purchases</h2>
+<p>
+  Pulse Pro is an optional subscription sold through <strong>Google Play Billing</strong>. Payment is handled entirely by Google — Pulse never sees your card details, and there is no account to create. We receive only whether the subscription is currently active, in order to unlock the features it includes.
 </p>
 
 <h2>Advertising</h2>
@@ -41,7 +63,17 @@
   <li><strong>Location</strong> (<code>ACCESS_FINE_LOCATION</code> / <code>ACCESS_COARSE_LOCATION</code>)
       — required by some Android versions to allow Bluetooth scanning. Your location is never tracked or stored.</li>
   <li><strong>Internet</strong> (<code>INTERNET</code>)
-      — to load and display advertisements via Google AdMob.</li>
+      — to load and display advertisements via Google AdMob, and to complete purchases through Google Play.</li>
+  <li><strong>Camera</strong> (<code>CAMERA</code>)
+      — for the optional fingertip heart-rate reading. Frames are never saved or uploaded.</li>
+  <li><strong>Notifications</strong> (<code>POST_NOTIFICATIONS</code>)
+      — for the ongoing workout notification, zone alerts, and low-battery or disconnect warnings.</li>
+  <li><strong>Vibration</strong> (<code>VIBRATE</code>)
+      — for optional alerts when you drift out of your target zone.</li>
+  <li><strong>Foreground service</strong> (<code>FOREGROUND_SERVICE</code>, <code>FOREGROUND_SERVICE_CONNECTED_DEVICE</code>)
+      — to keep the connection to your heart-rate monitor and the workout clock alive while the screen is off.</li>
+  <li><strong>Health Connect</strong> (<code>health.WRITE_EXERCISE</code>, <code>health.WRITE_HEART_RATE</code>)
+      — only if you enable Health Connect export. Write-only; Pulse never reads your health records.</li>
 </ul>
 
 <h2>Children</h2>
