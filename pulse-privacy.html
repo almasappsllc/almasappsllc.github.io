@@ -15,7 +15,7 @@
 <body>
 
 <h1>Privacy Policy — Pulse</h1>
-<p class="muted">Last updated: October 5, 2026</p>
+<p class="muted">Last updated: October 18, 2026</p>
 
 <p>
   Pulse (“the app”), on Android, iPhone and Apple Watch, is developed by
@@ -28,7 +28,7 @@
 <h2>Health and Fitness Data</h2>
 <p>
   The app reads your heart rate from a Bluetooth Low Energy (BLE) heart rate monitor, from
-  the rear camera (below), or, on Apple Watch, from the watch’s own heart-rate sensor. It
+  the iPhone’s rear camera (below), or, on Apple Watch, from the watch’s own heart-rate sensor. It
   can record completed workouts (duration, time in heart-rate zones, average/min/max heart
   rate, an activity type and an optional note) and your age, which is used to estimate
   your heart-rate zones. <strong>All of it is processed and stored entirely locally on your
@@ -44,8 +44,9 @@
 
 <h2>Camera</h2>
 <p>
-  Pulse can estimate your heart rate from a fingertip held over the rear camera and flash.
-  The camera is used <strong>as a sensor</strong>: frames are analysed in memory on your
+  Pulse for Android does not use the camera. On iPhone, versions of Pulse that include the
+  fingertip reading can estimate your heart rate from a fingertip held over the rear camera
+  and flash. The camera is used <strong>as a sensor</strong>: frames are analysed in memory on your
   device to detect the pulse signal and are <strong>never saved, recorded, or
   uploaded</strong>. This feature is optional and only runs while its screen is open.
 </p>
@@ -65,6 +66,12 @@
       heart rate and active energy, and reads heart rate during a workout. Health data is
       never used for advertising, never shared with third parties, and never leaves your
       device through Pulse.</li>
+  <li><strong>Google Sheet log</strong> (Android): if you paste the web address of your own
+      Google Apps Script under Settings → Advanced, each finished session is sent to it: its
+      date and start time, duration, time in Zone 2, and minimum, maximum and average heart
+      rate. The script and the sheet belong to you and run in your Google account, under
+      <a href="https://policies.google.com/privacy">Google’s Privacy Policy</a>; Pulse sends
+      nothing else and has no copy. Clearing the address stops it.</li>
   <li><strong>Export, backup and sync</strong>: you can export your session history as a CSV
       or JSON file, restore a backup, or keep a sync file in a location you choose (on iOS,
       for example, iCloud Drive or another Files location). The file is written wherever you
@@ -72,13 +79,13 @@
       service is governed by that service’s privacy policy.</li>
 </ul>
 <p>
-  What happens to data after it reaches Health Connect, Apple Health or a file you chose is
+  What happens to data after it reaches Health Connect, Apple Health, your Google Sheet or a file you chose is
   governed by those services and by any other app you have given access to it.
 </p>
 <p>
   You can delete your entire on-device workout history at any time from Settings, and
   uninstalling the app removes everything it stores. Copies already in Health Connect,
-  Apple Health or an exported file stay there until you delete them.
+  Apple Health, your Google Sheet or an exported file stay there until you delete them.
 </p>
 
 <h2>Purchases</h2>
@@ -129,9 +136,7 @@
   <li><strong>Location</strong> (<code>ACCESS_FINE_LOCATION</code> / <code>ACCESS_COARSE_LOCATION</code>)
       — required by some Android versions to allow Bluetooth scanning. Your location is never tracked or stored.</li>
   <li><strong>Internet</strong> (<code>INTERNET</code>)
-      — to load and display advertisements via Google AdMob, and to complete purchases through Google Play.</li>
-  <li><strong>Camera</strong> (<code>CAMERA</code>)
-      — for the optional fingertip heart-rate reading. Frames are never saved or uploaded.</li>
+      — to load and display advertisements via Google AdMob, to complete purchases through Google Play, and to send sessions to your Google Sheet if you set one up.</li>
   <li><strong>Notifications</strong> (<code>POST_NOTIFICATIONS</code>)
       — for the ongoing workout notification, zone alerts, and low-battery or disconnect warnings.</li>
   <li><strong>Vibration</strong> (<code>VIBRATE</code>)
