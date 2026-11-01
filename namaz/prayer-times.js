@@ -78,13 +78,15 @@
   }
 
   function tableRow(label, values, unavailable = false) {
+    const labels = ['Fajr', 'Sunrise', 'Dhuhr', 'Asr', 'Sunset', 'Maghrib', 'Isha', 'Shari’i midnight'];
     const tr = document.createElement('tr');
     const dateCell = document.createElement('th');
     dateCell.scope = 'row';
     dateCell.textContent = label;
     tr.append(dateCell);
-    values.forEach(value => {
+    values.forEach((value, index) => {
       const td = document.createElement('td');
+      td.dataset.label = labels[index];
       td.textContent = value;
       if (unavailable) td.className = 'unavailable';
       tr.append(td);
