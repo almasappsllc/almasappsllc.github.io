@@ -3,12 +3,12 @@
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Shia Ja'fari prayer times for your location. Print the timetable or save it as a PDF.">
-  <title>Namaz | Prayer times for your city</title>
+  <title>Shia Namaz | Prayer times for your city</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <header class="site-header">
-    <span class="header-label">NAMAZ <i>·</i> SHIA <i>·</i> JA'FARI</span>
+    <span class="header-label">SHIA NAMAZ <i>·</i> JA'FARI</span>
     <nav class="header-links" aria-label="Site links">
       <a href="blog.html">Blog</a>
       <a href="https://play.google.com/store/apps/details?id=com.namaz.prayertimes" target="_blank" rel="noopener">Google Play ↗</a>
@@ -17,7 +17,7 @@
   </header>
   <main>
     <section id="location-screen" class="location-screen">
-      <p class="eyebrow">NAMAZ PRAYER TIMES</p>
+      <p class="eyebrow">SHIA NAMAZ PRAYER TIMES</p>
       <h1>Get your prayer times</h1>
       <p class="intro">Choose your city. We’ll remember it on this device.</p>
       <label class="location-label" for="city-search">Type your city</label>
@@ -39,7 +39,7 @@
     </section>
 
     <section id="schedule-screen" class="schedule-screen" hidden>
-      <div class="page-heading"><div><p class="eyebrow">NAMAZ PRAYER TIMES</p><h1>Namaz prayer times</h1></div><button class="text-button" id="change-city" type="button">Change city</button></div>
+      <div class="page-heading"><div><p class="eyebrow">SHIA NAMAZ PRAYER TIMES</p><h1>Shia Namaz prayer times</h1></div><button class="text-button" id="change-city" type="button">Change city</button></div>
       <div class="date-block">
         <p id="selected-location" class="selected-location"></p>
         <p id="gregorian-date" class="gregorian-date"></p>
@@ -54,7 +54,7 @@
       <div class="table-actions"><button class="button" id="print-table" type="button">Print timetable</button><button class="button button-quiet" id="print-hijri" type="button">Print Hijri calendar</button></div>
       <p class="print-note">In the print window, choose your printer or “Save as PDF”.</p>
       <section id="hijri-calendar" class="hijri-calendar" hidden aria-label="Printable Hijri calendar">
-        <p class="eyebrow">NAMAZ · HIJRI CALENDAR</p>
+        <p class="eyebrow">SHIA NAMAZ · HIJRI CALENDAR</p>
         <h2 id="calendar-title"></h2>
         <p id="calendar-location" class="calendar-location"></p>
         <table class="calendar-table"><thead><tr><th>Sun</th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th></tr></thead><tbody id="calendar-days"></tbody></table>
@@ -84,10 +84,10 @@
   </main>
   <footer class="site-footer">
     <a href="privacy.html">Privacy policy</a>
-    <a href="mailto:almasappsllc@gmail.com?subject=Namaz%20website%20feedback">Contact me</a>
+    <a href="mailto:almasappsllc@gmail.com?subject=Shia%20Namaz%20website%20feedback">Contact me</a>
     <span>© 2026 Almas Apps</span>
   </footer>
-  <script src="vendor/adhan.umd.min.js" defer></script>
+  <script src="vendor/namaz-engine.js" defer></script>
   <script src="vendor/tz-lookup.js" defer></script>
   <script src="engine.js" defer></script>
   <script src="app.js" defer></script>

@@ -115,8 +115,8 @@ async function printHijriCalendar(){
   const params=new URLSearchParams({lat:selectedPlace.lat,lon:selectedPlace.lon,zone,date:localDateInZone(zone)});
   const button=document.querySelector('#print-hijri');button.disabled=true;button.textContent='Preparing calendar…';
   try{
-    const payload=NamazEngine.hijriMonth(params.get('date'));
-    document.querySelector('#calendar-title').textContent=`${payload.month} ${payload.year} AH`;
+    const payload=NamazEngine.hijriMonth(document.querySelector('#hijri-date').dataset.civilDate||params.get('date'),selectedPlace.lat,selectedPlace.lon,zone);
+    document.querySelector('#calendar-title').textContent=`${payload.monthName} ${payload.year} AH`;
     document.querySelector('#calendar-location').textContent=selectedPlace.label;
     const cells=Array(42).fill(null),firstOffset=new Date(`${payload.days[0].date}T12:00:00Z`).getUTCDay();
     for(const day of payload.days)cells[firstOffset+day.day-1]=day;
@@ -139,19 +139,18 @@ async function calculateTimes(){
   for(const input of document.querySelectorAll('[data-adjust]'))if(Number(input.value)!==0)params.set(`offset_${input.dataset.adjust}`,input.value);
   tableMessage.hidden=false;tableMessage.textContent='Loading prayer times…';
   try{
-    const date=params.get('date');
-    const result=NamazEngine.compute(selectedPlace.lat,selectedPlace.lon,date,{method:methodSelect.value,fajrAngle:params.get('fajrAngle'),ishaAngle:params.get('ishaAngle'),maghribAngle:params.get('maghribAngle'),highLat:params.get('highLat'),showImsak:params.get('showImsak')==='true',imsakOffset:params.get('imsakOffset'),offsets:Object.fromEntries([...document.querySelectorAll('[data-adjust]')].map(input=>[input.dataset.adjust,input.value]))});
-    const payload={date,zone,hijri:NamazEngine.hijri(date),rows:result.rows,approximated:result.approximated};
+    const result=NamazEngine.compute(selectedPlace.lat,selectedPlace.lon,zone,{method:methodSelect.value,fajrAngle:params.get('fajrAngle'),ishaAngle:params.get('ishaAngle'),maghribAngle:params.get('maghribAngle'),highLat:params.get('highLat'),showImsak:params.get('showImsak')==='true',imsakOffset:params.get('imsakOffset'),offsets:Object.fromEntries([...document.querySelectorAll('[data-adjust]')].map(input=>[input.dataset.adjust,input.value]))});
+    const payload={date:result.date,zone,hijri:result.hijri,rows:result.rows,approximated:result.approximated,maghribApproximated:result.maghribApproximated};
     const clock=new Intl.DateTimeFormat(undefined,{hour:'numeric',minute:'2-digit',timeZone:payload.zone});
     const rows=payload.rows.map(row=>`<tr><th scope="row">${names[row.id]||row.id}</th><td>${clock.format(new Date(row.time))}</td></tr>`).join('');
     document.querySelector('#selected-location').textContent=selectedPlace.label;
     const [year,month,day]=payload.date.split('-').map(Number);
     document.querySelector('#gregorian-date').textContent=new Intl.DateTimeFormat(undefined,{weekday:'long',year:'numeric',month:'long',day:'numeric',timeZone:'UTC'}).format(new Date(Date.UTC(year,month-1,day,12)));
-    document.querySelector('#hijri-date').textContent=payload.hijri?`${payload.hijri.day} ${payload.hijri.month} ${payload.hijri.year} AH`:'';
+    document.querySelector('#hijri-date').textContent=`${payload.hijri.day} ${payload.hijri.monthName} ${payload.hijri.year} AH`;
     document.querySelector('#hijri-date').dataset.civilDate=payload.date;
     document.querySelector('#prayer-rows').innerHTML=rows;
     tableMessage.hidden=true;
-    const note=document.querySelector('#approximation-note');note.hidden=!payload.approximated;note.textContent='At this time of year, the sun does not reach the Maghrib angle. Maghrib is set to the deepest point of the night.';
+    const note=document.querySelector('#approximation-note');note.hidden=!payload.approximated;note.textContent=payload.maghribApproximated?'At this time of year, the sun does not reach the Maghrib angle. Maghrib is set to the deepest point of the night.':'At this time of year, the sun does not reach one of the selected angles. The calculation uses the high-latitude rule above.';
   }catch(error){tableMessage.textContent=error.message}
 }
 
