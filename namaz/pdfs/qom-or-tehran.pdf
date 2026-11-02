@@ -1,0 +1,51 @@
+%PDF-1.4
+%‚„œ”
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [3 0 R] /Count 1 >>
+endobj
+3 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 4 0 R >> >> /Contents 5 0 R >>
+endobj
+4 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+5 0 obj
+<< /Length 1823 >>
+stream
+0.150 0.390 0.310 rg BT /F1 9 Tf 54 785 Td (NAMAZ / QUICK GUIDE 03) Tj ET
+0.090 0.170 0.160 rg BT /F1 31 Tf 54 735 Td (Qom or Tehran?) Tj ET
+0.350 0.420 0.400 rg BT /F1 13 Tf 54 694 Td (Compare the two Ja'fari presets in the Namaz app.) Tj ET
+0.780 0.820 0.790 RG 1 w 54 661 m 541 661 l S
+0.150 0.390 0.310 rg BT /F1 15 Tf 54 628 Td (The settings) Tj ET
+0.090 0.170 0.160 rg BT /F1 10.5 Tf 54 605 Td (Qom: Fajr 16.0 degrees, Isha 14.0 degrees, Maghrib 4.0 degrees. Tehran: Fajr 17.7) Tj ET
+0.090 0.170 0.160 rg BT /F1 10.5 Tf 54 589 Td (degrees, Isha 14.0 degrees, Maghrib 4.5 degrees. Both use Asr shadow factor one.) Tj ET
+0.150 0.390 0.310 rg BT /F1 15 Tf 54 558 Td (How to choose) Tj ET
+0.090 0.170 0.160 rg BT /F1 10.5 Tf 54 535 Td (Start with the method recommended by your mosque or marja'. If a trusted local) Tj ET
+0.090 0.170 0.160 rg BT /F1 10.5 Tf 54 519 Td (timetable uses one of these presets, select that one. If it gives different angles,) Tj ET
+0.090 0.170 0.160 rg BT /F1 10.5 Tf 54 503 Td (Namaz also offers custom values.) Tj ET
+0.150 0.390 0.310 rg BT /F1 15 Tf 54 472 Td (Before relying on a change) Tj ET
+0.090 0.170 0.160 rg BT /F1 10.5 Tf 54 449 Td (Changing the method can move Fajr and Maghrib. Compare the result with a trusted) Tj ET
+0.090 0.170 0.160 rg BT /F1 10.5 Tf 54 433 Td (local source. The city name alone does not determine which method is right for you.) Tj ET
+0.150 0.390 0.310 rg BT /F1 15 Tf 54 402 Td (Sources) Tj ET
+0.090 0.170 0.160 rg BT /F1 10.5 Tf 54 379 Td (Namaz app: PrayerEngine.kt  |  github.com/batoulapps/adhan-kotlin) Tj ET
+0.780 0.820 0.790 RG 1 w 54 75 m 541 75 l S
+0.350 0.420 0.400 rg BT /F1 8.5 Tf 54 54 Td (Namaz prayer-time calculator ? These presets are not universal labels for all) Tj ET
+0.350 0.420 0.400 rg BT /F1 8.5 Tf 54 41 Td (Ja'fari methods) Tj ET
+endstream
+endobj
+xref
+0 6
+0000000000 65535 f 
+0000000015 00000 n 
+0000000064 00000 n 
+0000000121 00000 n 
+0000000247 00000 n 
+0000000317 00000 n 
+trailer
+<< /Size 6 /Root 1 0 R >>
+startxref
+2191
+%%EOF
