@@ -4,8 +4,8 @@
   <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Shia Ja'fari prayer times for your location. Print the timetable or save it as a PDF.">
   <title>Shia Namaz | Prayer times for your city</title>
-  <link rel="stylesheet" href="styles.css?v=ee488793ff">
-  <link rel="preload" href="vendor/namaz-engine.js?v=ee488793ff" as="script">
+  <link rel="stylesheet" href="styles.css?v=984b8acf9b">
+  <link rel="preload" href="vendor/namaz-engine.js?v=984b8acf9b" as="script">
 </head>
 <body class="app">
   <header class="site-header">
@@ -18,16 +18,18 @@
   </header>
   <main class="app-main">
     <section id="location-screen" class="location-screen">
-      <h1>Get your prayer times</h1>
-      <p class="intro">Choose your city. We’ll remember it on this device.</p>
-      <p class="trust">Calculated by the Shia Namaz app’s own engine: Maghrib after sunset, Shari’i midnight, and the Qom or Tehran method. <a href="articles/choose-qom-or-tehran.html">How the methods differ</a></p>
       <button id="saved-city" class="saved-city" type="button" hidden>
         <span class="saved-city-text"><span class="saved-city-label">Your city</span><strong id="saved-city-name"></strong><span id="saved-city-region"></span></span>
         <span class="saved-city-go">Show times <span aria-hidden="true">→</span></span>
       </button>
+      <h1>Get your prayer times</h1>
+      <p class="intro">Choose your city. We’ll remember it on this device.</p>
+      <p class="trust">Calculated by the Shia Namaz app’s own engine: <a href="articles/why-maghrib-after-sunset.html">Maghrib after sunset</a>, Shari’i midnight, and the Qom or Tehran method.</p>
       <label class="location-label" for="city-search">Type your city</label>
-      <input id="city-search" type="search" autocomplete="off" aria-autocomplete="list" aria-controls="city-suggestions" aria-expanded="false" placeholder="Start typing a city name">
-      <div id="city-suggestions" class="city-suggestions" role="listbox" aria-label="City choices" hidden></div>
+      <div class="search-field">
+        <input id="city-search" type="search" autocomplete="off" role="combobox" aria-autocomplete="list" aria-controls="city-suggestions" aria-expanded="false" placeholder="Start typing a city name">
+        <div id="city-suggestions" class="city-suggestions" role="listbox" aria-label="City choices" hidden></div>
+      </div>
       <button class="button button-quiet locate-button" id="locate" type="button">Use my location</button>
       <details class="more-options">
         <summary>Enter or paste coordinates</summary>
@@ -48,7 +50,7 @@
         <div class="place-heading"><h1 id="selected-location" class="selected-location"></h1><button class="text-button" id="change-city" type="button">Change city</button></div>
         <p id="selected-region" class="selected-region"></p>
         <p class="date-line"><span id="gregorian-date" class="gregorian-date"></span><span class="dot" aria-hidden="true">·</span><span id="hijri-date" class="hijri-date"></span></p>
-        <p id="method-line" class="method-line"></p>
+        <div class="method-row"><p id="method-line" class="method-line"></p><label class="clock-switch"><input id="clock-24" type="checkbox" role="switch"><span class="switch-track" aria-hidden="true"></span>24-hour</label></div>
       </div>
       <div id="table-message" class="message" role="status" hidden></div>
       <table id="prayer-table" class="prayer-table">
@@ -91,8 +93,8 @@
     <a href="mailto:almasappsllc@gmail.com?subject=Shia%20Namaz%20website%20feedback">Contact me</a>
     <span>© 2026 Almas Apps</span>
   </footer>
-  <script src="engine.js?v=ee488793ff" defer></script>
-  <script src="print.js?v=ee488793ff" defer></script>
-  <script src="app.js?v=ee488793ff" defer></script>
+  <script src="engine.js?v=984b8acf9b" defer></script>
+  <script src="print.js?v=984b8acf9b" defer></script>
+  <script src="app.js?v=984b8acf9b" defer></script>
 </body>
 </html>

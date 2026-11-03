@@ -207,7 +207,18 @@
     return zoneFor(lat, lon);
   }
 
-  window.NamazEngine = { occasions, strings, ready, compute, computeOn, hijriMonth, searchCities, prepareSearch, zoneFor, zoneAt, loadScript, HIJRI_MONTHS };
+  // Times as the page and the printed sheets show them: 12-hour (5:13, with AM/PM apart
+  // so the page can set it small, the sheets leave it out) or 24-hour (05:13).
+  function clock(zone, h24) {
+    const formatter = new Intl.DateTimeFormat('en-US', { hour: 'numeric', minute: '2-digit', hourCycle: h24 ? 'h23' : 'h12', timeZone: zone });
+    return time => {
+      const parts = formatter.formatToParts(time), part = type => parts.find(p => p.type === type)?.value || '';
+      return h24 ? { time: `${part('hour').padStart(2, '0')}:${part('minute')}`, period: '' }
+        : { time: `${Number(part('hour'))}:${part('minute')}`, period: part('dayPeriod').toUpperCase() };
+    };
+  }
+
+  window.NamazEngine = { clock, occasions, strings, ready, compute, computeOn, hijriMonth, searchCities, prepareSearch, zoneFor, zoneAt, loadScript, HIJRI_MONTHS };
   // The engine is preloaded by the page; start it once the page is idle so the first
   // timetable after picking a city is instant.
   const warm = () => ready().catch(() => {});

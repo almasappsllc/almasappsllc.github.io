@@ -6,9 +6,10 @@ const locationError=document.querySelector('#location-error');
 const tableMessage=document.querySelector('#table-message');
 const methodSelect=document.querySelector('#method');
 const timeZoneInput=document.querySelector('#time-zone');
+const clockToggle=document.querySelector('#clock-24');
 const names={IMSAK:'Imsak',FAJR:'Fajr',SUNRISE:'Sunrise',DHUHR:'Dhuhr',ASR:'Asr',SUNSET:'Sunset',MAGHRIB:'Maghrib',ISHA:'Isha',MIDNIGHT:"Shari'i midnight"};
 const adjustmentRows=['IMSAK','FAJR','SUNRISE','DHUHR','ASR','SUNSET','MAGHRIB','ISHA','MIDNIGHT'];
-let selectedPlace=null,searchTimer=null,searchResults=[],searchSequence=0;
+let selectedPlace=null,searchTimer=null,searchResults=[],resultsFor='',searchSequence=0,shownTimes=null;
 const deviceZone=Intl.DateTimeFormat().resolvedOptions().timeZone||'UTC';
 timeZoneInput.value=deviceZone;
 document.querySelector('#time-adjustments').innerHTML=adjustmentRows.map(id=>`<label>${names[id]}<input type="number" min="-120" max="120" step="1" value="0" data-adjust="${id}"></label>`).join('');
@@ -27,9 +28,12 @@ function localDateInZone(zone){
   const value=type=>parts.find(part=>part.type===type).value;
   return `${value('year')}-${value('month')}-${value('day')}`;
 }
-function hideSuggestions(){suggestions.replaceChildren();suggestions.hidden=true;searchResults=[];citySearch.setAttribute('aria-expanded','false')}
+function hideSuggestions(){suggestions.replaceChildren();suggestions.hidden=true;searchResults=[];resultsFor='';citySearch.setAttribute('aria-expanded','false')}
+// One swap from the old list to the new: the list is never emptied first, so typing doesn't flicker.
+function showSuggestions(nodes){suggestions.replaceChildren(...nodes);suggestions.scrollTop=0;suggestions.hidden=false;citySearch.setAttribute('aria-expanded','true')}
+const suggestionMessage=text=>Object.assign(document.createElement('p'),{className:'suggestion-message',textContent:text});
 function openSchedule(){locationScreen.hidden=true;scheduleScreen.hidden=false;clearError();whenIdle(printTools)}
-function openLocation(){scheduleScreen.hidden=true;locationScreen.hidden=false;showSavedCity();whenIdle(()=>NamazEngine.prepareSearch())}
+function openLocation(){hideSuggestions();scheduleScreen.hidden=true;locationScreen.hidden=false;showSavedCity();whenIdle(()=>NamazEngine.prepareSearch())}
 // The city search is always the first screen; a returning visitor's city waits there as one tap.
 function showSavedCity(){
   const card=document.querySelector('#saved-city');card.hidden=!selectedPlace;if(!selectedPlace)return;
@@ -45,7 +49,7 @@ function rememberPreferences(){
     place:selectedPlace,method:methodSelect.value,fajrAngle:document.querySelector('#fajr-angle').value,
     ishaAngle:document.querySelector('#isha-angle').value,maghribAngle:document.querySelector('#maghrib-angle').value,
     highLat:document.querySelector('#high-lat').value,zone:timeZoneInput.value,
-    showImsak:document.querySelector('#show-imsak').checked,imsakOffset:document.querySelector('#imsak-offset').value,
+    showImsak:document.querySelector('#show-imsak').checked,imsakOffset:document.querySelector('#imsak-offset').value,clock24:clockToggle.checked,
     offsets:Object.fromEntries([...document.querySelectorAll('[data-adjust]')].map(input=>[input.dataset.adjust,input.value]))
   };
   try{localStorage.setItem('namaz-site-page',JSON.stringify(preferences))}catch{}
@@ -63,22 +67,23 @@ function restorePreferences(preferences){
   document.querySelector('#show-imsak').checked=!!preferences.showImsak;
   document.querySelector('#imsak-offset').value=preferences.imsakOffset||'0';
   document.querySelector('#imsak-offset-wrap').hidden=!preferences.showImsak;
+  clockToggle.checked=!!preferences.clock24;
   for(const input of document.querySelectorAll('[data-adjust]'))input.value=preferences.offsets?.[input.dataset.adjust]||'0';
   return true;
 }
-function displaySuggestions(items){
-  hideSuggestions();searchResults=items;
-  if(!items.length){const note=document.createElement('p');note.className='suggestion-message';note.textContent='No matching city found. Try another spelling or enter coordinates.';suggestions.append(note);suggestions.hidden=false;citySearch.setAttribute('aria-expanded','true');return}
-  for(const [index,place] of items.entries()){
+const placeLabel=place=>[place.name,place.region,place.country].filter(Boolean).join(', ');
+function displaySuggestions(items,query){
+  searchResults=items;resultsFor=query;
+  if(!items.length)return showSuggestions([suggestionMessage('No matching city found. Try another spelling or enter coordinates.')]);
+  showSuggestions(items.map((place,index)=>{
     const button=document.createElement('button');button.type='button';button.className='city-option';button.setAttribute('role','option');
     const name=document.createElement('strong');name.textContent=place.name;
     const region=document.createElement('span');region.textContent=[place.region,place.country].filter(Boolean).join(', ');
     button.append(name,region);
-    button.addEventListener('click',()=>selectPlace({...place,label:[place.name,place.region,place.country].filter(Boolean).join(', ')}));
+    button.addEventListener('click',()=>selectPlace({...place,label:placeLabel(place)}));
     button.addEventListener('keydown',event=>{if(event.key==='ArrowDown'){event.preventDefault();suggestions.querySelectorAll('button')[Math.min(index+1,items.length-1)]?.focus()}if(event.key==='ArrowUp'){event.preventDefault();if(index===0)citySearch.focus();else suggestions.querySelectorAll('button')[index-1]?.focus()}});
-    suggestions.append(button);
-  }
-  suggestions.hidden=false;citySearch.setAttribute('aria-expanded','true');
+    return button;
+  }));
 }
 async function selectPlace(place){
   const zone=place.zone||await NamazEngine.zoneAt(place.lat,place.lon);if(zone)timeZoneInput.value=zone;
@@ -86,15 +91,26 @@ async function selectPlace(place){
 }
 citySearch.addEventListener('focus',()=>NamazEngine.prepareSearch(),{once:true});
 citySearch.addEventListener('input',()=>{
-  clearError();clearTimeout(searchTimer);hideSuggestions();const sequence=++searchSequence;const query=citySearch.value.trim();
-  if(query.length<2)return;
+  clearError();clearTimeout(searchTimer);const sequence=++searchSequence;const query=citySearch.value.trim();
+  if(query.length<2)return hideSuggestions();
+  // The current list stays up until the next one is ready. A slow first download (the city
+  // index) says so, but only when there is no list to keep.
   searchTimer=setTimeout(async()=>{
-    const slow=setTimeout(()=>{if(sequence!==searchSequence)return;suggestions.replaceChildren(Object.assign(document.createElement('p'),{className:'suggestion-message',textContent:'Loading cities…'}));suggestions.hidden=false},150);
-    try{const data=await NamazEngine.searchCities(query);clearTimeout(slow);if(sequence!==searchSequence)return;displaySuggestions(data)}
+    const slow=setTimeout(()=>{if(sequence===searchSequence&&suggestions.hidden)showSuggestions([suggestionMessage('Loading cities…')])},300);
+    try{const data=await NamazEngine.searchCities(query);clearTimeout(slow);if(sequence!==searchSequence)return;displaySuggestions(data,query)}
     catch(error){clearTimeout(slow);if(sequence===searchSequence){hideSuggestions();showError(error.message)}}
   },90);
 });
-citySearch.addEventListener('keydown',event=>{if(event.key==='ArrowDown'){event.preventDefault();suggestions.querySelector('button')?.focus()}if(event.key==='Enter'&&searchResults.length){event.preventDefault();const place=searchResults[0];selectPlace({...place,label:[place.name,place.region,place.country].filter(Boolean).join(', ')})}});
+citySearch.addEventListener('keydown',async event=>{
+  if(event.key==='ArrowDown'){event.preventDefault();suggestions.querySelector('button')?.focus()}
+  if(event.key!=='Enter')return;
+  event.preventDefault();
+  // Enter picks the top result for what is typed now, not for the list still on screen.
+  const query=citySearch.value.trim();if(query.length<2)return;
+  let results=resultsFor===query?searchResults:null;
+  if(!results){clearTimeout(searchTimer);const sequence=++searchSequence;try{results=await NamazEngine.searchCities(query)}catch(error){return showError(error.message)}if(sequence!==searchSequence)return;displaySuggestions(results,query)}
+  if(results.length)selectPlace({...results[0],label:placeLabel(results[0])});
+});
 document.addEventListener('click',event=>{if(event.target!==citySearch&&!event.target.closest('#city-suggestions')){searchSequence++;hideSuggestions()}});
 
 document.querySelector('#locate').addEventListener('click',()=>{
@@ -131,7 +147,7 @@ for(const button of document.querySelectorAll('[data-print]'))button.addEventLis
   try{
     await printTools();
     const zone=timeZoneInput.value.trim();
-    await NamazPrint.print(button.dataset.print,{place:selectedPlace,zone,settings:computeSettings(),methodLabel:methodLabel(),
+    await NamazPrint.print(button.dataset.print,{place:selectedPlace,zone,settings:computeSettings(),methodLabel:methodLabel(),h24:clockToggle.checked,
       date:document.querySelector('#hijri-date').dataset.civilDate||localDateInZone(zone),link:shareLink(),siteUrl});
   }catch(error){tableMessage.hidden=false;tableMessage.textContent=error.message}
   finally{button.disabled=false;label.textContent=text}
@@ -166,6 +182,19 @@ function computeSettings(){
     highLat:value('high-lat'),showImsak:document.querySelector('#show-imsak').checked,imsakOffset:value('imsak-offset'),
     offsets:Object.fromEntries([...document.querySelectorAll('[data-adjust]')].map(input=>[input.dataset.adjust,input.value]))};
 }
+// The rows, in the clock the visitor chose; the 24-hour switch redraws them without recalculating.
+function showTimes(payload){
+  shownTimes=payload;
+  const clock=NamazEngine.clock(payload.zone,clockToggle.checked);
+  const prayers=['FAJR','DHUHR','ASR','MAGHRIB','ISHA'],now=Date.now();
+  const nextId=payload.rows.find(row=>prayers.includes(row.id)&&row.time.getTime()>now)?.id;
+  document.querySelector('#prayer-rows').innerHTML=payload.rows.map(row=>{
+    const cls=[['SUNRISE','SUNSET','IMSAK'].includes(row.id)?'marker':'',row.id===nextId?'next':''].filter(Boolean).join(' ');
+    const t=clock(row.time);
+    return `<tr${cls?` class="${cls}"`:''}><th scope="row">${names[row.id]||row.id}${row.id===nextId?'<span class="next-tag">Next</span>':''}</th><td>${t.time}${t.period?`<span class="period">${t.period}</span>`:''}</td></tr>`;
+  }).join('');
+}
+clockToggle.addEventListener('change',()=>{rememberPreferences();if(shownTimes)showTimes(shownTimes)});
 async function calculateTimes(){
   if(!selectedPlace)return;
   const zone=timeZoneInput.value.trim();
@@ -176,15 +205,11 @@ async function calculateTimes(){
     await NamazEngine.ready();
     const result=NamazEngine.compute(selectedPlace.lat,selectedPlace.lon,zone,computeSettings());
     const payload={date:result.date,zone,hijri:result.hijri,rows:result.rows,approximated:result.approximated,maghribApproximated:result.maghribApproximated};
-    const clock=new Intl.DateTimeFormat(undefined,{hour:'numeric',minute:'2-digit',timeZone:payload.zone});
-    const prayers=['FAJR','DHUHR','ASR','MAGHRIB','ISHA'],now=Date.now();
-    const nextId=payload.rows.find(row=>prayers.includes(row.id)&&new Date(row.time).getTime()>now)?.id;
-    const rows=payload.rows.map(row=>{const cls=[['SUNRISE','SUNSET','IMSAK'].includes(row.id)?'marker':'',row.id===nextId?'next':''].filter(Boolean).join(' ');return `<tr${cls?` class="${cls}"`:''}><th scope="row">${names[row.id]||row.id}${row.id===nextId?'<span class="next-tag">Next</span>':''}</th><td>${clock.format(new Date(row.time))}</td></tr>`}).join('');
+    showTimes(payload);
     const [year,month,day]=payload.date.split('-').map(Number);
     document.querySelector('#gregorian-date').textContent=new Intl.DateTimeFormat(undefined,{weekday:'long',year:'numeric',month:'long',day:'numeric',timeZone:'UTC'}).format(new Date(Date.UTC(year,month-1,day,12)));
     document.querySelector('#hijri-date').textContent=`${payload.hijri.day} ${payload.hijri.monthName} ${payload.hijri.year} AH`;
     document.querySelector('#hijri-date').dataset.civilDate=payload.date;
-    document.querySelector('#prayer-rows').innerHTML=rows;
     endPending();
     labelPrintChoices(payload);
     const note=document.querySelector('#approximation-note');note.hidden=!payload.approximated;note.textContent=payload.maghribApproximated?'At this time of year, the sun does not reach the Maghrib angle. Maghrib is set to the deepest point of the night.':'At this time of year, the sun does not reach one of the selected angles. The calculation uses the high-latitude rule above.';
