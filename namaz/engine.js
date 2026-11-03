@@ -2,6 +2,9 @@
 // Times and Hijri dates come from the app's own PrayerEngine and HijriCalendar, compiled to
 // JavaScript (vendor/namaz-engine.js, built by namaz/engine-js in the growth repo).
 (() => {
+  // Deploys stamp ?v=<version> on this script's URL; pass it on so data files refresh too.
+  const V = (document.currentScript?.src.match(/[?&]v=([\w-]+)/) || [])[1];
+  const versioned = path => V ? `${path}?v=${V}` : path;
   const METHODS = {
     QUM: { fajr: 16.0, isha: 14.0, maghrib: 4.0 },
     TEHRAN: { fajr: 17.7, isha: 14.0, maghrib: 4.5 },
@@ -31,7 +34,7 @@
     if (window.NamazKotlin) return Promise.resolve();
     enginePromise ||= new Promise((resolve, reject) => {
       const script = document.createElement('script');
-      script.src = 'vendor/namaz-engine.js';
+      script.src = versioned('vendor/namaz-engine.js');
       script.async = true;
       script.onload = () => resolve();
       script.onerror = () => { enginePromise = null; reject(new Error('The prayer-time engine did not load. Check your connection and try again.')); };
@@ -78,7 +81,7 @@
 
   // The app's Ja'fari occasions and their titles (data/events.json, data/strings/<lang>.json).
   const jsonCache = {};
-  const getJSON = path => (jsonCache[path] ||= fetch(path).then(r => { if (!r.ok) throw new Error(path); return r.json(); })
+  const getJSON = path => (jsonCache[path] ||= fetch(versioned(path)).then(r => { if (!r.ok) throw new Error(path); return r.json(); })
     .catch(error => { delete jsonCache[path]; throw error; }));
   async function strings(lang = 'en') {
     try { return await getJSON(`data/strings/${lang}.json`); } catch { return getJSON('data/strings/en.json'); }
@@ -92,7 +95,7 @@
   let citiesPromise = null;
   const fold = s => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z0-9 ]+/g, ' ').replace(/\s+/g, ' ').trim();
   function loadCities() {
-    citiesPromise ||= fetch('data/cities.json').then(r => {
+    citiesPromise ||= fetch(versioned('data/cities.json')).then(r => {
       if (!r.ok) throw new Error('City search is unavailable. Enter coordinates instead.');
       return r.json();
     }).then(rows => rows.map(([name, cc, region, lat, lon]) => ({ name, cc, region, lat, lon, key: fold(name) })))
