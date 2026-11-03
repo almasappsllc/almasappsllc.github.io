@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://shianamaz.com/sitemap.xml
