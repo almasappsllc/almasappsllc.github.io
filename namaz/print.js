@@ -31,7 +31,7 @@
   }
 
   // title/titleSub on the left, side/sideSub on the right; meta in the brand line.
-  function sheet(ctx, { kind, title, titleSub, side, sideSub, meta, body, notes = [] }) {
+  function sheet(ctx, { kind, title, titleSub, side, sideSub, meta = '', body, notes = [] }) {
     const qr = (() => {
       try {
         const code = qrcode(0, 'M'); code.addData(ctx.link); code.make();

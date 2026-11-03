@@ -121,7 +121,7 @@ citySearch.addEventListener('keydown',async event=>{
   if(!results){clearTimeout(searchTimer);const sequence=++searchSequence;try{results=await NamazEngine.searchCities(query)}catch(error){return showError(error.message)}if(sequence!==searchSequence)return;displaySuggestions(results,query)}
   if(results.length)selectPlace({...results[0],label:placeLabel(results[0])});
 });
-document.addEventListener('click',event=>{if(event.target!==citySearch&&!event.target.closest('#city-suggestions')){searchSequence++;hideSuggestions()}});
+document.addEventListener('click',event=>{if(event.target!==citySearch&&!(event.target instanceof Element&&event.target.closest('#city-suggestions'))){searchSequence++;hideSuggestions()}});
 
 // A location from the device or typed as coordinates is called after the nearest town, as
 // the app does. The times still come from the exact coordinates.
@@ -154,7 +154,7 @@ document.querySelector('#import-coordinates').addEventListener('click',()=>{
 
 document.querySelector('#change-city').addEventListener('click',()=>{openLocation();citySearch.value='';citySearch.focus()});
 methodSelect.addEventListener('change',()=>{document.querySelector('#custom-angles').hidden=methodSelect.value!=='CUSTOM'});
-document.querySelector('#show-imsak').addEventListener('change',event=>{document.querySelector('#imsak-offset-wrap').hidden=!event.target.checked});
+document.querySelector('#show-imsak').addEventListener('change',()=>{document.querySelector('#imsak-offset-wrap').hidden=!document.querySelector('#show-imsak').checked});
 document.querySelector('#update-times').addEventListener('click',()=>calculateTimes());
 for(const button of document.querySelectorAll('[data-print]'))button.addEventListener('click',async()=>{
   if(!selectedPlace)return;
@@ -193,7 +193,7 @@ function labelPrintChoices(payload){
   document.querySelector('#print-hijri-span').textContent=`${NamazI18n.hijriMonth(payload.hijri.month)} ${payload.hijri.year}`;
 }
 function computeSettings(){
-  const value=id=>document.getElementById(id).value;
+  const value=id=>document.querySelector('#'+id).value;
   return {method:methodSelect.value,fajrAngle:value('fajr-angle'),ishaAngle:value('isha-angle'),maghribAngle:value('maghrib-angle'),
     highLat:value('high-lat'),showImsak:document.querySelector('#show-imsak').checked,imsakOffset:value('imsak-offset'),
     offsets:Object.fromEntries([...document.querySelectorAll('[data-adjust]')].map(input=>[input.dataset.adjust,input.value]))};

@@ -3,7 +3,7 @@
 // JavaScript (vendor/namaz-engine.js, built by namaz/engine-js in the growth repo).
 (() => {
   // Deploys stamp ?v=<version> on this script's URL; pass it on so data files refresh too.
-  const V = (document.currentScript?.src.match(/[?&]v=([\w-]+)/) || [])[1];
+  const V = ((/** @type {HTMLScriptElement | null} */ (document.currentScript))?.src.match(/[?&]v=([\w-]+)/) || [])[1];
   const versioned = path => V ? `${path}?v=${V}` : path;
   const METHODS = {
     QUM: { fajr: 16.0, isha: 14.0, maghrib: 4.0 },
@@ -66,7 +66,7 @@
     }
     const imsakOffset = Math.round(Number(settings.imsakOffset) || 0);
     if (imsakOffset < 0 || imsakOffset > 120) throw new Error(t('err_imsak', 'Imsak offset must be from 0 to 120 minutes.'));
-    const offsets = Object.entries(settings.offsets || {}).map(([id, v]) => [id, Math.round(Number(v) || 0)]);
+    const offsets = Object.entries(settings.offsets || {}).map(([id, v]) => /** @type {[string, number]} */ ([id, Math.round(Number(v) || 0)]));
     if (offsets.some(([, v]) => v < -120 || v > 120)) throw new Error(t('err_adjust', 'Time adjustments must be from -120 to 120 minutes.'));
     const result = parse(kotlin().computeTimes(lat, lon, nowMillis, zone, angles.fajr, angles.isha, angles.maghrib,
       settings.highLat || 'AUTO', !!settings.showImsak, imsakOffset,

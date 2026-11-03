@@ -18,7 +18,7 @@
       title: 'Shia Namaz | Prayer times for your city',
       description: "Shia Ja'fari prayer times for your location. Print the timetable or save it as a PDF.",
       language: 'Language', guides: 'Guides',
-      ios_aria: 'Shia Namaz on the App Store', android_aria: 'Shia Namaz on Google Play',
+      nav_times: 'Prayer times', get_app_long: 'Get the app', get_app_short: 'Get app',
       your_city: 'Your city', show_times: 'Show times',
       heading: 'Get your prayer times',
       intro_html: 'Ja’fari times from the Shia Namaz app’s own engine, with <a href="articles/why-maghrib-after-sunset.html">Maghrib after sunset</a>. We’ll remember your city on this device.',
@@ -77,7 +77,7 @@
       title: 'Shia Namaz | Şəhəriniz üçün namaz vaxtları',
       description: 'Olduğunuz yer üçün Cəfəri namaz vaxtları. Cədvəli çap edin və ya PDF kimi saxlayın.',
       language: 'Dil', guides: 'Bələdçilər',
-      ios_aria: 'App Store-da Shia Namaz', android_aria: 'Google Play-də Shia Namaz',
+      nav_times: 'Namaz vaxtları', get_app_long: 'Tətbiqi yükləyin', get_app_short: 'Tətbiq',
       your_city: 'Şəhəriniz', show_times: 'Vaxtları göstər',
       heading: 'Namaz vaxtlarınızı öyrənin',
       intro_html: 'Shia Namaz tətbiqinin öz hesablaması ilə Cəfəri namaz vaxtları, <a href="articles/why-maghrib-after-sunset.html">Məğrib gün batımından sonra</a>. Şəhərinizi bu cihazda yadda saxlayırıq.',
@@ -140,7 +140,7 @@
       title: 'Shia Namaz | Şehriniz için namaz vakitleri',
       description: 'Bulunduğunuz yer için Caferi namaz vakitleri. Çizelgeyi yazdırın veya PDF olarak kaydedin.',
       language: 'Dil', guides: 'Rehberler',
-      ios_aria: "App Store'da Shia Namaz", android_aria: "Google Play'de Shia Namaz",
+      nav_times: 'Namaz vakitleri', get_app_long: 'Uygulamayı indirin', get_app_short: 'Uygulama',
       your_city: 'Şehriniz', show_times: 'Vakitleri göster',
       heading: 'Namaz vakitlerinizi öğrenin',
       intro_html: 'Shia Namaz uygulamasının kendi hesaplamasıyla Caferi vakitler, <a href="articles/why-maghrib-after-sunset.html">Mağrib güneş battıktan sonra</a>. Şehrinizi bu cihazda hatırlarız.',
@@ -203,7 +203,7 @@
       title: 'Shia Namaz | Gebetszeiten für Ihre Stadt',
       description: "Ja'fari-Gebetszeiten für Ihren Standort. Drucken Sie den Gebetszeitenplan aus oder speichern Sie ihn als PDF.",
       language: 'Sprache', guides: 'Ratgeber',
-      ios_aria: 'Shia Namaz im App Store', android_aria: 'Shia Namaz bei Google Play',
+      nav_times: 'Gebetszeiten', get_app_long: 'App herunterladen', get_app_short: 'App',
       your_city: 'Ihre Stadt', show_times: 'Zeiten anzeigen',
       heading: 'Ihre Gebetszeiten',
       intro_html: 'Ja’fari-Gebetszeiten, berechnet mit der Engine der Shia-Namaz-App, mit <a href="articles/why-maghrib-after-sunset.html">Maghrib nach Sonnenuntergang</a>. Ihre Stadt wird auf diesem Gerät gespeichert.',
@@ -331,10 +331,15 @@
       document.title = t('title');
       document.querySelector('meta[name="description"]')?.setAttribute('content', t('description'));
     }
-    const select = document.querySelector('#lang-select');
-    if (select) { select.value = lang; select.setAttribute('aria-label', t('language')); select.title = t('language'); }
-    const code = document.querySelector('.lang-code');
-    if (code) code.textContent = lang.toUpperCase();
+    const summary = document.querySelector('#lang-switch summary');
+    if (summary) {
+      summary.setAttribute('aria-label', `${t('language')}: ${LANGS[lang]}`);
+      summary.title = t('language');
+      summary.querySelector('.lang-code').textContent = lang.toUpperCase();
+    }
+    for (const link of document.querySelectorAll('#lang-switch a[data-lang]')) {
+      if (link.dataset.lang === lang) link.setAttribute('aria-current', 'true'); else link.removeAttribute('aria-current');
+    }
   }
 
   function set(next) {
@@ -345,19 +350,26 @@
     document.dispatchEvent(new CustomEvent('namaz:lang', { detail: lang }));
   }
 
-  // The switcher: a globe and the language's code in the header. An invisible native select
-  // sits on top, so a tap opens the phone's own picker, listing each language in its own words.
-  const GLOBE = '<svg class="lang-globe" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="9.5"/><path d="M2.5 12h19M12 2.5c2.6 2.6 3.9 5.8 3.9 9.5s-1.3 6.9-3.9 9.5M12 2.5C9.4 5.1 8.1 8.3 8.1 12s1.3 6.9 3.9 9.5"/></svg>';
+  // The switcher: the translate mark and the language's code in the header, opening a short
+  // menu of the languages, each named in its own words. It is a <details> (header.js closes it
+  // on a click elsewhere or Escape); each item is a ?lang= link, handled here without a reload.
+  // The mark is Material Icons' "translate" (Apache License 2.0).
+  const TRANSLATE = '<svg class="lang-mark" width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.87 15.07l-2.54-2.51.03-.03c1.74-1.94 2.98-4.17 3.71-6.53H17V4h-7V2H8v2H1v1.99h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11.76-2.04zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2l-4.5-12zm-2.62 7l1.62-4.33L19.12 17h-3.24z"/></svg>';
+  const CHEVRON = '<svg class="menu-chevron" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>';
+  const CHECK = '<svg class="menu-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
   function mountSwitcher() {
     const slot = document.querySelector('#lang-switch');
     if (!slot) return;
-    const select = document.createElement('select');
-    select.id = 'lang-select';
-    select.className = 'lang-select';
-    for (const [code, name] of Object.entries(LANGS)) select.append(new Option(name, code));
-    select.addEventListener('change', () => set(select.value));
-    slot.innerHTML = `${GLOBE}<span class="lang-code" aria-hidden="true"></span>`;
-    slot.append(select);
+    const items = Object.entries(LANGS).map(([code, name]) =>
+      `<li><a href="?lang=${code}" lang="${code}" hreflang="${code}" data-lang="${code}"><span>${name}</span>${CHECK}</a></li>`).join('');
+    slot.innerHTML = `<summary class="lang-button">${TRANSLATE}<span class="lang-code"></span>${CHEVRON}</summary><ul class="menu-list">${items}</ul>`;
+    slot.addEventListener('click', event => {
+      const link = event.target instanceof Element ? event.target.closest('a[data-lang]') : null;
+      if (!(link instanceof HTMLAnchorElement)) return;
+      event.preventDefault();
+      slot.removeAttribute('open');
+      set(link.dataset.lang);
+    });
   }
 
   window.NamazI18n = {

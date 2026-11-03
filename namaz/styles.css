@@ -234,7 +234,34 @@ main{max-width:1040px}
 .sheet-foot strong{color:#111}
 .sheet-qr{flex:none;display:block}
 .sheet-qr svg{width:13mm;height:13mm;display:block}
-.lang-switch{position:relative;display:inline-flex;align-items:center;gap:4px;padding:6px 2px;color:var(--green-dark);font:700 12px var(--sans);letter-spacing:.04em;cursor:pointer}.lang-switch:hover .lang-code{text-decoration:underline}.lang-switch:focus-within{outline:2px solid var(--green);outline-offset:2px}.lang-globe{flex:none}.lang-select{position:absolute;inset:0;width:100%;height:100%;min-height:0;padding:0;border:0;opacity:0;cursor:pointer;font-size:16px}
-@media(max-width:600px){.lang-switch{font-size:10px;gap:3px}}
-@media print{.lang-switch{display:none}}
 .sheet-table thead th.long{letter-spacing:0;font-size:6pt}
+/* Header A: two nav links, a divider, the language menu and one "Get the app" menu. */
+.site-header{height:68px}
+.header-label.brand img{width:30px;height:30px}
+.site-header .header-links{gap:24px}
+.site-header .header-links>a:not(.store-pill){margin-right:0}
+.site-header .nav-link{display:inline-flex;align-items:center;height:44px;font-size:13px;border-bottom:2px solid transparent;box-sizing:border-box;padding-top:2px}
+.site-header .nav-link[aria-current="page"]{border-bottom-color:var(--green)}
+.site-header .nav-link:hover{text-decoration:none;border-bottom-color:var(--line)}
+.site-header .nav-link[aria-current="page"]:hover{border-bottom-color:var(--green)}
+.nav-divider{width:1px;height:22px;background:var(--line)}
+.menu{position:relative}
+.menu>summary{list-style:none;cursor:pointer;user-select:none}
+.menu>summary::-webkit-details-marker{display:none}
+.lang-button{display:flex;align-items:center;gap:6px;height:44px;padding:0 8px;color:var(--green-dark);font:700 13px var(--sans);letter-spacing:.04em}
+.lang-button:hover .lang-code{text-decoration:underline}
+.menu[open] .menu-chevron{transform:rotate(180deg)}
+.app-button{display:flex;align-items:center;gap:8px;height:44px;padding:0 20px;border-radius:22px;background:var(--green);color:#fff;font:700 13px var(--sans);white-space:nowrap}
+.app-button:hover,.app-menu[open] .app-button{background:var(--green-dark)}
+.app-short{display:none}
+.menu-list{position:absolute;top:calc(100% + 6px);right:0;z-index:30;min-width:200px;margin:0;padding:6px 0;list-style:none;background:#fff;border:1px solid var(--line);box-shadow:0 6px 18px rgba(23,43,41,.1)}
+.site-header .menu-list a{display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:44px;padding:0 16px;color:var(--ink);font:400 14px var(--sans);letter-spacing:0;text-decoration:none;white-space:nowrap}
+.site-header .app-menu .menu-list a{justify-content:flex-start}
+.site-header .menu-list a:hover{background:#edf2ed;text-decoration:none}
+.site-header .menu-list a[aria-current]{font-weight:700;background:#edf2ed}
+.menu-check{color:var(--green);visibility:hidden}
+.menu-list a[aria-current] .menu-check{visibility:visible}
+.menu-list svg{flex:none}
+@media(max-width:600px){.site-header{height:60px}.site-header .header-links{gap:6px}.nav-times,.nav-divider{display:none!important}.site-header .nav-link{font-size:11px;padding:2px 6px 0}.lang-button{gap:4px;padding:0 6px;font-size:11px}.lang-button .menu-chevron{display:none}.app-button{height:36px;padding:0 12px;border-radius:18px;font-size:11px;gap:6px}.app-long{display:none}.app-short{display:inline}.header-label.brand img{width:28px;height:28px}}
+@media(max-width:360px){.site-header .header-links{gap:2px}.app-button svg{display:none}}
+@media print{.site-header{display:none}}
