@@ -20,8 +20,9 @@ function shareLink(){
   if(selectedPlace){url.searchParams.set('lat',Number(selectedPlace.lat).toFixed(3));url.searchParams.set('lon',Number(selectedPlace.lon).toFixed(3));url.searchParams.set('city',selectedPlace.label);const zone=timeZoneInput.value.trim();if(zone!==NamazEngine.zoneFor(selectedPlace.lat,selectedPlace.lon))url.searchParams.set('zone',zone);if(methodSelect.value!=='QUM'&&methodSelect.value!=='CUSTOM')url.searchParams.set('method',methodSelect.value)}
   return url.toString();
 }
-function renderQr(caption){
+async function renderQr(caption){
   try{
+    await printTools();
     const qr=qrcode(0,'M');qr.addData(shareLink());qr.make();
     document.querySelector('#print-qr').innerHTML=qr.createSvgTag({cellSize:4,margin:0,scalable:true});
     document.querySelector('#print-qr-caption').textContent=caption;
@@ -35,7 +36,11 @@ function localDateInZone(zone){
   return `${value('year')}-${value('month')}-${value('day')}`;
 }
 function hideSuggestions(){suggestions.replaceChildren();suggestions.hidden=true;searchResults=[];citySearch.setAttribute('aria-expanded','false')}
-function openSchedule(){locationScreen.hidden=true;scheduleScreen.hidden=false;clearError()}
+function openSchedule(){locationScreen.hidden=true;scheduleScreen.hidden=false;clearError();whenIdle(printTools)}
+function openLocation(){scheduleScreen.hidden=true;locationScreen.hidden=false;whenIdle(()=>NamazEngine.prepareSearch())}
+const whenIdle=task=>'requestIdleCallback' in window?requestIdleCallback(()=>task(),{timeout:2000}):setTimeout(task,500);
+// The printed sheet's QR code and its link's time zone; loaded after the timetable shows.
+function printTools(){return Promise.all([NamazEngine.loadScript('vendor/qrcode.js'),NamazEngine.loadScript('vendor/tz-lookup.js')])}
 function rememberPreferences(){
   if(!selectedPlace)return;
   const preferences={
@@ -78,10 +83,10 @@ function displaySuggestions(items){
   suggestions.hidden=false;citySearch.setAttribute('aria-expanded','true');
 }
 async function selectPlace(place){
-  const zone=place.zone||NamazEngine.zoneFor(place.lat,place.lon);if(zone)timeZoneInput.value=zone;
+  const zone=place.zone||await NamazEngine.zoneAt(place.lat,place.lon);if(zone)timeZoneInput.value=zone;
   selectedPlace=place;rememberPreferences();openSchedule();await calculateTimes();
 }
-citySearch.addEventListener('focus',()=>{NamazEngine.loadCities().catch(()=>{})},{once:true});
+citySearch.addEventListener('focus',()=>NamazEngine.prepareSearch(),{once:true});
 citySearch.addEventListener('input',()=>{
   clearError();clearTimeout(searchTimer);hideSuggestions();const sequence=++searchSequence;const query=citySearch.value.trim();
   if(query.length<2)return;
@@ -117,11 +122,11 @@ document.querySelector('#import-coordinates').addEventListener('click',()=>{
   document.querySelector('#latitude').value=values[0];document.querySelector('#longitude').value=values[1];applyCoordinates();
 });
 
-document.querySelector('#change-city').addEventListener('click',()=>{scheduleScreen.hidden=true;locationScreen.hidden=false;citySearch.value='';citySearch.focus()});
+document.querySelector('#change-city').addEventListener('click',()=>{openLocation();citySearch.value='';citySearch.focus()});
 methodSelect.addEventListener('change',()=>{document.querySelector('#custom-angles').hidden=methodSelect.value!=='CUSTOM'});
 document.querySelector('#show-imsak').addEventListener('change',event=>{document.querySelector('#imsak-offset-wrap').hidden=!event.target.checked});
 document.querySelector('#update-times').addEventListener('click',()=>calculateTimes());
-document.querySelector('#print-table').addEventListener('click',()=>{renderQr(`Scan for daily times in ${selectedPlace?.label.split(',')[0]||'your city'}`);document.body.dataset.printView='timetable';window.print()});
+document.querySelector('#print-table').addEventListener('click',async()=>{await renderQr(`Scan for daily times in ${selectedPlace?.label.split(',')[0]||'your city'}`);document.body.dataset.printView='timetable';window.print()});
 document.querySelector('#print-hijri').addEventListener('click',printHijriCalendar);
 window.addEventListener('afterprint',()=>{delete document.body.dataset.printView;document.querySelector('#hijri-calendar').hidden=true});
 
@@ -156,13 +161,29 @@ async function printHijriCalendar(){
     }catch{document.querySelector('#calendar-events').hidden=true}
     for(const cell of document.querySelectorAll('#calendar-days td[data-day]')){const items=occasionsByDay[cell.dataset.day];if(items){cell.classList.add('has-occasion',`occasion-${items[0].kind}`);const tag=document.createElement('span');tag.className='cell-occasion';tag.textContent=items.map(i=>i.title.split(':')[0]).join(' · ');cell.append(tag)}}
     document.querySelector('#hijri-calendar').hidden=false;
-    renderQr(`Scan for prayer times in ${selectedPlace.label.split(',')[0]}`);
+    await renderQr(`Scan for prayer times in ${selectedPlace.label.split(',')[0]}`);
     document.body.dataset.printView='calendar';
     window.print();
   }catch(error){tableMessage.hidden=false;tableMessage.textContent=error.message}
   finally{button.disabled=false;button.textContent='Print Hijri calendar'}
 }
 
+// While the engine loads, show the page as it will look: city, date and method are known
+// already, so only the times (and the Hijri date) wait, as quiet placeholders.
+const placeholderRows=['FAJR','SUNRISE','DHUHR','ASR','SUNSET','MAGHRIB','ISHA','MIDNIGHT'];
+function showPending(zone){
+  const [placeName,...placeRest]=selectedPlace.label.split(', ');
+  document.querySelector('#selected-location').textContent=placeName;
+  document.querySelector('#selected-region').textContent=placeRest.join(', ');
+  const [year,month,day]=localDateInZone(zone).split('-').map(Number);
+  document.querySelector('#gregorian-date').textContent=new Intl.DateTimeFormat(undefined,{weekday:'long',year:'numeric',month:'long',day:'numeric',timeZone:'UTC'}).format(new Date(Date.UTC(year,month-1,day,12)));
+  document.querySelector('#method-line').textContent=`${methodLabel()} · ${zone.replace(/_/g,' ')} time`;
+  tableMessage.hidden=true;
+  scheduleScreen.classList.add('is-loading');scheduleScreen.setAttribute('aria-busy','true');
+  const body=document.querySelector('#prayer-rows');
+  if(!body.children.length)body.innerHTML=placeholderRows.map(id=>`<tr class="pending${['SUNRISE','SUNSET'].includes(id)?' marker':''}"><th scope="row">${names[id]}</th><td><span class="placeholder" aria-hidden="true"></span></td></tr>`).join('');
+}
+function endPending(){scheduleScreen.classList.remove('is-loading');scheduleScreen.removeAttribute('aria-busy')}
 async function calculateTimes(){
   if(!selectedPlace)return;
   const zone=timeZoneInput.value.trim();
@@ -171,7 +192,7 @@ async function calculateTimes(){
   const params=new URLSearchParams({lat:selectedPlace.lat,lon:selectedPlace.lon,zone,date:localDateInZone(zone),method:methodSelect.value,highLat:document.querySelector('#high-lat').value,showImsak:String(document.querySelector('#show-imsak').checked),imsakOffset:document.querySelector('#imsak-offset').value});
   if(methodSelect.value==='CUSTOM')for(const [id,key] of [['fajr-angle','fajrAngle'],['isha-angle','ishaAngle'],['maghrib-angle','maghribAngle']])params.set(key,document.getElementById(id).value);
   for(const input of document.querySelectorAll('[data-adjust]'))if(Number(input.value)!==0)params.set(`offset_${input.dataset.adjust}`,input.value);
-  tableMessage.hidden=false;tableMessage.textContent='Loading prayer times…';
+  showPending(zone);
   try{
     await NamazEngine.ready();
     const result=NamazEngine.compute(selectedPlace.lat,selectedPlace.lon,zone,{method:methodSelect.value,fajrAngle:params.get('fajrAngle'),ishaAngle:params.get('ishaAngle'),maghribAngle:params.get('maghribAngle'),highLat:params.get('highLat'),showImsak:params.get('showImsak')==='true',imsakOffset:params.get('imsakOffset'),offsets:Object.fromEntries([...document.querySelectorAll('[data-adjust]')].map(input=>[input.dataset.adjust,input.value]))});
@@ -180,16 +201,14 @@ async function calculateTimes(){
     const prayers=['FAJR','DHUHR','ASR','MAGHRIB','ISHA'],now=Date.now();
     const nextId=payload.rows.find(row=>prayers.includes(row.id)&&new Date(row.time).getTime()>now)?.id;
     const rows=payload.rows.map(row=>{const cls=[['SUNRISE','SUNSET','IMSAK'].includes(row.id)?'marker':'',row.id===nextId?'next':''].filter(Boolean).join(' ');return `<tr${cls?` class="${cls}"`:''}><th scope="row">${names[row.id]||row.id}${row.id===nextId?'<span class="next-tag">Next</span>':''}</th><td>${clock.format(new Date(row.time))}</td></tr>`}).join('');
-    const [placeName,...placeRest]=selectedPlace.label.split(', ');document.querySelector('#selected-location').textContent=placeName;document.querySelector('#selected-region').textContent=placeRest.join(', ');
     const [year,month,day]=payload.date.split('-').map(Number);
     document.querySelector('#gregorian-date').textContent=new Intl.DateTimeFormat(undefined,{weekday:'long',year:'numeric',month:'long',day:'numeric',timeZone:'UTC'}).format(new Date(Date.UTC(year,month-1,day,12)));
     document.querySelector('#hijri-date').textContent=`${payload.hijri.day} ${payload.hijri.monthName} ${payload.hijri.year} AH`;
     document.querySelector('#hijri-date').dataset.civilDate=payload.date;
     document.querySelector('#prayer-rows').innerHTML=rows;
-    tableMessage.hidden=true;
-    document.querySelector('#method-line').textContent=`${methodLabel()} · ${zone.replace(/_/g,' ')} time`;
+    endPending();
     const note=document.querySelector('#approximation-note');note.hidden=!payload.approximated;note.textContent=payload.maghribApproximated?'At this time of year, the sun does not reach the Maghrib angle. Maghrib is set to the deepest point of the night.':'At this time of year, the sun does not reach one of the selected angles. The calculation uses the high-latitude rule above.';
-  }catch(error){tableMessage.textContent=error.message}
+  }catch(error){endPending();document.querySelector('#prayer-rows').querySelectorAll('tr.pending').forEach(row=>row.remove());tableMessage.hidden=false;tableMessage.textContent=error.message}
 }
 
 // A shared or scanned link (?lat=&lon=&city=&zone=) opens that city's timetable.
@@ -202,4 +221,5 @@ const linked=placeFromLink();
 let saved=null;try{saved=JSON.parse(localStorage.getItem('namaz-site-page')||'null')}catch{}
 if(linked){if(saved)restorePreferences(saved);if(['QUM','TEHRAN'].includes(linked.method))methodSelect.value=linked.method;document.querySelector('#custom-angles').hidden=methodSelect.value!=='CUSTOM';let zoneOk=false;try{if(linked.zone){new Intl.DateTimeFormat(undefined,{timeZone:linked.zone});zoneOk=true}}catch{}selectPlace({lat:linked.lat,lon:linked.lon,label:linked.label,zone:zoneOk?linked.zone:null});history.replaceState(null,'',location.pathname)}
 else if(restorePreferences(saved)){openSchedule();calculateTimes()}
+else whenIdle(()=>NamazEngine.prepareSearch())
 

@@ -163,3 +163,12 @@ main{max-width:1040px}
 }
 @media(max-width:600px){.date-line{flex-direction:column;gap:2px}.date-line .dot{display:none}}
 @media print{.date-line .gregorian-date,.date-line .hijri-date{font-size:12pt;color:#111}}
+
+/* Loading: the page keeps its final shape; times and the Hijri date wait as soft bars. */
+.placeholder,.hijri-date:empty::before{display:inline-block;width:64px;height:.8em;border-radius:4px;background:linear-gradient(90deg,#e6ebe6 0%,#f1f4f0 50%,#e6ebe6 100%);background-size:200% 100%;animation:placeholder-pulse 1.4s ease-in-out infinite;vertical-align:-.05em}
+.hijri-date:empty::before{content:"";width:150px}
+.prayer-table tr.marker .placeholder{width:52px}
+.schedule-screen.is-loading .prayer-table tbody tr:not(.pending){opacity:.45;transition:opacity .2s}
+.schedule-screen.is-loading .table-actions{opacity:.45;pointer-events:none}
+@keyframes placeholder-pulse{0%{background-position:100% 0}100%{background-position:-100% 0}}
+@media(prefers-reduced-motion:reduce){.placeholder,.hijri-date:empty::before{animation:none}}

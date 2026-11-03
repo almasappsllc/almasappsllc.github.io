@@ -91,42 +91,111 @@
     return { note: text.calendar_events_note || '', items: events.filter(e => e.month === month).map(e => ({ ...e, title: text[e.key] || e.key })) };
   }
 
-  // City search over the bundled GeoNames list, loaded on first use.
-  let citiesPromise = null;
-  const fold = s => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z0-9 ]+/g, ' ').replace(/\s+/g, ' ').trim();
-  function loadCities() {
-    citiesPromise ||= fetch(versioned('data/cities.json')).then(r => {
-      if (!r.ok) throw new Error('City search is unavailable. Enter coordinates instead.');
-      return r.json();
-    }).then(rows => rows.map(([name, cc, region, lat, lon]) => ({ name, cc, region, lat, lon, key: fold(name) })))
-      .catch(error => { citiesPromise = null; throw error; });
-    return citiesPromise;
-  }
-  async function searchCities(query, limit = 20) {
-    const cities = await loadCities();
-    const [cityPart, ...rest] = query.split(',');
-    const q = fold(cityPart), where = fold(rest.join(' '));
-    if (q.length < 2) return [];
-    const matchesWhere = c => !where || fold(`${c.region} ${countryName(c.cc)} ${c.cc}`).includes(where);
-    const exact = [], prefix = [], inside = [];
-    for (const c of cities) {
-      if (!matchesWhere(c)) continue;
-      if (c.key === q) exact.push(c);
-      else if (c.key.startsWith(q)) prefix.push(c);
-      else if (q.length >= 3 && c.key.includes(q)) inside.push(c);
-      if (exact.length >= limit) break;
-    }
-    return [...exact, ...prefix, ...inside].slice(0, limit).map(c => ({
-      name: c.name, region: c.region, country: countryName(c.cc), lat: c.lat, lon: c.lon,
-      zone: zoneFor(c.lat, c.lon),
+  // Scripts the timetable itself does not need load on first use.
+  const scripts = {};
+  function loadScript(path) {
+    return (scripts[path] ||= new Promise((resolve, reject) => {
+      const script = document.createElement('script');
+      script.src = versioned(path);
+      script.async = true;
+      script.onload = () => resolve();
+      script.onerror = () => { delete scripts[path]; reject(new Error(`${path} did not load.`)); };
+      document.head.append(script);
     }));
   }
+
+  // City search: the app's own gazetteer (239,120 places, every spelling its search knows),
+  // split by the first letters of each word so a search downloads one small file
+  // (data/places, built by namaz/tools/build-places.py). The rules are the app's
+  // CityGazetteer.search: every typed word starts a word of the place's names, most
+  // populous first; failing that, trailing words name its province or country; same-named
+  // places within 10 km are one place.
+  const SEARCH_LIMIT = 20, OVERFETCH = 3, DUPLICATE_KM = 10;
+  const fold = s => s.normalize('NFD').replace(/\p{Mn}/gu, '').toLowerCase();
+  const tokens = s => fold(s).split(/[^\p{L}\p{N}]+/u).filter(Boolean);
+  const startsWord = (text, term) => text.startsWith(term) || text.includes(' ' + term);
+  let indexPromise = null;
+  function loadIndex() {
+    indexPromise ||= Promise.all([getJSON('data/places/index.json'), loadScript('vendor/tz-lookup.js')])
+      .then(([index]) => ({ ...index, split: new Set(index.split), regionFold: {} }))
+      .catch(() => { indexPromise = null; throw new Error('City search is unavailable. Check your connection, or enter coordinates.'); });
+    return indexPromise;
+  }
+  const fileKey = key => /^[a-z0-9]+$/.test(key) ? key : '_' + [...key].map(c => c.codePointAt(0).toString(16)).join('-');
+  const shards = {};
+  function shardFor(word, index) {
+    const letters = [...word];
+    let n = 2;
+    while (index.split.has(letters.slice(0, n).join('')) && letters.length > n) n++;
+    const key = letters.slice(0, n).join('');
+    const file = `data/places/s/${fileKey(key)}${index.split.has(key) ? '.top' : ''}.json`;
+    return (shards[file] ||= fetch(versioned(file)).then(r => {
+      if (r.status === 404) return [];
+      if (!r.ok) throw new Error('City search is unavailable. Check your connection, or enter coordinates.');
+      return r.json();
+    }).then(rows => rows.map(([name, cc, admin1, lat, lon, words]) => ({ name, cc, admin1, lat: lat / 1000, lon: lon / 1000, words: words.split(' ') })))
+      .catch(error => { delete shards[file]; throw error; }));
+  }
+  const countryFold = {};
+  function inRegion(place, term, index) {
+    const code = `${place.cc}.${place.admin1}`;
+    const region = index.regions[code];
+    if (region) {
+      const folded = index.regionFold[code] ??= fold(region);
+      if (startsWord(folded, term)) return true;
+    }
+    if (place.admin1.toLowerCase() === term) return true;
+    const country = countryFold[place.cc] ??= fold(countryName(place.cc));
+    return startsWord(country, term) || place.cc.toLowerCase() === term;
+  }
+  function distanceKm(lat1, lon1, lat2, lon2) {
+    const deg = Math.PI / 180, a = Math.sin((lat2 - lat1) * deg / 2), b = Math.sin((lon2 - lon1) * deg / 2);
+    const h = a * a + Math.cos(lat1 * deg) * Math.cos(lat2 * deg) * b * b;
+    return 2 * 6371 * Math.asin(Math.min(1, Math.sqrt(h)));
+  }
+  async function searchCities(query, limit = SEARCH_LIMIT) {
+    const typed = tokens(query);
+    if (typed.join('').length < 2) return [];
+    const index = await loadIndex();
+    // The whole query as a name first, then the last word as a region, then the last two...
+    for (let n = typed.length; n >= 1; n--) {
+      const name = typed.slice(0, n), region = typed.slice(n);
+      const anchor = name.reduce((a, b) => (b.length > a.length ? b : a));
+      if ([...anchor].length < 2) continue;
+      const hits = [];
+      for (const place of await shardFor(anchor, index)) {
+        if (!name.every(t => place.words.some(w => w.startsWith(t)))) continue;
+        if (!region.every(t => inRegion(place, t, index))) continue;
+        hits.push(place);
+        if (hits.length >= limit * OVERFETCH) break;
+      }
+      if (!hits.length) continue;
+      const kept = [];
+      for (const place of hits) {
+        if (kept.length >= limit) break;
+        const folded = fold(place.name);
+        if (!kept.some(k => fold(k.name) === folded && distanceKm(k.lat, k.lon, place.lat, place.lon) <= DUPLICATE_KM)) kept.push(place);
+      }
+      return kept.map(place => ({
+        name: place.name, region: index.regions[`${place.cc}.${place.admin1}`] || '', country: countryName(place.cc),
+        lat: place.lat, lon: place.lon, zone: zoneFor(place.lat, place.lon),
+      }));
+    }
+    return [];
+  }
+  // Called when the city screen shows, so the first search does not wait.
+  function prepareSearch() { return loadIndex().catch(() => {}); }
   function zoneFor(lat, lon) {
     try { return window.tzlookup ? tzlookup(lat, lon) : null; } catch { return null; }
   }
+  async function zoneAt(lat, lon) {
+    try { await loadScript('vendor/tz-lookup.js'); } catch {}
+    return zoneFor(lat, lon);
+  }
 
-  window.NamazEngine = { occasions, strings, ready, compute, hijriMonth, searchCities, loadCities, zoneFor, HIJRI_MONTHS };
-  // Warm both up once the page is idle, so the first search and timetable are instant.
-  const warm = () => { loadCities().catch(() => {}); ready().catch(() => {}); };
+  window.NamazEngine = { occasions, strings, ready, compute, hijriMonth, searchCities, prepareSearch, zoneFor, zoneAt, loadScript, HIJRI_MONTHS };
+  // The engine is preloaded by the page; start it once the page is idle so the first
+  // timetable after picking a city is instant.
+  const warm = () => ready().catch(() => {});
   if ('requestIdleCallback' in window) requestIdleCallback(warm, { timeout: 1500 }); else setTimeout(warm, 300);
 })();
