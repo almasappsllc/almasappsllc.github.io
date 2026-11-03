@@ -11,7 +11,7 @@
   const LOCALES = { en: undefined, az: 'az-Latn-AZ', tr: 'tr-TR', de: 'de-DE' };
   // Languages the browser's own setting may pick. A language joins once a native reader has
   // reviewed its text; until then it is reachable only by the switcher or a ?lang= link.
-  const REVIEWED = new Set(['en']);
+  const REVIEWED = new Set(['en', 'az', 'tr', 'de']);  // az, tr, de reviewed 2026-11-03
 
   const T = {
     en: {
