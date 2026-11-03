@@ -113,21 +113,27 @@ citySearch.addEventListener('keydown',async event=>{
 });
 document.addEventListener('click',event=>{if(event.target!==citySearch&&!event.target.closest('#city-suggestions')){searchSequence++;hideSuggestions()}});
 
+// A location from the device or typed as coordinates is called after the nearest town, as
+// the app does. The times still come from the exact coordinates.
+async function nameCoordinates(lat,lon,fallback){
+  try{const place=await NamazEngine.nearestPlace(lat,lon);return place?placeLabel(place):fallback}catch{return fallback}
+}
 document.querySelector('#locate').addEventListener('click',()=>{
   clearError();
   if(!navigator.geolocation)return showError('Location is not available here. Type your city or enter coordinates.');
   const button=document.querySelector('#locate');button.disabled=true;button.textContent='Finding your location…';
   navigator.geolocation.getCurrentPosition(async({coords})=>{
+    const label=await nameCoordinates(coords.latitude,coords.longitude,'My location');
     button.disabled=false;button.textContent='Use my location';
-    await selectPlace({lat:coords.latitude,lon:coords.longitude,label:'My location'});
+    await selectPlace({lat:coords.latitude,lon:coords.longitude,label});
   },()=>{button.disabled=false;button.textContent='Use my location';showError('Could not get your location. Type your city or enter coordinates instead.')},{timeout:12000,maximumAge:300000});
 });
-function applyCoordinates(){
+async function applyCoordinates(){
   const latText=document.querySelector('#latitude').value.trim(),lonText=document.querySelector('#longitude').value.trim();
   if(!latText||!lonText)return showError('Enter both latitude and longitude.');
   const lat=Number(latText),lon=Number(lonText);
   if(!Number.isFinite(lat)||lat < -90||lat > 90||!Number.isFinite(lon)||lon < -180||lon > 180)return showError('Enter a latitude from -90 to 90 and longitude from -180 to 180.');
-  selectPlace({lat,lon,label:`Coordinates ${lat.toFixed(4)}, ${lon.toFixed(4)}`});
+  await selectPlace({lat,lon,label:await nameCoordinates(lat,lon,`Coordinates ${lat.toFixed(4)}, ${lon.toFixed(4)}`)});
 }
 document.querySelector('#apply-coordinates').addEventListener('click',applyCoordinates);
 document.querySelector('#import-coordinates').addEventListener('click',()=>{
@@ -225,6 +231,16 @@ function placeFromLink(){
 const linked=placeFromLink();
 let saved=null;try{saved=JSON.parse(localStorage.getItem('namaz-site-page')||'null')}catch{}
 if(linked){if(saved)restorePreferences(saved);if(['QUM','TEHRAN'].includes(linked.method))methodSelect.value=linked.method;document.querySelector('#custom-angles').hidden=methodSelect.value!=='CUSTOM';let zoneOk=false;try{if(linked.zone){new Intl.DateTimeFormat(undefined,{timeZone:linked.zone});zoneOk=true}}catch{}selectPlace({lat:linked.lat,lon:linked.lon,label:linked.label,zone:zoneOk?linked.zone:null});history.replaceState(null,'',location.pathname)}
-else{restorePreferences(saved);openLocation()}
+else{restorePreferences(saved);openLocation();nameSavedLocation()}
+// A city saved before locations were named ("My location") gets its town's name.
+function nameSavedLocation(){
+  const place=selectedPlace;
+  if(!place||!(place.label==='My location'||place.label.startsWith('Coordinates ')))return;
+  nameCoordinates(place.lat,place.lon,null).then(label=>{
+    if(!label||selectedPlace!==place)return;
+    selectedPlace={...place,label};rememberPreferences();showSavedCity();
+    if(!scheduleScreen.hidden){const [name,...rest]=label.split(', ');document.querySelector('#selected-location').textContent=name;document.querySelector('#selected-region').textContent=rest.join(', ')}
+  });
+}
 document.querySelector('#saved-city').addEventListener('click',()=>{openSchedule();calculateTimes()});
 

@@ -197,6 +197,60 @@
     }
     return [];
   }
+  // Naming where the visitor is: the app's CityGazetteer.nearestCity, with its constants,
+  // on data/places/near (the places the app may name a location after, in 2-degree
+  // cells). The nearest place within 40 km (a town over a municipality unless the
+  // municipality is 5 km closer), failing that within 100 km; then, if the visitor is
+  // inside a bigger place's footprint in the same country, that place instead (Istanbul
+  // at its airport, not the hamlet beside it). Times still come from the coordinates.
+  const NEAR_BAND_KM = 40, MAX_MATCH_KM = 100, ADM_MARGIN_KM = 5, NEAR_CELL = 2;
+  const footprintKm = pop => Math.min(Math.max(Math.sqrt(Math.max(pop, 0) / (Math.PI * 3000)), 1), 40);
+  const nearCells = {};
+  function nearCell(a, b) {
+    const file = `data/places/near/${a}_${b}.json`;
+    return (nearCells[file] ||= fetch(versioned(file)).then(r => {
+      if (r.status === 404) return [];
+      if (!r.ok) throw new Error(file);
+      return r.json();
+    }).then(rows => rows.map(([name, cc, admin1, lat, lon, pop, kind]) => ({ name, cc, admin1, lat: lat / 1000, lon: lon / 1000, pop, kind })))
+      .catch(error => { delete nearCells[file]; throw error; }));
+  }
+  async function placesWithin(lat, lon, km) {
+    const dLat = km / 111, dLon = Math.min(km / (111 * Math.max(Math.cos(lat * Math.PI / 180), 0.01)), 180);
+    const keys = new Set(), loads = [];
+    for (let a = Math.floor((lat - dLat) / NEAR_CELL); a <= Math.floor((lat + dLat) / NEAR_CELL); a++) {
+      for (let b = Math.floor((lon - dLon) / NEAR_CELL); b <= Math.floor((lon + dLon) / NEAR_CELL); b++) {
+        const wrapped = ((b + 90) % 180 + 180) % 180 - 90, key = `${a}_${wrapped}`;
+        if (!keys.has(key)) { keys.add(key); loads.push(nearCell(a, wrapped)); }
+      }
+    }
+    const hits = [];
+    for (const rows of await Promise.all(loads)) for (const place of rows) {
+      const km2 = distanceKm(lat, lon, place.lat, place.lon);
+      if (km2 <= km) hits.push({ ...place, km: km2 });
+    }
+    return hits;
+  }
+  const closest = list => list.reduce((a, b) => (!a || b.km < a.km ? b : a), null);
+  function nearestOf(hits) {
+    const town = closest(hits.filter(h => h.kind === 0)), municipality = closest(hits.filter(h => h.kind === 1));
+    if (!town || !municipality) return town || municipality;
+    return municipality.km < town.km - ADM_MARGIN_KM ? municipality : town;
+  }
+  function containing(hits, nearest) {
+    const inside = hits.filter(h => h.cc === nearest.cc && h.km <= footprintKm(h.pop));
+    const towns = inside.filter(h => h.kind === 0);
+    return (towns.length ? towns : inside).reduce((a, b) => (!a || b.pop > a.pop ? b : a), null);
+  }
+  // { name, region, country } for the place to call these coordinates, or null (at sea).
+  async function nearestPlace(lat, lon) {
+    const [index, near] = await Promise.all([loadIndex(), placesWithin(lat, lon, NEAR_BAND_KM)]);
+    const nearest = nearestOf(near) || nearestOf(await placesWithin(lat, lon, MAX_MATCH_KM));
+    if (!nearest) return null;
+    const hit = containing(near, nearest) || nearest;
+    return { name: hit.name, region: index.regions[`${hit.cc}.${hit.admin1}`] || '', country: countryName(hit.cc) };
+  }
+
   // Called when the city screen shows, so the first search does not wait.
   function prepareSearch() { return loadIndex().catch(() => {}); }
   function zoneFor(lat, lon) {
@@ -218,7 +272,7 @@
     };
   }
 
-  window.NamazEngine = { clock, occasions, strings, ready, compute, computeOn, hijriMonth, searchCities, prepareSearch, zoneFor, zoneAt, loadScript, HIJRI_MONTHS };
+  window.NamazEngine = { clock, nearestPlace, occasions, strings, ready, compute, computeOn, hijriMonth, searchCities, prepareSearch, zoneFor, zoneAt, loadScript, HIJRI_MONTHS };
   // The engine is preloaded by the page; start it once the page is idle so the first
   // timetable after picking a city is instant.
   const warm = () => ready().catch(() => {});
