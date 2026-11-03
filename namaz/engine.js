@@ -25,6 +25,20 @@
     if (!window.NamazKotlin) throw new Error('The prayer-time engine did not load. Refresh the page and try again.');
     return window.NamazKotlin;
   }
+  // The engine bundle is large, so it loads in the background instead of holding up the page.
+  let enginePromise = null;
+  function ready() {
+    if (window.NamazKotlin) return Promise.resolve();
+    enginePromise ||= new Promise((resolve, reject) => {
+      const script = document.createElement('script');
+      script.src = 'vendor/namaz-engine.js';
+      script.async = true;
+      script.onload = () => resolve();
+      script.onerror = () => { enginePromise = null; reject(new Error('The prayer-time engine did not load. Check your connection and try again.')); };
+      document.head.append(script);
+    });
+    return enginePromise;
+  }
   function parse(json) {
     const value = JSON.parse(json);
     if (value.error) throw new Error(value.error);
@@ -62,6 +76,18 @@
     return month;
   }
 
+  // The app's Ja'fari occasions and their titles (data/events.json, data/strings/<lang>.json).
+  const jsonCache = {};
+  const getJSON = path => (jsonCache[path] ||= fetch(path).then(r => { if (!r.ok) throw new Error(path); return r.json(); })
+    .catch(error => { delete jsonCache[path]; throw error; }));
+  async function strings(lang = 'en') {
+    try { return await getJSON(`data/strings/${lang}.json`); } catch { return getJSON('data/strings/en.json'); }
+  }
+  async function occasions(month, lang = 'en') {
+    const [events, text] = await Promise.all([getJSON('data/events.json'), strings(lang)]);
+    return { note: text.calendar_events_note || '', items: events.filter(e => e.month === month).map(e => ({ ...e, title: text[e.key] || e.key })) };
+  }
+
   // City search over the bundled GeoNames list, loaded on first use.
   let citiesPromise = null;
   const fold = s => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z0-9 ]+/g, ' ').replace(/\s+/g, ' ').trim();
@@ -96,5 +122,8 @@
     try { return window.tzlookup ? tzlookup(lat, lon) : null; } catch { return null; }
   }
 
-  window.NamazEngine = { compute, hijriMonth, searchCities, zoneFor, HIJRI_MONTHS };
+  window.NamazEngine = { occasions, strings, ready, compute, hijriMonth, searchCities, loadCities, zoneFor, HIJRI_MONTHS };
+  // Warm both up once the page is idle, so the first search and timetable are instant.
+  const warm = () => { loadCities().catch(() => {}); ready().catch(() => {}); };
+  if ('requestIdleCallback' in window) requestIdleCallback(warm, { timeout: 1500 }); else setTimeout(warm, 300);
 })();

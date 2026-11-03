@@ -96,3 +96,49 @@ main{max-width:1040px}
   .calendar-note{font-size:8.5pt;color:#444}
 }
 .prayer-table thead th:last-child{text-align:right}
+
+/* App store buttons. */
+.header-links{gap:10px}
+.store-pill{display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 12px;border:1px solid var(--green);border-radius:16px;color:var(--green-dark);background:transparent}
+.store-pill:hover{background:#e8eee9;text-decoration:none!important}
+.store-pill svg{width:14px;height:14px;flex:none}
+.header-links>a:not(.store-pill){margin-right:6px}
+.app-cta{display:grid;grid-template-columns:56px minmax(0,1fr);gap:14px 16px;align-items:center;margin-top:28px;padding:20px;background:#fff;border:1px solid var(--line)}
+.app-cta img{width:56px;height:56px;border-radius:13px}
+.app-cta h2{margin:0;font:normal 22px/1.2 var(--serif)}
+.app-cta p{margin:4px 0 0;color:var(--muted);font-size:13px}
+.app-cta-buttons{grid-column:1/-1;display:flex;gap:10px;flex-wrap:wrap}
+.store-button{flex:1 1 180px;display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:52px;padding:0 16px;background:var(--ink);color:#fff;text-decoration:none;border-radius:10px;font:700 17px/1.1 var(--sans)}
+.store-button:hover{background:#000}
+.store-button svg{width:22px;height:22px;flex:none}
+.store-button span{display:flex;flex-direction:column;text-align:left}
+.store-button small{font-size:10px;font-weight:400;letter-spacing:.02em}
+.store-button.preferred{order:-1}
+@media(max-width:600px){.store-pill{width:32px;padding:0;justify-content:center}.store-pill span{display:none}.store-pill svg{width:15px;height:15px}}
+@media print{.app-cta,.store-pill{display:none!important}}
+
+/* Occasions on the Hijri calendar and the QR code on printouts. */
+.cell-occasion{display:block;margin-top:4px;font-size:10px;line-height:1.25;color:var(--green-dark);overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.calendar-table td.has-occasion{background:#eef3ef}
+.calendar-events{margin-top:16px}
+.calendar-events h3{margin:0 0 6px;font:normal 18px var(--serif)}
+.calendar-events ul{margin:0;padding:0;list-style:none;display:grid;gap:4px}
+.calendar-events li{display:grid;grid-template-columns:150px minmax(0,1fr);gap:12px;font-size:13px;padding:5px 0;border-bottom:1px solid var(--line)}
+.calendar-events li strong{font-variant-numeric:tabular-nums}
+.calendar-events-note{margin:6px 0 0;color:var(--muted);font-size:11px}
+@media print{
+  .print-footer{gap:5mm}
+  .print-footer-text{flex:1}
+  .print-qr{margin:0;display:flex;flex-direction:column;align-items:center;gap:1.5mm;flex:none}
+  .print-qr #print-qr{width:26mm;height:26mm}
+  .print-qr svg{width:100%;height:100%;display:block}
+  .print-qr figcaption{font-size:7.5pt;color:#333;max-width:34mm;text-align:center;line-height:1.25}
+  .calendar-table td{height:23mm}
+  .calendar-table td.has-occasion{background:#ececec}
+  .cell-occasion{font-size:7pt;color:#111;margin-top:1.5mm}
+  .calendar-events{margin-top:5mm;break-inside:avoid}
+  .calendar-events h3{font-size:12pt;margin-bottom:1.5mm}
+  .calendar-events li{grid-template-columns:42mm minmax(0,1fr);font-size:9pt;padding:1.2mm 0;border-bottom:.5pt solid #bbb}
+  .calendar-events-note{font-size:8pt;color:#444}
+  .calendar-note{margin-top:2mm}
+}

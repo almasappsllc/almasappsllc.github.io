@@ -15,6 +15,18 @@ document.querySelector('#time-adjustments').innerHTML=adjustmentRows.map(id=>`<l
 
 function methodLabel(){return {QUM:'Qom method',TEHRAN:'Tehran method',CUSTOM:'Custom angles'}[methodSelect.value]||'Qom method'}
 try{document.querySelector('#print-url').textContent=(location.host+location.pathname).replace(/index\.html$/,'').replace(/\/$/,'')}catch{}
+function shareLink(){
+  const url=new URL(location.href.split(/[?#]/)[0]);
+  if(selectedPlace){url.searchParams.set('lat',Number(selectedPlace.lat).toFixed(3));url.searchParams.set('lon',Number(selectedPlace.lon).toFixed(3));url.searchParams.set('city',selectedPlace.label);const zone=timeZoneInput.value.trim();if(zone!==NamazEngine.zoneFor(selectedPlace.lat,selectedPlace.lon))url.searchParams.set('zone',zone);if(methodSelect.value!=='QUM'&&methodSelect.value!=='CUSTOM')url.searchParams.set('method',methodSelect.value)}
+  return url.toString();
+}
+function renderQr(caption){
+  try{
+    const qr=qrcode(0,'M');qr.addData(shareLink());qr.make();
+    document.querySelector('#print-qr').innerHTML=qr.createSvgTag({cellSize:4,margin:0,scalable:true});
+    document.querySelector('#print-qr-caption').textContent=caption;
+  }catch{document.querySelector('.print-qr').hidden=true}
+}
 function showError(message){locationError.textContent=message;locationError.hidden=false}
 function clearError(){locationError.textContent='';locationError.hidden=true}
 function localDateInZone(zone){
@@ -69,13 +81,15 @@ async function selectPlace(place){
   const zone=place.zone||NamazEngine.zoneFor(place.lat,place.lon);if(zone)timeZoneInput.value=zone;
   selectedPlace=place;rememberPreferences();openSchedule();await calculateTimes();
 }
+citySearch.addEventListener('focus',()=>{NamazEngine.loadCities().catch(()=>{})},{once:true});
 citySearch.addEventListener('input',()=>{
   clearError();clearTimeout(searchTimer);hideSuggestions();const sequence=++searchSequence;const query=citySearch.value.trim();
   if(query.length<2)return;
   searchTimer=setTimeout(async()=>{
-    try{const data=await NamazEngine.searchCities(query);if(sequence!==searchSequence)return;displaySuggestions(data)}
-    catch(error){if(sequence===searchSequence)showError(error.message)}
-  },220);
+    const slow=setTimeout(()=>{if(sequence!==searchSequence)return;suggestions.replaceChildren(Object.assign(document.createElement('p'),{className:'suggestion-message',textContent:'Loading cities…'}));suggestions.hidden=false},150);
+    try{const data=await NamazEngine.searchCities(query);clearTimeout(slow);if(sequence!==searchSequence)return;displaySuggestions(data)}
+    catch(error){clearTimeout(slow);if(sequence===searchSequence){hideSuggestions();showError(error.message)}}
+  },90);
 });
 citySearch.addEventListener('keydown',event=>{if(event.key==='ArrowDown'){event.preventDefault();suggestions.querySelector('button')?.focus()}if(event.key==='Enter'&&searchResults.length){event.preventDefault();const place=searchResults[0];selectPlace({...place,label:[place.name,place.region,place.country].filter(Boolean).join(', ')})}});
 document.addEventListener('click',event=>{if(event.target!==citySearch&&!event.target.closest('#city-suggestions')){searchSequence++;hideSuggestions()}});
@@ -107,7 +121,7 @@ document.querySelector('#change-city').addEventListener('click',()=>{scheduleScr
 methodSelect.addEventListener('change',()=>{document.querySelector('#custom-angles').hidden=methodSelect.value!=='CUSTOM'});
 document.querySelector('#show-imsak').addEventListener('change',event=>{document.querySelector('#imsak-offset-wrap').hidden=!event.target.checked});
 document.querySelector('#update-times').addEventListener('click',()=>calculateTimes());
-document.querySelector('#print-table').addEventListener('click',()=>{document.body.dataset.printView='timetable';window.print()});
+document.querySelector('#print-table').addEventListener('click',()=>{renderQr(`Scan for daily times in ${selectedPlace?.label.split(',')[0]||'your city'}`);document.body.dataset.printView='timetable';window.print()});
 document.querySelector('#print-hijri').addEventListener('click',printHijriCalendar);
 window.addEventListener('afterprint',()=>{delete document.body.dataset.printView;document.querySelector('#hijri-calendar').hidden=true});
 
@@ -117,6 +131,7 @@ async function printHijriCalendar(){
   const params=new URLSearchParams({lat:selectedPlace.lat,lon:selectedPlace.lon,zone,date:localDateInZone(zone)});
   const button=document.querySelector('#print-hijri');button.disabled=true;button.textContent='Preparing calendar…';
   try{
+    await NamazEngine.ready();
     const payload=NamazEngine.hijriMonth(document.querySelector('#hijri-date').dataset.civilDate||params.get('date'),selectedPlace.lat,selectedPlace.lon,zone);
     document.querySelector('#calendar-title').textContent=`${payload.monthName} ${payload.year} AH`;
     document.querySelector('#calendar-location').textContent=selectedPlace.label;
@@ -128,8 +143,20 @@ async function printHijriCalendar(){
     const gregorian=(day,index)=>{const d=civil(day.date);return index===0||d.getUTCDate()===1?`${d.getUTCDate()} ${shortMonth.format(d)}`:String(d.getUTCDate())};
     const first=civil(payload.days[0].date),last=civil(payload.days[payload.days.length-1].date);
     document.querySelector('#calendar-span').textContent=`${longMonth.format(first)}${first.getUTCMonth()!==last.getUTCMonth()?` – ${longMonth.format(last)}`:''} · ${methodLabel()}`;
-    document.querySelector('#calendar-days').innerHTML=Array.from({length:rows},(_,row)=>`<tr>${cells.slice(row*7,row*7+7).map(day=>day?`<td><span class="hijri-day-number">${day.day}</span><small>${gregorian(day,payload.days.indexOf(day))}</small></td>`:'<td class="empty"></td>').join('')}</tr>`).join('');
+    document.querySelector('#calendar-days').innerHTML=Array.from({length:rows},(_,row)=>`<tr>${cells.slice(row*7,row*7+7).map(day=>day?`<td data-day="${day.day}"><span class="hijri-day-number">${day.day}</span><small>${gregorian(day,payload.days.indexOf(day))}</small></td>`:'<td class="empty"></td>').join('')}</tr>`).join('');
+    let occasionsByDay={};
+    try{
+      const {items,note}=await NamazEngine.occasions(payload.month);
+      for(const item of items)(occasionsByDay[item.day] ||= []).push(item);
+      const list=document.querySelector('#calendar-event-list');
+      list.innerHTML='';
+      for(const item of items){const day=payload.days.find(d=>d.day===item.day);const li=document.createElement('li');li.className=`occasion-${item.kind}`;const when=document.createElement('strong');when.textContent=`${item.day} ${payload.monthName}`+(day?` · ${new Intl.DateTimeFormat(undefined,{day:'numeric',month:'short',timeZone:'UTC'}).format(new Date(`${day.date}T12:00:00Z`))}`:'');const what=document.createElement('span');what.textContent=item.title;li.append(when,what);list.append(li)}
+      document.querySelector('#calendar-events-note').textContent=note;
+      document.querySelector('#calendar-events').hidden=!items.length;
+    }catch{document.querySelector('#calendar-events').hidden=true}
+    for(const cell of document.querySelectorAll('#calendar-days td[data-day]')){const items=occasionsByDay[cell.dataset.day];if(items){cell.classList.add('has-occasion',`occasion-${items[0].kind}`);const tag=document.createElement('span');tag.className='cell-occasion';tag.textContent=items.map(i=>i.title.split(':')[0]).join(' · ');cell.append(tag)}}
     document.querySelector('#hijri-calendar').hidden=false;
+    renderQr(`Scan for prayer times in ${selectedPlace.label.split(',')[0]}`);
     document.body.dataset.printView='calendar';
     window.print();
   }catch(error){tableMessage.hidden=false;tableMessage.textContent=error.message}
@@ -146,6 +173,7 @@ async function calculateTimes(){
   for(const input of document.querySelectorAll('[data-adjust]'))if(Number(input.value)!==0)params.set(`offset_${input.dataset.adjust}`,input.value);
   tableMessage.hidden=false;tableMessage.textContent='Loading prayer times…';
   try{
+    await NamazEngine.ready();
     const result=NamazEngine.compute(selectedPlace.lat,selectedPlace.lon,zone,{method:methodSelect.value,fajrAngle:params.get('fajrAngle'),ishaAngle:params.get('ishaAngle'),maghribAngle:params.get('maghribAngle'),highLat:params.get('highLat'),showImsak:params.get('showImsak')==='true',imsakOffset:params.get('imsakOffset'),offsets:Object.fromEntries([...document.querySelectorAll('[data-adjust]')].map(input=>[input.dataset.adjust,input.value]))});
     const payload={date:result.date,zone,hijri:result.hijri,rows:result.rows,approximated:result.approximated,maghribApproximated:result.maghribApproximated};
     const clock=new Intl.DateTimeFormat(undefined,{hour:'numeric',minute:'2-digit',timeZone:payload.zone});
@@ -162,4 +190,16 @@ async function calculateTimes(){
   }catch(error){tableMessage.textContent=error.message}
 }
 
-try{const saved=JSON.parse(localStorage.getItem('namaz-site-page')||'null');if(restorePreferences(saved)){openSchedule();calculateTimes()}}catch{}
+// A shared or scanned link (?lat=&lon=&city=&zone=) opens that city's timetable.
+function placeFromLink(){
+  try{const q=new URLSearchParams(location.search),lat=Number(q.get('lat')),lon=Number(q.get('lon'));
+    if(!q.has('lat')||!Number.isFinite(lat)||!Number.isFinite(lon)||Math.abs(lat)>90||Math.abs(lon)>180)return null;
+    return {lat,lon,label:(q.get('city')||`Coordinates ${lat.toFixed(4)}, ${lon.toFixed(4)}`).slice(0,120),zone:q.get('zone')||null,method:q.get('method')}}catch{return null}
+}
+const linked=placeFromLink();
+let saved=null;try{saved=JSON.parse(localStorage.getItem('namaz-site-page')||'null')}catch{}
+if(linked){if(saved)restorePreferences(saved);if(['QUM','TEHRAN'].includes(linked.method))methodSelect.value=linked.method;document.querySelector('#custom-angles').hidden=methodSelect.value!=='CUSTOM';let zoneOk=false;try{if(linked.zone){new Intl.DateTimeFormat(undefined,{timeZone:linked.zone});zoneOk=true}}catch{}selectPlace({lat:linked.lat,lon:linked.lon,label:linked.label,zone:zoneOk?linked.zone:null});history.replaceState(null,'',location.pathname)}
+else if(restorePreferences(saved)){openSchedule();calculateTimes()}
+
+// Put the visitor's own store first.
+try{const ua=navigator.userAgent;const store=/iPhone|iPad|iPod|Macintosh/.test(ua)&&!/Android/.test(ua)?'ios':/Android/.test(ua)?'android':null;if(store)for(const el of document.querySelectorAll(`.store-button[data-store="${store}"]`))el.classList.add('preferred')}catch{}
