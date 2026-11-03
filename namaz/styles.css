@@ -148,9 +148,24 @@ main{max-width:1040px}
 .article-next a:hover{text-decoration:underline}
 @media(max-width:600px){.article-main{padding:34px 20px 44px}.article-body p{font-size:16px}.article-body .lede{font-size:18px}}
 
+/* Readability pass: nothing on screen smaller than 13px except small capitals, the footer on
+   one line, and a phone header that stays legible (the "· Ja'fari" drops instead of the
+   text shrinking). */
+.site-footer span{flex-basis:auto;font-size:13px}
+.intro a{color:var(--green-dark);font-weight:700}
+.method-line,.clock-switch,.settings-help,.city-option span,.print-choice span{font-size:13px}
+.clock-switch{min-height:32px}
+.article-body .article-date,.blog-date{margin:0 0 26px;font-size:14px;color:var(--muted)}
+.blog-entry>p.blog-date{margin:-4px 0 8px}
+@media(max-width:600px){.header-label{font-size:12px;letter-spacing:.1em}.brand-extra{display:none}.header-links a{font-size:13px}}
+@media(max-width:420px){.header-label{font-size:12px;letter-spacing:.08em}.header-links a{font-size:13px}}
+
 /* Printed sheets (print.js): only the sheet prints, edge to edge, no browser header or footer.
-   Sized to fit one A4 or US Letter page. No rule is thinner than .5pt: hairlines drop out of
-   print previews and low-resolution printers. */
+   Each fills its page: US Letter height, or A4 height when the page is that tall (a browser
+   that ignores the page-size query gets the Letter height, which still fits A4). The table
+   stretches to take the room and the app line sits at the foot of the paper. Rules are
+   drawn by each cell, never collapsed, and none is thinner than .75pt: collapsed and
+   hairline borders drop out of print previews. */
 .print-sheet{display:none}
 @media print{
   @page{margin:0}
@@ -159,61 +174,63 @@ main{max-width:1040px}
   body>*:not(.print-sheet){display:none!important}
   .print-sheet{display:block}
 }
-.sheet{width:100%;padding:13mm 15mm 10mm;color:#111;font:9.5pt/1.4 var(--sans);-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.sheet{display:flex;flex-direction:column;width:100%;min-height:278mm;padding:13mm 15mm 10mm;color:#111;font:9.5pt/1.4 var(--sans);-webkit-print-color-adjust:exact;print-color-adjust:exact}
+@media print and (min-height:290mm){.sheet{min-height:296mm}}
 .sheet i{font-style:normal;color:#aaa;padding:0 .35em}
 .sheet-head{display:flex;justify-content:space-between;align-items:center;gap:8mm}
-.sheet-brand{display:inline-flex;align-items:center;gap:2.2mm;font-size:7pt;font-weight:700;letter-spacing:.16em;text-transform:uppercase}
+.sheet-brand{display:inline-flex;align-items:center;gap:2.2mm;font-size:7.5pt;font-weight:700;letter-spacing:.16em;text-transform:uppercase}
 .sheet-brand img{width:5mm;height:5mm;border-radius:1.2mm}
-.sheet-meta{font-size:7.5pt;color:#777;text-align:right}
-.sheet-title{display:flex;justify-content:space-between;align-items:flex-end;gap:10mm;margin:9mm 0 6mm}
+.sheet-meta{font-size:8pt;color:#666;text-align:right}
+.sheet-title{display:flex;justify-content:space-between;align-items:flex-end;gap:10mm;margin:8mm 0 6mm}
 .sheet-title>div:first-child{min-width:0}
 .sheet-title h1{margin:0;font:normal 30pt/1.05 var(--serif);letter-spacing:-.02em}
-.sheet-title.long h1{font-size:23pt}
-.sheet-place{margin:1.8mm 0 0;font-size:9.5pt;color:#777}
-.sheet-period{flex:none;white-space:nowrap;text-align:right}
-.sheet-period p{margin:0}
-.sheet-period-main{font:normal 15pt/1.2 var(--serif)}
-.sheet-period-sub{margin-top:1.2mm!important;font-size:9pt;color:#777}
+.sheet-title.long h1{font-size:24pt}
+.sheet-title-sub{margin:2mm 0 0;font-size:10pt;color:#666}
+.sheet-side{flex:none;white-space:nowrap;text-align:right}
+.sheet-side p{margin:0}
+.sheet-side-main{font:normal 15pt/1.2 var(--serif)}
+.sheet-side-sub{margin-top:1.2mm!important;font-size:9.5pt;color:#666}
+.sheet-body{flex:1 1 auto;display:flex;flex-direction:column}
+.sheet-body>*{flex:1 1 auto}
 
 /* Week and month: one row per day, equal columns for the times. */
-.sheet-table{width:100%;border-collapse:collapse;table-layout:fixed;font-variant-numeric:tabular-nums}
-.sheet-table th,.sheet-table td{padding:0;text-align:center;font-weight:400}
-.sheet-table thead th{padding:0 .5mm 2.2mm;font-size:7pt;font-weight:700;letter-spacing:.07em;text-transform:uppercase;border-bottom:.75pt solid #111}
+.sheet-table{width:100%;border-collapse:separate;border-spacing:0;table-layout:fixed;font-variant-numeric:tabular-nums}
+.sheet-table th,.sheet-table td{padding:0;text-align:center;font-weight:400;border-bottom:.75pt solid #bdbdb6}
+.sheet-table thead th{height:8mm;padding:0 .5mm 2.2mm;vertical-align:bottom;font-size:7pt;font-weight:700;letter-spacing:.07em;text-transform:uppercase;border-bottom:1pt solid #111}
 .sheet-table thead th.col-day{text-align:left;padding-left:2mm}
 .sheet-table .marker{color:#8a8a8a}
-.sheet-table tbody tr{border-bottom:.5pt solid #d4d4ce}
 .sheet-week .sheet-table .col-day{width:22%}
-.sheet-week .sheet-table tbody th,.sheet-week .sheet-table tbody td{height:21mm;font-size:14pt}
+.sheet-week .sheet-table tbody th,.sheet-week .sheet-table tbody td{height:21mm;font-size:15pt}
 .sheet-week .sheet-table tbody th{text-align:left;padding-left:2mm}
-.sheet-week .wd{display:block;font:normal 14pt/1.2 var(--serif)}
-.sheet-week .dm{display:block;margin-top:1mm;font-size:8pt;color:#777}
+.sheet-week .wd{display:block;font:normal 15pt/1.2 var(--serif)}
+.sheet-week .dm{display:block;margin-top:1mm;font-size:8.5pt;color:#666}
 .sheet-month .sheet-title{margin:6mm 0 4.5mm}
 .sheet-month .sheet-title h1{font-size:26pt}
 .sheet-month .sheet-title.long h1{font-size:21pt}
 .sheet-month .sheet-table .col-day{width:12%}
 .sheet-month .sheet-table .col-hijri{width:17%}
-.sheet-month .sheet-table tbody th,.sheet-month .sheet-table tbody td{height:5.2mm;font-size:9.5pt}
+.sheet-month .sheet-table tbody th,.sheet-month .sheet-table tbody td{height:5.2mm;font-size:10pt}
 .sheet-month .sheet-table tbody th{text-align:left;padding-left:2mm;white-space:nowrap}
-.sheet-month .wd{display:inline-block;width:9mm;color:#777}
+.sheet-month .wd{display:inline-block;width:9mm;color:#666}
 .sheet-month tr.friday .wd{color:#111;font-weight:700}
-.sheet-month .col-hijri{text-align:left;white-space:nowrap;color:#666}
+.sheet-month .col-hijri{text-align:left;white-space:nowrap;color:#555}
 .sheet-month thead th.col-hijri{color:#111}
-.sheet-month .hm{font-size:7.5pt;color:#999}
+.sheet-month .hm{font-size:7.5pt;color:#888}
 
-/* Hijri month: a ruled grid, every box the same, blank ones included. */
-.sheet-calendar{width:100%;border-collapse:collapse;table-layout:fixed}
-.sheet-calendar th{padding:0 2.2mm 2mm;text-align:left;font-size:7pt;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#8a8a8a}
-.sheet-calendar th.friday{color:#111}
-.sheet-calendar td{height:24mm;padding:2mm 2.2mm;vertical-align:top;border:.75pt solid #bdbdb6}
-.sheet-calendar.weeks-5 td{height:28mm}
-.sheet-calendar .hd{display:block;font:normal 16pt/1 var(--serif)}
-.sheet-calendar .gd{float:right;margin-top:.4mm;font-size:7pt;color:#8a8a8a}
-.sheet-calendar .oc{display:block;margin-top:1.8mm;font-size:6.8pt;line-height:1.3;color:#6b5016}
-.sheet-calendar .oc+.oc{margin-top:1.2mm}
+/* Hijri month: the month is the title, the grid takes the page. */
+.cal{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));grid-template-rows:auto repeat(var(--weeks),minmax(20mm,1fr))}
+.cal-head{padding:0 2.4mm 2mm;font-size:7.5pt;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#777;border-bottom:1pt solid #111}
+.cal-head.friday{color:#111}
+.cal-day{display:grid;grid-template-columns:1fr auto;grid-template-rows:auto 1fr;gap:0 2mm;min-width:0;padding:2.4mm 2.6mm;border-right:.9pt solid #a3a39b;border-bottom:.9pt solid #a3a39b}
+.cal-day.first{border-left:.9pt solid #a3a39b}
+.cal .hd{font:normal 20pt/1 var(--serif)}
+.cal .gd{margin-top:.6mm;font-size:8pt;color:#777;white-space:nowrap}
+.cal .oc{grid-column:1/-1;align-self:end;font-size:7.5pt;line-height:1.3;color:#5f4713}
+.cal-day.occasion .hd{color:#7a5a17}
 
-.sheet-notes{margin:3mm 0 0;font-size:7pt;line-height:1.5;color:#808080}
-.sheet-foot{display:flex;justify-content:space-between;align-items:center;gap:8mm;margin-top:6mm;padding-top:3mm;border-top:.5pt solid #ccc;break-inside:avoid}
-.sheet-foot p{margin:0;font-size:7pt;line-height:1.6;color:#808080}
+.sheet-notes{margin:3mm 0 0;font-size:7.5pt;line-height:1.5;color:#777}
+.sheet-foot{display:flex;justify-content:space-between;align-items:center;gap:8mm;margin-top:4mm;padding-top:3mm;border-top:.6pt solid #ccc;break-inside:avoid}
+.sheet-foot p{margin:0;font-size:7.5pt;color:#777;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .sheet-foot strong{color:#111}
 .sheet-qr{flex:none;display:block}
-.sheet-qr svg{width:14mm;height:14mm;display:block}
+.sheet-qr svg{width:13mm;height:13mm;display:block}

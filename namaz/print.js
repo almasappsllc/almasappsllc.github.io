@@ -1,7 +1,8 @@
 // Printable sheets: a week or a month of prayer times, or the Hijri month, each on one page.
-// Every sheet shares one layout: brand and method at the top, the city as the title with the
-// period beside it, the table, then one quiet line pointing to the app, with a QR code back
-// to this city's times.
+// Every sheet shares one layout: brand and method at the top, a title with the period or
+// place beside it, the table, then one quiet line pointing to the app, with a QR code back
+// to this city's times. Each sheet fills the page: the table stretches and the app line
+// sits at the foot of the paper.
 (() => {
   const NAMES = { IMSAK: 'Imsak', FAJR: 'Fajr', SUNRISE: 'Sunrise', DHUHR: 'Dhuhr', ASR: 'Asr', SUNSET: 'Sunset', MAGHRIB: 'Maghrib', ISHA: 'Isha', MIDNIGHT: 'Midnight' };
   const MARKERS = new Set(['IMSAK', 'SUNRISE', 'SUNSET']);
@@ -23,8 +24,8 @@
     return `${first.day} ${first.monthName}${year} – ${last.day} ${last.monthName} ${last.year} AH`;
   }
 
-  function sheet(ctx, { kind, period, periodSub, body, notes = [] }) {
-    const [city, ...region] = ctx.place.label.split(', ');
+  // title/titleSub on the left, side/sideSub on the right; meta in the brand line.
+  function sheet(ctx, { kind, title, titleSub, side, sideSub, meta, body, notes = [] }) {
     const qr = (() => {
       try {
         const code = qrcode(0, 'M'); code.addData(ctx.link); code.make();
@@ -34,20 +35,22 @@
     return `<article class="sheet sheet-${kind}">
       <header class="sheet-head">
         <span class="sheet-brand"><img src="icon.png" alt="" width="24" height="24">Shia Namaz <i>·</i> Ja'fari</span>
-        <span class="sheet-meta">${esc(ctx.methodLabel)} <i>·</i> ${esc(ctx.zone.replace(/_/g, ' '))} time</span>
+        ${meta ? `<span class="sheet-meta">${meta}</span>` : ''}
       </header>
-      <div class="sheet-title${city.length > 16 ? ' long' : ''}">
-        <div><h1>${esc(city)}</h1>${region.length ? `<p class="sheet-place">${esc(region.join(', '))}</p>` : ''}</div>
-        <div class="sheet-period"><p class="sheet-period-main">${esc(period)}</p>${periodSub ? `<p class="sheet-period-sub">${esc(periodSub)}</p>` : ''}</div>
+      <div class="sheet-title${title.length > 16 ? ' long' : ''}">
+        <div><h1>${esc(title)}</h1>${titleSub ? `<p class="sheet-title-sub">${esc(titleSub)}</p>` : ''}</div>
+        <div class="sheet-side"><p class="sheet-side-main">${esc(side)}</p>${sideSub ? `<p class="sheet-side-sub">${esc(sideSub)}</p>` : ''}</div>
       </div>
-      ${body}
+      <div class="sheet-body">${body}</div>
       ${notes.length ? `<p class="sheet-notes">${notes.map(esc).join(' ')}</p>` : ''}
       <footer class="sheet-foot">
-        <p><strong>Get the app</strong> <i>·</i> Shia Namaz, with daily reminders, on the App Store and Google Play<br>${qr ? `Scan for today's times in ${esc(city)} <i>·</i> ` : ''}${esc(ctx.siteUrl)}</p>
+        <p><strong>Get the app</strong> <i>·</i> Shia Namaz on the App Store and Google Play <i>·</i> ${esc(ctx.siteUrl)}</p>
         ${qr ? `<span class="sheet-qr">${qr}</span>` : ''}
       </footer>
     </article>`;
   }
+  const place = ctx => { const [city, ...region] = ctx.place.label.split(', '); return { city, region: region.join(', ') }; };
+  const prayerMeta = ctx => `${esc(ctx.methodLabel)} <i>·</i> ${esc(ctx.zone.replace(/_/g, ' '))} time`;
   const HIJRI_NOTE = 'Hijri dates follow the app’s moon-sighting calculation and may differ from local announcements by a day.';
 
   // A run of days as a table: one row per day, one column per time the timetable shows.
@@ -78,7 +81,8 @@
     const table = daysTable(ctx, dates, { compact: false });
     const range = format({ day: 'numeric', month: 'short', year: 'numeric' });
     const period = range.formatRange ? range.formatRange(civil(dates[0]), civil(dates[6])) : `${range.format(civil(dates[0]))} – ${range.format(civil(dates[6]))}`;
-    return sheet(ctx, { kind: 'week', period, periodSub: hijriSpan(table.days[0].hijri, table.days[6].hijri), body: table.html,
+    const { city, region } = place(ctx);
+    return sheet(ctx, { kind: 'week', title: city, titleSub: region, side: period, sideSub: hijriSpan(table.days[0].hijri, table.days[6].hijri), meta: prayerMeta(ctx), body: table.html,
       notes: [...table.notes, HIJRI_NOTE] });
   }
 
@@ -87,8 +91,9 @@
     const length = new Date(Date.UTC(y, m, 0)).getUTCDate();
     const dates = Array.from({ length }, (_, i) => `${y}-${String(m).padStart(2, '0')}-${String(i + 1).padStart(2, '0')}`);
     const table = daysTable(ctx, dates, { compact: true });
-    return sheet(ctx, { kind: 'month', period: format({ month: 'long', year: 'numeric' }).format(civil(dates[0])),
-      periodSub: hijriSpan(table.days[0].hijri, table.days[length - 1].hijri), body: table.html,
+    const { city, region } = place(ctx);
+    return sheet(ctx, { kind: 'month', title: city, titleSub: region, side: format({ month: 'long', year: 'numeric' }).format(civil(dates[0])),
+      sideSub: hijriSpan(table.days[0].hijri, table.days[length - 1].hijri), meta: prayerMeta(ctx), body: table.html,
       notes: [...table.notes, HIJRI_NOTE] });
   }
 
@@ -103,26 +108,26 @@
     for (const item of occasions.items) (byDay[item.day] ||= []).push(item);
     const short = format({ day: 'numeric', month: 'short' });
     const weekdays = Array.from({ length: 7 }, (_, i) => format({ weekday: 'short' }).format(new Date(Date.UTC(2023, 0, 1 + i, 12))));
-    // Every cell, blank ones too, has the same ruled box, so the grid reads as one piece.
-    // Occasions are written in full in their day; there is no separate list to repeat them.
-    const rows = [];
-    for (let i = 0; i < cells.length; i += 7) {
-      rows.push(`<tr>${cells.slice(i, i + 7).map(day => {
-        if (!day) return '<td class="empty"></td>';
-        const d = civil(day.date), items = byDay[day.day] || [];
-        const gregorian = day.day === 1 || d.getUTCDate() === 1 ? short.format(d) : String(d.getUTCDate());
-        return `<td><span class="gd">${esc(gregorian)}</span><span class="hd">${day.day}</span>${items.map(item => `<span class="oc">${esc(item.title)}</span>`).join('')}</td>`;
-      }).join('')}</tr>`);
-    }
+    // A grid of boxes, each drawing its own right and bottom rule (the first column its left
+    // rule too). Collapsed table borders drop out of Chrome's print preview at some scales.
+    // Occasions are written in full at the foot of their day.
+    const head = weekdays.map((w, col) => `<div class="cal-head${col === 0 ? ' first' : ''}${col === 5 ? ' friday' : ''}">${esc(w)}</div>`).join('');
+    const days = cells.map((day, i) => {
+      const cls = `cal-day${i % 7 === 0 ? ' first' : ''}${day ? '' : ' empty'}`;
+      if (!day) return `<div class="${cls}"></div>`;
+      const d = civil(day.date), items = byDay[day.day] || [];
+      const gregorian = day.day === 1 || d.getUTCDate() === 1 ? short.format(d) : String(d.getUTCDate());
+      return `<div class="${cls}${items.length ? ' occasion' : ''}"><span class="hd">${day.day}</span><span class="gd">${esc(gregorian)}</span>${items.length ? `<span class="oc">${items.map(item => esc(item.title)).join('<br>')}</span>` : ''}</div>`;
+    }).join('');
     const first = civil(payload.days[0].date), last = civil(payload.days[payload.days.length - 1].date);
     const monthYear = format({ month: 'long', year: 'numeric' });
     const gregorianSpan = monthYear.formatRange ? monthYear.formatRange(first, last) : `${monthYear.format(first)} – ${monthYear.format(last)}`;
-    const notes = [HIJRI_NOTE];
-    if (occasions.note) notes.push(occasions.note);
-    return sheet(ctx, { kind: 'hijri', period: `${payload.monthName} ${payload.year} AH`, periodSub: gregorianSpan,
-      body: `<table class="sheet-calendar weeks-${cells.length / 7}"><thead><tr>${weekdays.map((w, col) => `<th scope="col"${col === 5 ? ' class="friday"' : ''}>${esc(w)}</th>`).join('')}</tr></thead><tbody>${rows.join('')}</tbody></table>`, notes });
+    const { city, region } = place(ctx);
+    const notes = ['Hijri dates follow the app’s moon-sighting calculation for this city and may differ from local announcements by a day.'];
+    if (occasions.items.length) notes.push('Occasions follow the common Ja‘fari narrations.');
+    return sheet(ctx, { kind: 'hijri', title: `${payload.monthName} ${payload.year} AH`, titleSub: gregorianSpan, side: city, sideSub: region,
+      body: `<div class="cal" style="--weeks:${cells.length / 7}">${head}${days}</div>`, notes });
   }
-
   // kind: 'week' | 'month' | 'hijri'. ctx: { place, zone, settings, methodLabel, h24, date, link, siteUrl }
   async function print(kind, ctx) {
     await NamazEngine.ready();
