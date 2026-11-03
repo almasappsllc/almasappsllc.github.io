@@ -4,11 +4,17 @@
 // to this city's times. Each sheet fills the page: the table stretches and the app line
 // sits at the foot of the paper.
 (() => {
-  const NAMES = { IMSAK: 'Imsak', FAJR: 'Fajr', SUNRISE: 'Sunrise', DHUHR: 'Dhuhr', ASR: 'Asr', SUNSET: 'Sunset', MAGHRIB: 'Maghrib', ISHA: 'Isha', MIDNIGHT: 'Midnight' };
+  // Sheets print in the page's language (i18n.js); the column heads use the short names.
+  const t = (key, vars) => NamazI18n.t(key, vars);
+  const name = id => {
+    if (id === 'MIDNIGHT') return t('p_MIDNIGHT_short');
+    const sheetKey = `p_${id}_sheet`, short = t(sheetKey);
+    return short === sheetKey ? t('p_' + id) : short;
+  };
   const MARKERS = new Set(['IMSAK', 'SUNRISE', 'SUNSET']);
   const esc = value => String(value).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const civil = date => new Date(`${date}T12:00:00Z`);
-  const format = options => new Intl.DateTimeFormat(undefined, { ...options, timeZone: 'UTC' });
+  const format = options => NamazI18n.dateFormat(options);
   const addDays = (date, n) => { const d = civil(date); d.setUTCDate(d.getUTCDate() + n); return d.toISOString().slice(0, 10); };
   const isFriday = date => civil(date).getUTCDay() === 5;
 
@@ -18,10 +24,10 @@
 
   function hijriSpan(first, last) {
     if (first.month === last.month && first.year === last.year) {
-      return first.day === last.day ? `${first.day} ${first.monthName} ${first.year} AH` : `${first.day}–${last.day} ${first.monthName} ${first.year} AH`;
+      return first.day === last.day ? `${first.day} ${first.monthName} ${first.year} ${t('ah')}` : `${first.day}–${last.day} ${first.monthName} ${first.year} ${t('ah')}`;
     }
     const year = first.year === last.year ? '' : ` ${first.year}`;
-    return `${first.day} ${first.monthName}${year} – ${last.day} ${last.monthName} ${last.year} AH`;
+    return `${first.day} ${first.monthName}${year} – ${last.day} ${last.monthName} ${last.year} ${t('ah')}`;
   }
 
   // title/titleSub on the left, side/sideSub on the right; meta in the brand line.
@@ -34,7 +40,7 @@
     })();
     return `<article class="sheet sheet-${kind}">
       <header class="sheet-head">
-        <span class="sheet-brand"><img src="icon.png" alt="" width="24" height="24">Shia Namaz <i>·</i> Ja'fari</span>
+        <span class="sheet-brand"><img src="icon.png" alt="" width="24" height="24">Shia Namaz <i>·</i> ${esc(t('sheet_school'))}</span>
         ${meta ? `<span class="sheet-meta">${meta}</span>` : ''}
       </header>
       <div class="sheet-title${title.length > 16 ? ' long' : ''}">
@@ -44,14 +50,13 @@
       <div class="sheet-body">${body}</div>
       ${notes.length ? `<p class="sheet-notes">${notes.map(esc).join(' ')}</p>` : ''}
       <footer class="sheet-foot">
-        <p><strong>Get the app</strong> <i>·</i> Shia Namaz on the App Store and Google Play <i>·</i> ${esc(ctx.siteUrl)}</p>
+        <p><strong>${esc(t('get_app'))}</strong> <i>·</i> ${esc(t('on_stores'))} <i>·</i> ${esc(ctx.siteUrl)}</p>
         ${qr ? `<span class="sheet-qr">${qr}</span>` : ''}
       </footer>
     </article>`;
   }
   const place = ctx => { const [city, ...region] = ctx.place.label.split(', '); return { city, region: region.join(', ') }; };
-  const prayerMeta = ctx => `${esc(ctx.methodLabel)} <i>·</i> ${esc(ctx.zone.replace(/_/g, ' '))} time`;
-  const HIJRI_NOTE = 'Hijri dates follow the app’s moon-sighting calculation and may differ from local announcements by a day.';
+  const prayerMeta = ctx => `${esc(ctx.methodLabel)} <i>·</i> ${esc(t('zone_time', { zone: ctx.zone.replace(/_/g, ' ') }))}`;
 
   // A run of days as a table: one row per day, one column per time the timetable shows.
   function daysTable(ctx, dates, { compact }) {
@@ -60,7 +65,7 @@
     const time = clock(ctx.zone, ctx.h24);
     const weekday = format({ weekday: compact ? 'short' : 'long' });
     const dayMonth = format({ day: 'numeric', month: 'short' });
-    const head = `<thead><tr><th class="col-day" scope="col">${compact ? 'Date' : 'Day'}</th>${compact ? '<th class="col-hijri" scope="col">Hijri</th>' : ''}${ids.map(id => `<th scope="col"${MARKERS.has(id) ? ' class="marker"' : ''}>${NAMES[id]}</th>`).join('')}</tr></thead>`;
+    const head = `<thead><tr><th class="col-day" scope="col">${esc(t(compact ? 'col_date' : 'col_day'))}</th>${compact ? `<th class="col-hijri" scope="col">${esc(t('col_hijri'))}</th>` : ''}${ids.map(id => { const cls = [MARKERS.has(id) ? 'marker' : '', name(id).length > 8 && !name(id).includes(' ') ? 'long' : ''].filter(Boolean).join(' '); return `<th scope="col"${cls ? ` class="${cls}"` : ''}>${esc(name(id))}</th>`; }).join('')}</tr></thead>`;
     const rows = days.map((day, index) => {
       const date = dates[index], d = civil(date), h = day.hijri;
       const showMonth = index === 0 || h.day === 1;
@@ -71,8 +76,8 @@
       return `<tr${isFriday(date) ? ' class="friday"' : ''}>${dayCell}${times}</tr>`;
     }).join('');
     const notes = [];
-    if (days.some(day => day.maghribApproximated)) notes.push('On some of these days the sun does not reach the Maghrib angle; Maghrib is set to the deepest point of the night.');
-    else if (days.some(day => day.approximated)) notes.push('On some of these days the sun does not reach one of the angles; those times use the high-latitude rule.');
+    if (days.some(day => day.maghribApproximated)) notes.push(t('sheet_approx_maghrib'));
+    else if (days.some(day => day.approximated)) notes.push(t('sheet_approx_angle'));
     return { days, html: `<table class="sheet-table">${head}<tbody>${rows}</tbody></table>`, notes };
   }
 
@@ -83,7 +88,7 @@
     const period = range.formatRange ? range.formatRange(civil(dates[0]), civil(dates[6])) : `${range.format(civil(dates[0]))} – ${range.format(civil(dates[6]))}`;
     const { city, region } = place(ctx);
     return sheet(ctx, { kind: 'week', title: city, titleSub: region, side: period, sideSub: hijriSpan(table.days[0].hijri, table.days[6].hijri), meta: prayerMeta(ctx), body: table.html,
-      notes: [...table.notes, HIJRI_NOTE] });
+      notes: [...table.notes, t('sheet_hijri_note')] });
   }
 
   function month(ctx) {
@@ -94,7 +99,7 @@
     const { city, region } = place(ctx);
     return sheet(ctx, { kind: 'month', title: city, titleSub: region, side: format({ month: 'long', year: 'numeric' }).format(civil(dates[0])),
       sideSub: hijriSpan(table.days[0].hijri, table.days[length - 1].hijri), meta: prayerMeta(ctx), body: table.html,
-      notes: [...table.notes, HIJRI_NOTE] });
+      notes: [...table.notes, t('sheet_hijri_note')] });
   }
 
   async function hijri(ctx) {
@@ -103,7 +108,7 @@
     const cells = Array(offset).fill(null).concat(payload.days);
     while (cells.length % 7) cells.push(null);
     let occasions = { items: [], note: '' };
-    try { occasions = await NamazEngine.occasions(payload.month); } catch {}
+    try { occasions = await NamazEngine.occasions(payload.month, NamazI18n.lang); } catch {}
     const byDay = {};
     for (const item of occasions.items) (byDay[item.day] ||= []).push(item);
     const short = format({ day: 'numeric', month: 'short' });
@@ -123,9 +128,9 @@
     const monthYear = format({ month: 'long', year: 'numeric' });
     const gregorianSpan = monthYear.formatRange ? monthYear.formatRange(first, last) : `${monthYear.format(first)} – ${monthYear.format(last)}`;
     const { city, region } = place(ctx);
-    const notes = ['Hijri dates follow the app’s moon-sighting calculation for this city and may differ from local announcements by a day.'];
-    if (occasions.items.length) notes.push('Occasions follow the common Ja‘fari narrations.');
-    return sheet(ctx, { kind: 'hijri', title: `${payload.monthName} ${payload.year} AH`, titleSub: gregorianSpan, side: city, sideSub: region,
+    const notes = [t('sheet_hijri_note_city')];
+    if (occasions.items.length) notes.push(t('sheet_occasions_note'));
+    return sheet(ctx, { kind: 'hijri', title: `${payload.monthName} ${payload.year} ${t('ah')}`, titleSub: gregorianSpan, side: city, sideSub: region,
       body: `<div class="cal" style="--weeks:${cells.length / 7}">${head}${days}</div>`, notes });
   }
   // kind: 'week' | 'month' | 'hijri'. ctx: { place, zone, settings, methodLabel, h24, date, link, siteUrl }

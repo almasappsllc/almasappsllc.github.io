@@ -234,3 +234,7 @@ main{max-width:1040px}
 .sheet-foot strong{color:#111}
 .sheet-qr{flex:none;display:block}
 .sheet-qr svg{width:13mm;height:13mm;display:block}
+.lang-switch{display:inline-flex}.lang-select{width:auto;min-height:30px;height:30px;padding:0 24px 0 8px;border:1px solid var(--line);background:#fff;color:var(--green-dark);font:700 12px var(--sans);cursor:pointer}
+@media(max-width:600px){.lang-select{min-height:28px;height:28px;padding:0 20px 0 6px;font-size:11px}.brand-extra{display:none}}
+@media print{.lang-switch{display:none}}
+.sheet-table thead th.long{letter-spacing:0;font-size:6pt}

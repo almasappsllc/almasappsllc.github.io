@@ -9,6 +9,9 @@
     QUM: { fajr: 16.0, isha: 14.0, maghrib: 4.0 },
     TEHRAN: { fajr: 17.7, isha: 14.0, maghrib: 4.5 },
   };
+  // Messages and month names in the page's language (i18n.js), English if it hasn't loaded.
+  const t = (key, fallback, vars) => window.NamazI18n ? NamazI18n.t(key, vars) : fallback;
+  const monthName = month => window.NamazI18n ? NamazI18n.hijriMonth(month) : HIJRI_MONTHS[month - 1];
   const HIJRI_MONTHS = ["Muharram", "Safar", "Rabiʻ al-Awwal", "Rabiʻ al-Thani", "Jumada al-Ula", "Jumada al-Akhira", "Rajab", "Shaʻban", "Ramadan", "Shawwal", "Dhu al-Qaʻda", "Dhu al-Hijja"];
   const COUNTRY_NAMES = {
     AE: 'United Arab Emirates', AF: 'Afghanistan', AU: 'Australia', AZ: 'Azerbaijan', BH: 'Bahrain',
@@ -25,7 +28,7 @@
 
 
   function kotlin() {
-    if (!window.NamazKotlin) throw new Error('The prayer-time engine did not load. Refresh the page and try again.');
+    if (!window.NamazKotlin) throw new Error(t('err_engine', 'The prayer-time engine did not load. Refresh the page and try again.'));
     return window.NamazKotlin;
   }
   // The engine bundle is large, so it loads in the background instead of holding up the page.
@@ -37,7 +40,7 @@
       script.src = versioned('vendor/namaz-engine.js');
       script.async = true;
       script.onload = () => resolve();
-      script.onerror = () => { enginePromise = null; reject(new Error('The prayer-time engine did not load. Check your connection and try again.')); };
+      script.onerror = () => { enginePromise = null; reject(new Error(t('err_engine_net', 'The prayer-time engine did not load. Check your connection and try again.'))); };
       document.head.append(script);
     });
     return enginePromise;
@@ -54,21 +57,22 @@
     const angles = settings.method === 'CUSTOM'
       ? { fajr: Number(settings.fajrAngle), isha: Number(settings.ishaAngle), maghrib: Number(settings.maghribAngle) }
       : METHODS[settings.method] || METHODS.QUM;
-    for (const [name, value] of [['Fajr', angles.fajr], ['Isha', angles.isha]]) {
-      if (!Number.isFinite(value) || value < 1 || value > 30) throw new Error(`${name} angle must be from 1 to 30 degrees.`);
+    for (const [id, value] of [['FAJR', angles.fajr], ['ISHA', angles.isha]]) {
+      const name = t('p_' + id, id === 'FAJR' ? 'Fajr' : 'Isha');
+      if (!Number.isFinite(value) || value < 1 || value > 30) throw new Error(t('err_angle', `${name} angle must be from 1 to 30 degrees.`, { name }));
     }
     if (!Number.isFinite(angles.maghrib) || !(angles.maghrib === 0 || (angles.maghrib >= 1 && angles.maghrib <= 30))) {
-      throw new Error('Maghrib angle must be 0 or from 1 to 30 degrees.');
+      throw new Error(t('err_maghrib_angle', 'Maghrib angle must be 0 or from 1 to 30 degrees.'));
     }
     const imsakOffset = Math.round(Number(settings.imsakOffset) || 0);
-    if (imsakOffset < 0 || imsakOffset > 120) throw new Error('Imsak offset must be from 0 to 120 minutes.');
+    if (imsakOffset < 0 || imsakOffset > 120) throw new Error(t('err_imsak', 'Imsak offset must be from 0 to 120 minutes.'));
     const offsets = Object.entries(settings.offsets || {}).map(([id, v]) => [id, Math.round(Number(v) || 0)]);
-    if (offsets.some(([, v]) => v < -120 || v > 120)) throw new Error('Time adjustments must be from -120 to 120 minutes.');
+    if (offsets.some(([, v]) => v < -120 || v > 120)) throw new Error(t('err_adjust', 'Time adjustments must be from -120 to 120 minutes.'));
     const result = parse(kotlin().computeTimes(lat, lon, nowMillis, zone, angles.fajr, angles.isha, angles.maghrib,
       settings.highLat || 'AUTO', !!settings.showImsak, imsakOffset,
       offsets.filter(([, v]) => v !== 0).map(([id, v]) => `${id}:${v}`).join(',')));
     result.rows = result.rows.map(row => ({ id: row.id, time: new Date(row.time) }));
-    result.hijri.monthName = HIJRI_MONTHS[result.hijri.month - 1];
+    result.hijri.monthName = monthName(result.hijri.month);
     return result;
   }
 
@@ -89,7 +93,7 @@
   // The Hijri month (the app's crescent-visibility calendar) containing a civil date.
   function hijriMonth(dateStr, lat, lon, zone) {
     const month = parse(kotlin().hijriMonth(dateStr, lat, lon, zone));
-    month.monthName = HIJRI_MONTHS[month.month - 1];
+    month.monthName = monthName(month.month);
     return month;
   }
 
@@ -132,7 +136,7 @@
   function loadIndex() {
     indexPromise ||= Promise.all([getJSON('data/places/index.json'), loadScript('vendor/tz-lookup.js')])
       .then(([index]) => ({ ...index, split: new Set(index.split), regionFold: {} }))
-      .catch(() => { indexPromise = null; throw new Error('City search is unavailable. Check your connection, or enter coordinates.'); });
+      .catch(() => { indexPromise = null; throw new Error(t('err_search', 'City search is unavailable. Check your connection, or enter coordinates.')); });
     return indexPromise;
   }
   const fileKey = key => /^[a-z0-9]+$/.test(key) ? key : '_' + [...key].map(c => c.codePointAt(0).toString(16)).join('-');
@@ -145,7 +149,7 @@
     const file = `data/places/s/${fileKey(key)}${index.split.has(key) ? '.top' : ''}.json`;
     return (shards[file] ||= fetch(versioned(file)).then(r => {
       if (r.status === 404) return [];
-      if (!r.ok) throw new Error('City search is unavailable. Check your connection, or enter coordinates.');
+      if (!r.ok) throw new Error(t('err_search', 'City search is unavailable. Check your connection, or enter coordinates.'));
       return r.json();
     }).then(rows => rows.map(([name, cc, admin1, lat, lon, words]) => ({ name, cc, admin1, lat: lat / 1000, lon: lon / 1000, words: words.split(' ') })))
       .catch(error => { delete shards[file]; throw error; }));
