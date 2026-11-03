@@ -8,18 +8,18 @@
 </head>
 <body>
   <header class="site-header">
-    <span class="header-label">SHIA NAMAZ <i>·</i> JA'FARI</span>
+    <a class="header-label brand" href="./"><img src="icon.png" alt="" width="28" height="28"><span>SHIA NAMAZ <i>·</i> JA'FARI</span></a>
     <nav class="header-links" aria-label="Site links">
-      <a href="blog.html">Blog</a>
+      <a href="blog.html">Guides</a>
       <a href="https://play.google.com/store/apps/details?id=com.namaz.prayertimes" target="_blank" rel="noopener">Google Play ↗</a>
       <a href="https://apps.apple.com/app/namaz-shia-prayer-qibla/id6817066991" target="_blank" rel="noopener">App Store ↗</a>
     </nav>
   </header>
   <main>
     <section id="location-screen" class="location-screen">
-      <p class="eyebrow">SHIA NAMAZ PRAYER TIMES</p>
       <h1>Get your prayer times</h1>
       <p class="intro">Choose your city. We’ll remember it on this device.</p>
+      <p class="trust">Calculated by the Shia Namaz app’s own engine: Maghrib after sunset, Shari’i midnight, and the Qom or Tehran method. <a href="articles/choose-qom-or-tehran.html">How the methods differ</a></p>
       <label class="location-label" for="city-search">Type your city</label>
       <input id="city-search" type="search" autocomplete="off" aria-autocomplete="list" aria-controls="city-suggestions" aria-expanded="false" placeholder="Start typing a city name">
       <div id="city-suggestions" class="city-suggestions" role="listbox" aria-label="City choices" hidden></div>
@@ -39,12 +39,13 @@
     </section>
 
     <section id="schedule-screen" class="schedule-screen" hidden>
-      <div class="page-heading"><div><p class="eyebrow">SHIA NAMAZ PRAYER TIMES</p><h1>Shia Namaz prayer times</h1></div><button class="text-button" id="change-city" type="button">Change city</button></div>
+      <div class="page-heading"><div><h1>Prayer times</h1></div><button class="text-button" id="change-city" type="button">Change city</button></div>
       <div class="date-block">
         <p id="selected-location" class="selected-location"></p>
         <p id="gregorian-date" class="gregorian-date"></p>
         <p id="hijri-date" class="hijri-date"></p>
         <p class="hijri-note">Hijri date is an estimate and can differ with local moon sighting.</p>
+        <p id="method-line" class="method-line"></p>
       </div>
       <div id="table-message" class="message" role="status" hidden></div>
       <table id="prayer-table" class="prayer-table">
@@ -57,6 +58,7 @@
         <p class="eyebrow">SHIA NAMAZ · HIJRI CALENDAR</p>
         <h2 id="calendar-title"></h2>
         <p id="calendar-location" class="calendar-location"></p>
+        <p id="calendar-span" class="calendar-span"></p>
         <table class="calendar-table"><thead><tr><th>Sun</th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th></tr></thead><tbody id="calendar-days"></tbody></table>
         <p class="calendar-note">Hijri dates are estimates and may differ with local moon sighting.</p>
       </section>
@@ -81,6 +83,7 @@
       </details>
       <p id="approximation-note" class="approximation" hidden></p>
     </section>
+    <div class="print-footer" aria-hidden="true"><img src="icon.png" alt="" width="34" height="34"><div><strong>Shia Namaz</strong> · Ja'fari prayer times for your city<br><span id="print-url">almasappsllc.github.io/namaz</span> · Daily reminders in the Shia Namaz app on the App Store and Google Play</div></div>
   </main>
   <footer class="site-footer">
     <a href="privacy.html">Privacy policy</a>

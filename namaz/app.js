@@ -13,6 +13,8 @@ const deviceZone=Intl.DateTimeFormat().resolvedOptions().timeZone||'UTC';
 timeZoneInput.value=deviceZone;
 document.querySelector('#time-adjustments').innerHTML=adjustmentRows.map(id=>`<label>${names[id]}<input type="number" min="-120" max="120" step="1" value="0" data-adjust="${id}"></label>`).join('');
 
+function methodLabel(){return {QUM:'Qom method',TEHRAN:'Tehran method',CUSTOM:'Custom angles'}[methodSelect.value]||'Qom method'}
+try{document.querySelector('#print-url').textContent=(location.host+location.pathname).replace(/index\.html$/,'').replace(/\/$/,'')}catch{}
 function showError(message){locationError.textContent=message;locationError.hidden=false}
 function clearError(){locationError.textContent='';locationError.hidden=true}
 function localDateInZone(zone){
@@ -121,7 +123,12 @@ async function printHijriCalendar(){
     const cells=Array(42).fill(null),firstOffset=new Date(`${payload.days[0].date}T12:00:00Z`).getUTCDay();
     for(const day of payload.days)cells[firstOffset+day.day-1]=day;
     const rows=Math.ceil((firstOffset+payload.days.length)/7);
-    document.querySelector('#calendar-days').innerHTML=Array.from({length:rows},(_,row)=>`<tr>${cells.slice(row*7,row*7+7).map(day=>day?`<td><span class="hijri-day-number">${day.day}</span><small>${Number(day.date.slice(-2))}</small></td>`:'<td></td>').join('')}</tr>`).join('');
+    const shortMonth=new Intl.DateTimeFormat(undefined,{month:'short',timeZone:'UTC'}),longMonth=new Intl.DateTimeFormat(undefined,{month:'long',year:'numeric',timeZone:'UTC'});
+    const civil=date=>new Date(`${date}T12:00:00Z`);
+    const gregorian=(day,index)=>{const d=civil(day.date);return index===0||d.getUTCDate()===1?`${d.getUTCDate()} ${shortMonth.format(d)}`:String(d.getUTCDate())};
+    const first=civil(payload.days[0].date),last=civil(payload.days[payload.days.length-1].date);
+    document.querySelector('#calendar-span').textContent=`${longMonth.format(first)}${first.getUTCMonth()!==last.getUTCMonth()?` – ${longMonth.format(last)}`:''} · ${methodLabel()}`;
+    document.querySelector('#calendar-days').innerHTML=Array.from({length:rows},(_,row)=>`<tr>${cells.slice(row*7,row*7+7).map(day=>day?`<td><span class="hijri-day-number">${day.day}</span><small>${gregorian(day,payload.days.indexOf(day))}</small></td>`:'<td class="empty"></td>').join('')}</tr>`).join('');
     document.querySelector('#hijri-calendar').hidden=false;
     document.body.dataset.printView='calendar';
     window.print();
@@ -150,6 +157,7 @@ async function calculateTimes(){
     document.querySelector('#hijri-date').dataset.civilDate=payload.date;
     document.querySelector('#prayer-rows').innerHTML=rows;
     tableMessage.hidden=true;
+    document.querySelector('#method-line').textContent=`${methodLabel()} · Times in ${zone.replace(/_/g,' ')}`;
     const note=document.querySelector('#approximation-note');note.hidden=!payload.approximated;note.textContent=payload.maghribApproximated?'At this time of year, the sun does not reach the Maghrib angle. Maghrib is set to the deepest point of the night.':'At this time of year, the sun does not reach one of the selected angles. The calculation uses the high-latitude rule above.';
   }catch(error){tableMessage.textContent=error.message}
 }

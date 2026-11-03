@@ -1,6 +1,5 @@
 :root{--ink:#172b29;--muted:#60716d;--green:#276c59;--green-dark:#194b3f;--paper:#f7f7f2;--line:#cbd4ce;--white:#fff;--serif:Georgia,'Times New Roman',serif;--sans:Arial,Helvetica,sans-serif}*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.5 var(--sans)}[hidden]{display:none!important}.site-header{height:62px;padding:0 max(6vw,22px);display:flex;align-items:center;border-bottom:1px solid var(--line);background:#fbfbf8}.header-label{font-size:12px;font-weight:700;letter-spacing:.13em}.header-label i{font-style:normal;color:var(--green);padding:0 3px}.header-links{display:flex;align-items:center;gap:19px}.header-links a{color:var(--green-dark);font-size:12px;font-weight:700;text-decoration:none;white-space:nowrap}.header-links a:hover{text-decoration:underline}main{max-width:760px;margin:0 auto;padding:42px 24px 46px}.location-screen{max-width:580px;margin:20px auto}.eyebrow{margin:0 0 9px;color:var(--green);font-size:11px;font-weight:700;letter-spacing:.14em}.location-screen h1,.page-heading h1{font:normal clamp(36px,5vw,48px)/1.06 var(--serif);letter-spacing:-.035em;margin:0}.intro{color:var(--muted);margin:12px 0 26px}.location-label{display:block;font-size:13px;font-weight:700;margin-bottom:7px}input,select{width:100%;min-height:48px;border:1px solid #899991;border-radius:0;background:#fff;color:var(--ink);padding:0 12px;font:16px var(--sans)}input:focus,select:focus,button:focus-visible,summary:focus-visible{outline:2px solid var(--green);outline-offset:2px}#city-search{height:56px;font-size:18px}.city-suggestions{max-height:300px;overflow:auto;border:1px solid var(--line);background:#fff;margin-top:2px}.city-suggestions[hidden]{display:none}.city-option{width:100%;border:0;border-bottom:1px solid var(--line);background:#fff;padding:11px 13px;display:flex;flex-direction:column;align-items:flex-start;text-align:left;cursor:pointer;color:var(--ink);font:15px var(--sans)}.city-option:last-child{border-bottom:0}.city-option:hover,.city-option:focus{background:#edf2ed;outline:0}.city-option span{font-size:12px;color:var(--muted)}.suggestion-message{padding:10px 13px;margin:0;color:var(--muted);font-size:13px}.button{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:0 18px;border:1px solid var(--green);border-radius:0;background:var(--green);color:#fff;text-decoration:none;font:700 14px var(--sans);cursor:pointer}.button:hover{background:var(--green-dark)}.button-quiet{background:transparent;color:var(--green-dark)}.button-quiet:hover{background:#e8eee9}.locate-button{width:100%;margin-top:10px}.more-options,.settings-details{border-top:1px solid var(--line);margin-top:17px;padding-top:12px}.more-options summary,.settings-details summary,.adjustment-details summary{cursor:pointer;width:max-content;padding:3px 0;color:var(--green-dark);font-size:13px;font-weight:700}.settings-help{margin:7px 0 12px;color:var(--muted);font-size:12px}.more-options>label,.settings-details>label:not(.checkbox-row){display:block;margin:14px 0 6px;font-size:13px;font-weight:700}.paste-row{display:grid;grid-template-columns:1fr auto;gap:8px}.button-small{min-height:46px;padding:0 15px}.coordinate-grid,.custom-angle-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:12px 0}.coordinate-grid label,.custom-angle-grid label,.adjustment-grid label{display:grid;gap:5px;font-size:12px;font-weight:700;color:var(--muted)}.coordinate-grid input,.custom-angle-grid input,.adjustment-grid input{min-height:43px;font-size:15px}.custom-angle-grid{margin-top:10px}.adjustment-details{margin-top:15px;padding-top:12px;border-top:1px solid var(--line)}.adjustment-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.checkbox-row{display:flex;align-items:center;gap:9px;margin-top:16px;font-size:14px}.checkbox-row input{width:18px;min-height:18px;accent-color:var(--green)}#imsak-offset-wrap input{margin-top:6px}.update-button{width:100%;margin-top:18px}.message{padding:11px 13px;border-left:3px solid #bd8b37;background:#f0eadc;color:var(--ink);font-size:13px;margin:14px 0}.schedule-screen{max-width:600px;margin:0 auto}.page-heading{display:flex;align-items:flex-end;justify-content:space-between;gap:20px}.page-heading h1{font-size:40px}.text-button{padding:7px 0;border:0;border-bottom:1px solid var(--green);background:transparent;color:var(--green-dark);font:700 13px var(--sans);cursor:pointer;white-space:nowrap}.date-block{margin:24px 0 22px;padding:17px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}.selected-location{margin:0 0 3px;font-size:14px;font-weight:700;color:var(--green-dark)}.gregorian-date{margin:0;color:var(--muted);font-size:13px}.hijri-date{margin:8px 0 0;font:22px var(--serif)}.hijri-note{margin:2px 0 0;color:var(--muted);font-size:11px}.prayer-table{width:100%;border-collapse:collapse}.prayer-table th,.prayer-table td{padding:12px 8px;border-bottom:1px solid var(--line);text-align:left}.prayer-table thead th{color:var(--muted);font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;border-bottom:1px solid #899991}.prayer-table tbody th{font-weight:400}.prayer-table td{text-align:right;font-variant-numeric:tabular-nums}.table-actions{margin-top:20px}.table-actions .button{width:100%;min-height:52px;font-size:15px}.print-note{margin:8px 0 0;color:var(--muted);font-size:11px;text-align:center}.settings-details{margin-top:28px}.settings-details select,.settings-details>input{min-height:45px;font-size:15px}.settings-details .settings-help{margin-bottom:14px}.approximation{padding:11px 13px;border-left:3px solid #bd8b37;background:#f0eadc;font-size:13px;margin:14px 0}.site-footer{max-width:760px;margin:0 auto;padding:18px 24px 26px;border-top:1px solid var(--line);display:flex;align-items:center;justify-content:flex-end;gap:18px;color:var(--muted);font-size:12px}.site-footer span{color:var(--muted)}.site-footer a{color:var(--green-dark);text-decoration:none}.site-footer a:hover{text-decoration:underline}.blog-main{max-width:680px;min-height:calc(100vh - 145px);padding-top:50px}.blog-main h1{font:normal clamp(36px,5vw,48px)/1.06 var(--serif);letter-spacing:-.035em;margin:0}.blog-intro{color:var(--muted);margin:10px 0 30px}.blog-entry{border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:20px 0 24px}.blog-entry h2{font:26px/1.2 var(--serif);font-weight:400;margin:0 0 9px}.blog-entry h2 a{color:var(--ink);text-decoration:none}.blog-entry h2 a:hover,.blog-read-link:hover,.blog-back a:hover{text-decoration:underline}.blog-entry>p:not(.eyebrow){color:var(--muted);margin:0 0 14px}.blog-read-link,.blog-back a{color:var(--green-dark);font-size:13px;font-weight:700;text-decoration:none}.blog-back{margin-top:24px}
 @media(max-width:600px){.site-header{height:56px;padding:0 18px}.header-label{font-size:10px;letter-spacing:.07em}.header-links{gap:10px}.header-links a{font-size:10px}main{padding:28px 20px 34px}.location-screen{margin:8px auto}.location-screen h1,.page-heading h1{font-size:37px}.page-heading{align-items:flex-start}.page-heading h1{font-size:34px}.adjustment-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.site-footer{padding:16px 20px 22px;gap:14px;flex-wrap:wrap}}
-@media print{@page{margin:16mm}body{background:#fff;font-size:12pt}.site-header{height:auto;padding:0 0 8mm;border:0;border-bottom:1px solid #888}.header-label{font-size:9pt}.location-screen,.text-button,.table-actions,.print-note,.settings-details,.site-footer{display:none!important}main{max-width:none;margin:0;padding:10mm 0}.page-heading{display:block}.page-heading h1{font-size:25pt}.date-block{margin:7mm 0}.hijri-note{font-size:9pt}.prayer-table th,.prayer-table td{padding:4mm 2mm}}
 
 /* Keep short pages anchored to the viewport and align the header consistently. */
 body{min-height:100vh;display:flex;flex-direction:column}
@@ -39,25 +38,61 @@ main{max-width:1040px}
 .calendar-table small{display:block;margin-top:3px;color:var(--muted);font-size:11px}
 .calendar-note{margin:14px 0 0}
 @media(max-width:600px){.page-heading{gap:12px}.table-actions{flex-direction:column}.table-actions .button{flex:auto}.hijri-calendar{padding:14px}.calendar-table td{height:58px;padding:5px}.calendar-table th{font-size:10px}.hijri-day-number{font-size:19px}}
+
+
+/* Brand, trust line, footer alignment. */
+.header-label.brand{display:inline-flex;align-items:center;gap:10px;color:var(--ink);text-decoration:none}
+.header-label.brand img{width:28px;height:28px;border-radius:7px;flex:none}
+.header-label.brand:hover span{text-decoration:underline}
+.trust{margin:-12px 0 26px;padding-left:12px;border-left:2px solid var(--green);color:var(--ink);font-size:13px}
+.trust a{color:var(--green-dark);font-weight:700}
+.breadcrumbs a{color:inherit}
+.site-footer{justify-content:center}
+.method-line{margin:8px 0 0;color:var(--muted);font-size:12px}
+.calendar-span{margin:2px 0 0;color:var(--muted);font-size:12px}
+.calendar-table td.empty{background:transparent}
+.print-footer{display:none}
+@media(max-width:420px){.header-label.brand img{width:22px;height:22px}.header-label.brand{gap:6px}}
+
+/* Printed sheets: one A4 page, no browser header or footer. */
 @media print{
-  @page{size:A4 portrait;margin:12mm}
-  body{display:block;min-height:0;background:#fff;font-size:11pt}
-  .site-header{height:auto;padding:0 0 5mm;border:0}
-  .header-links,.site-footer,#location-screen,.table-actions,.print-note,.settings-details,.text-button{display:none!important}
+  @page{size:A4 portrait;margin:0}
+  html,body{background:#fff!important}
+  body{display:block;min-height:0;padding:14mm 16mm;font-size:11pt;color:#111}
+  .site-header{height:auto;padding:0 0 4mm;margin-bottom:8mm;border:0;border-bottom:1.5pt solid #111;background:#fff}
+  .header-label.brand{font-size:10pt;letter-spacing:.14em}
+  .header-label.brand img{width:9mm;height:9mm;border-radius:2mm}
+  .header-links,.site-footer,#location-screen,.table-actions,.print-note,.settings-details,.text-button,.message,.page-heading{display:none!important}
   main{width:100%;max-width:none;margin:0;padding:0}
   #schedule-screen{width:100%;max-width:none;margin:0}
-  .page-heading{display:block}
-  .page-heading h1{font-size:22pt}
-  .date-block{width:140mm;margin:6mm auto;padding:4mm 0}
+  .date-block{margin:0 0 7mm;padding:0;border:0}
+  .selected-location{font:normal 30pt/1.1 var(--serif);color:#111;letter-spacing:-.02em;margin:0 0 2mm}
+  .gregorian-date{font-size:12pt;color:#111}
+  .hijri-date{font-size:15pt;margin-top:1mm}
   .hijri-note{display:none}
-  .prayer-table{width:140mm;margin:0 auto}
-  .prayer-table th,.prayer-table td{padding:2.2mm 3mm;font-size:12pt}
-  .prayer-table thead th{font-size:9pt}
+  .method-line{font-size:9.5pt;color:#444;margin-top:2mm}
+  .prayer-table{width:100%;margin:0}
+  .prayer-table thead th{font-size:8.5pt;color:#444;border-bottom:1.5pt solid #111;padding:2mm 0}
+  .prayer-table tbody th,.prayer-table td{padding:4.2mm 0;font-size:15pt;border-bottom:.5pt solid #bbb}
+  .prayer-table tbody th{font-family:var(--serif)}
+  .prayer-table td{font-weight:700}
+  .approximation{border:0;background:none;padding:0;font-size:9pt;color:#444}
+  .print-footer{display:flex;align-items:center;gap:4mm;margin-top:10mm;padding-top:4mm;border-top:.5pt solid #999;font-size:9pt;color:#333;line-height:1.45;break-inside:avoid}
+  .print-footer img{width:9mm;height:9mm;border-radius:2mm}
+  .print-footer strong{color:#111}
   body[data-print-view="timetable"] #hijri-calendar{display:none!important}
   body[data-print-view="calendar"] #schedule-screen>*:not(#hijri-calendar){display:none!important}
-  body[data-print-view="calendar"] #hijri-calendar{display:block!important;width:100%;max-width:180mm;margin:0 auto;padding:0;border:0}
-  body[data-print-view="calendar"] .calendar-table{margin-top:8mm}
-  body[data-print-view="calendar"] .calendar-table td{height:27mm;padding:3mm}
-  body[data-print-view="calendar"] .hijri-day-number{font-size:18pt}
-  body[data-print-view="calendar"] .calendar-table small{font-size:9pt}
+  body[data-print-view="calendar"] #hijri-calendar{display:block!important;width:100%;max-width:none;margin:0;padding:0;border:0;background:#fff}
+  #hijri-calendar .eyebrow{color:#444;font-size:8.5pt}
+  #hijri-calendar h2{font-size:28pt;letter-spacing:-.02em}
+  .calendar-location{font-size:12pt;color:#111;font-weight:700;margin:2mm 0 0}
+  .calendar-span{font-size:9.5pt;color:#444}
+  .calendar-table{margin-top:6mm;border:1pt solid #111}
+  .calendar-table th{padding:2.5mm 0;font-size:8.5pt;letter-spacing:.08em;text-transform:uppercase;color:#111;border:0;border-bottom:1pt solid #111}
+  .calendar-table td{height:26mm;padding:2.5mm 3mm;border:.5pt solid #bbb}
+  .calendar-table td.empty{background:#f2f2f2}
+  .hijri-day-number{font-size:20pt;line-height:1}
+  .calendar-table small{font-size:8.5pt;color:#555;margin-top:1.5mm}
+  .calendar-note{font-size:8.5pt;color:#444}
 }
+.prayer-table thead th:last-child{text-align:right}
