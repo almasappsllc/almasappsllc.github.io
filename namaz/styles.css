@@ -19,25 +19,14 @@ main{flex:1 0 auto}
 @media(max-width:600px){.site-header{gap:12px}.header-links{gap:10px}.article-page .site-header{padding:0 18px}.article-page .site-header .wordmark{font-size:13px;letter-spacing:.05em}.article-page .site-header .wordmark span{display:none}.article-page .site-header nav{gap:10px}.article-page .site-header nav a{font-size:10px}.article-main{padding:28px 20px 34px}.article-page footer{padding:16px 20px 22px;gap:14px;flex-wrap:wrap}}
 @media(max-width:420px){.site-header{padding-left:14px;padding-right:14px;gap:8px}.header-extra{display:none}.header-label{font-size:9px;letter-spacing:.03em}.header-links{gap:7px}.header-links a{font-size:9px}.article-page .site-header{padding-left:14px;padding-right:14px}}
 
-/* Timetable layout and print views. */
+/* Timetable layout. */
 main{max-width:1040px}
 .schedule-screen{max-width:900px}
 .page-heading{justify-content:flex-start;align-items:flex-end;gap:16px}
-.table-actions{display:flex;gap:12px;flex-wrap:wrap}
-.table-actions .button{width:auto;flex:1 1 220px}
 .adjustment-grid{display:flex;flex-direction:column;gap:8px}
 .adjustment-grid label{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:42px;padding:5px 0;border-bottom:1px solid var(--line);color:var(--ink);font-size:14px}
 .adjustment-grid input{width:112px;min-height:36px;text-align:right}
-.hijri-calendar{margin-top:24px;padding:22px;background:#fff;border:1px solid var(--line)}
-.hijri-calendar h2{margin:0;font:normal 30px/1.15 var(--serif)}
-.calendar-location,.calendar-note{color:var(--muted);font-size:12px}
-.calendar-table{width:100%;margin-top:18px;border-collapse:collapse;table-layout:fixed}
-.calendar-table th{padding:9px 4px;border-bottom:1px solid var(--line);color:var(--muted);font-size:12px;text-align:center}
-.calendar-table td{height:74px;padding:8px;vertical-align:top;border:1px solid var(--line)}
-.hijri-day-number{font:22px var(--serif)}
-.calendar-table small{display:block;margin-top:3px;color:var(--muted);font-size:11px}
-.calendar-note{margin:14px 0 0}
-@media(max-width:600px){.page-heading{gap:12px}.table-actions{flex-direction:column}.table-actions .button{flex:auto}.hijri-calendar{padding:14px}.calendar-table td{height:58px;padding:5px}.calendar-table th{font-size:10px}.hijri-day-number{font-size:19px}}
+@media(max-width:600px){.page-heading{gap:12px}}
 
 
 /* Brand, trust line, footer alignment. */
@@ -49,52 +38,8 @@ main{max-width:1040px}
 .breadcrumbs a{color:inherit}
 .site-footer{justify-content:center}
 .method-line{margin:8px 0 0;color:var(--muted);font-size:12px}
-.calendar-span{margin:2px 0 0;color:var(--muted);font-size:12px}
-.calendar-table td.empty{background:transparent}
-.print-footer{display:none}
 @media(max-width:420px){.header-label.brand img{width:22px;height:22px}.header-label.brand{gap:6px}}
 
-/* Printed sheets: one A4 page, no browser header or footer. */
-@media print{
-  @page{size:A4 portrait;margin:0}
-  html,body{background:#fff!important}
-  body{display:block;min-height:0;padding:14mm 16mm;font-size:11pt;color:#111}
-  .site-header{height:auto;padding:0 0 4mm;margin-bottom:8mm;border:0;border-bottom:1.5pt solid #111;background:#fff}
-  .header-label.brand{font-size:10pt;letter-spacing:.14em}
-  .header-label.brand img{width:9mm;height:9mm;border-radius:2mm}
-  .header-links,.site-footer,#location-screen,.table-actions,.print-note,.settings-details,.text-button,.message,.page-heading{display:none!important}
-  main{width:100%;max-width:none;margin:0;padding:0}
-  #schedule-screen{width:100%;max-width:none;margin:0}
-  .date-block{margin:0 0 7mm;padding:0;border:0}
-  .selected-location{font:normal 30pt/1.1 var(--serif);color:#111;letter-spacing:-.02em;margin:0 0 2mm}
-  .gregorian-date{font-size:12pt;color:#111}
-  .hijri-date{font-size:15pt;margin-top:1mm}
-  .hijri-note{display:none}
-  .method-line{font-size:9.5pt;color:#444;margin-top:2mm}
-  .prayer-table{width:100%;margin:0}
-  .prayer-table thead th{font-size:8.5pt;color:#444;border-bottom:1.5pt solid #111;padding:2mm 0}
-  .prayer-table tbody th,.prayer-table td{padding:4.2mm 0;font-size:15pt;border-bottom:.5pt solid #bbb}
-  .prayer-table tbody th{font-family:var(--serif)}
-  .prayer-table td{font-weight:700}
-  .approximation{border:0;background:none;padding:0;font-size:9pt;color:#444}
-  .print-footer{display:flex;align-items:center;gap:4mm;margin-top:10mm;padding-top:4mm;border-top:.5pt solid #999;font-size:9pt;color:#333;line-height:1.45;break-inside:avoid}
-  .print-footer img{width:9mm;height:9mm;border-radius:2mm}
-  .print-footer strong{color:#111}
-  body[data-print-view="timetable"] #hijri-calendar{display:none!important}
-  body[data-print-view="calendar"] #schedule-screen>*:not(#hijri-calendar){display:none!important}
-  body[data-print-view="calendar"] #hijri-calendar{display:block!important;width:100%;max-width:none;margin:0;padding:0;border:0;background:#fff}
-  #hijri-calendar .eyebrow{color:#444;font-size:8.5pt}
-  #hijri-calendar h2{font-size:28pt;letter-spacing:-.02em}
-  .calendar-location{font-size:12pt;color:#111;font-weight:700;margin:2mm 0 0}
-  .calendar-span{font-size:9.5pt;color:#444}
-  .calendar-table{margin-top:6mm;border:1pt solid #111}
-  .calendar-table th{padding:2.5mm 0;font-size:8.5pt;letter-spacing:.08em;text-transform:uppercase;color:#111;border:0;border-bottom:1pt solid #111}
-  .calendar-table td{height:26mm;padding:2.5mm 3mm;border:.5pt solid #bbb}
-  .calendar-table td.empty{background:#f2f2f2}
-  .hijri-day-number{font-size:20pt;line-height:1}
-  .calendar-table small{font-size:8.5pt;color:#555;margin-top:1.5mm}
-  .calendar-note{font-size:8.5pt;color:#444}
-}
 .prayer-table thead th:last-child{text-align:right}
 
 /* App store buttons. */
@@ -104,33 +49,7 @@ main{max-width:1040px}
 .store-pill svg{width:14px;height:14px;flex:none}
 .header-links>a:not(.store-pill){margin-right:6px}
 @media(max-width:600px){.store-pill{width:32px;padding:0;justify-content:center}.store-pill span{display:none}.store-pill svg{width:15px;height:15px}}
-@media print{.store-pill{display:none!important}}
 
-/* Occasions on the Hijri calendar and the QR code on printouts. */
-.cell-occasion{display:block;margin-top:4px;font-size:10px;line-height:1.25;color:var(--green-dark);overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
-.calendar-table td.has-occasion{background:#eef3ef}
-.calendar-events{margin-top:16px}
-.calendar-events h3{margin:0 0 6px;font:normal 18px var(--serif)}
-.calendar-events ul{margin:0;padding:0;list-style:none;display:grid;gap:4px}
-.calendar-events li{display:grid;grid-template-columns:150px minmax(0,1fr);gap:12px;font-size:13px;padding:5px 0;border-bottom:1px solid var(--line)}
-.calendar-events li strong{font-variant-numeric:tabular-nums}
-.calendar-events-note{margin:6px 0 0;color:var(--muted);font-size:11px}
-@media print{
-  .print-footer{gap:5mm}
-  .print-footer-text{flex:1}
-  .print-qr{margin:0;display:flex;flex-direction:column;align-items:center;gap:1.5mm;flex:none}
-  .print-qr #print-qr{width:26mm;height:26mm}
-  .print-qr svg{width:100%;height:100%;display:block}
-  .print-qr figcaption{font-size:7.5pt;color:#333;max-width:34mm;text-align:center;line-height:1.25}
-  .calendar-table td{height:23mm}
-  .calendar-table td.has-occasion{background:#ececec}
-  .cell-occasion{font-size:7pt;color:#111;margin-top:1.5mm}
-  .calendar-events{margin-top:5mm;break-inside:avoid}
-  .calendar-events h3{font-size:12pt;margin-bottom:1.5mm}
-  .calendar-events li{grid-template-columns:42mm minmax(0,1fr);font-size:9pt;padding:1.2mm 0;border-bottom:.5pt solid #bbb}
-  .calendar-events-note{font-size:8pt;color:#444}
-  .calendar-note{margin-top:2mm}
-}
 
 /* Refined timetable: city as the title, quiet markers, next prayer. */
 .schedule-screen{max-width:600px}
@@ -149,26 +68,139 @@ main{max-width:1040px}
 .prayer-table tr.marker th,.prayer-table tr.marker td{color:var(--muted);font-size:14px;padding-top:9px;padding-bottom:9px}
 .prayer-table tr.next th,.prayer-table tr.next td{color:var(--green-dark);font-weight:700}
 .next-tag{margin-left:10px;padding:2px 7px;border-radius:9px;background:#e3ece6;color:var(--green-dark);font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;vertical-align:2px}
-.table-actions{margin-top:18px;display:flex;gap:22px;flex-wrap:wrap}
-.table-actions .text-button{font-size:13px}
-@media(max-width:600px){.table-actions{flex-direction:row}.schedule-screen .selected-location{font-size:34px}}
-@media print{
-  .place-heading .text-button{display:none!important}
-  .schedule-screen .selected-location{font-size:30pt}
-  .selected-region{font-size:11pt;color:#444}
-  .date-line{font-size:12pt;margin-top:3mm}
-  .next-tag{display:none}
-  .prayer-table tr.next th,.prayer-table tr.next td{color:#111}
-  .prayer-table tr.marker th,.prayer-table tr.marker td{font-size:12pt;color:#555;padding:2.6mm 0}
-}
+@media(max-width:600px){.schedule-screen .selected-location{font-size:34px}}
 @media(max-width:600px){.date-line{flex-direction:column;gap:2px}.date-line .dot{display:none}}
-@media print{.date-line .gregorian-date,.date-line .hijri-date{font-size:12pt;color:#111}}
 
 /* Loading: the page keeps its final shape; times and the Hijri date wait as soft bars. */
 .placeholder,.hijri-date:empty::before{display:inline-block;width:64px;height:.8em;border-radius:4px;background:linear-gradient(90deg,#e6ebe6 0%,#f1f4f0 50%,#e6ebe6 100%);background-size:200% 100%;animation:placeholder-pulse 1.4s ease-in-out infinite;vertical-align:-.05em}
 .hijri-date:empty::before{content:"";width:150px}
 .prayer-table tr.marker .placeholder{width:52px}
 .schedule-screen.is-loading .prayer-table tbody tr:not(.pending){opacity:.45;transition:opacity .2s}
-.schedule-screen.is-loading .table-actions{opacity:.45;pointer-events:none}
 @keyframes placeholder-pulse{0%{background-position:100% 0}100%{background-position:-100% 0}}
 @media(prefers-reduced-motion:reduce){.placeholder,.hijri-date:empty::before{animation:none}}
+
+/* One column for every screen. As a flex item with auto margins, main used to shrink to
+   its content, so the city search, the timetable and the opened settings each had a
+   width of their own. */
+.app-main{width:100%;max-width:648px;margin:0 auto;padding:42px 24px 56px}
+.app-main .location-screen,.app-main .schedule-screen{width:100%;max-width:none;margin:0}
+@media(max-width:600px){.app-main{padding:28px 20px 40px}.app .site-footer{width:calc(100% - 40px)}}
+
+/* Timetable rows: one size for every row; Sunrise, Sunset and Imsak only lighter. */
+.prayer-table th,.prayer-table td,.prayer-table tr.marker th,.prayer-table tr.marker td{font-size:17px;padding:14px 4px}
+.prayer-table tr.marker th,.prayer-table tr.marker td{color:var(--muted)}
+
+/* A returning visitor's city, one tap from the search screen. */
+.saved-city{width:100%;display:flex;align-items:center;justify-content:space-between;gap:16px;margin:0 0 26px;padding:16px 18px;border:1px solid var(--green);background:#fff;color:var(--ink);text-align:left;cursor:pointer;font:inherit}
+.saved-city:hover{background:#f1f6f2}
+.saved-city-text{display:flex;flex-direction:column;gap:2px;min-width:0}
+.saved-city-label{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--green)}
+.saved-city strong{font:normal 24px/1.15 var(--serif);letter-spacing:-.01em}
+#saved-city-region{color:var(--muted);font-size:13px}
+#saved-city-region:empty{display:none}
+.saved-city-go{flex:none;color:var(--green-dark);font-size:14px;font-weight:700;white-space:nowrap}
+
+/* Print choices. */
+.print-options{margin-top:30px}
+.print-heading{margin:0 0 10px;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.print-choices{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.print-choice{display:flex;flex-direction:column;align-items:flex-start;gap:4px;min-height:74px;padding:14px 15px;border:1px solid var(--line);background:#fff;color:var(--ink);text-align:left;cursor:pointer;font:inherit;transition:border-color .15s,box-shadow .15s}
+.print-choice:hover{border-color:var(--green);box-shadow:inset 0 -2px 0 var(--green)}
+.print-choice strong{font:normal 18px/1.2 var(--serif);font-weight:400}
+.print-choice span{font-size:12px;color:var(--muted)}
+.print-choice:disabled{opacity:.6;cursor:progress}
+.schedule-screen.is-loading .print-options{opacity:.45;pointer-events:none}
+.settings-details{margin-top:30px}
+@media(max-width:480px){.print-choices{grid-template-columns:1fr;gap:8px}.print-choice{min-height:0;flex-direction:row;justify-content:space-between;align-items:baseline}}
+
+/* Footer: links on one line, the copyright under them, room to breathe. */
+.site-footer{padding:26px 24px 40px;flex-wrap:wrap;justify-content:center;column-gap:28px;row-gap:10px;font-size:13px}
+.site-footer span{flex-basis:100%;text-align:center;font-size:12px}
+.app .site-footer{width:min(calc(100% - 48px),600px);margin:0 auto;padding-left:0;padding-right:0}
+
+/* Printed sheets (print.js): only the sheet prints, edge to edge, no browser header or footer.
+   Sized to fit one A4 or US Letter page. */
+.print-sheet{display:none}
+@media print{
+  @page{margin:0}
+  html,body{background:#fff!important}
+  body{display:block;min-height:0}
+  body>*:not(.print-sheet){display:none!important}
+  .print-sheet{display:block}
+}
+.sheet{width:100%;padding:12mm 15mm 9mm;color:#111;font:9.5pt/1.4 var(--sans);-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.sheet i{font-style:normal;color:#aaa;padding:0 .35em}
+.sheet-head{display:flex;justify-content:space-between;align-items:center;gap:8mm;padding-bottom:3mm;border-bottom:1.2pt solid #111}
+.sheet-brand{display:inline-flex;align-items:center;gap:2.5mm;font-size:7.5pt;font-weight:700;letter-spacing:.16em;text-transform:uppercase}
+.sheet-brand img{width:6mm;height:6mm;border-radius:1.4mm}
+.sheet-meta{font-size:8pt;color:#555;text-align:right}
+.sheet-title{display:flex;justify-content:space-between;align-items:flex-end;gap:10mm;margin:8mm 0 6mm}
+.sheet-title h1{margin:0;font:normal 30pt/1.05 var(--serif);letter-spacing:-.02em}
+.sheet-place{margin:1.8mm 0 0;font-size:10pt;color:#555}
+.sheet-period{text-align:right}
+.sheet-period p{margin:0}
+.sheet-period-main{font:normal 15pt/1.2 var(--serif)}
+.sheet-period-sub{margin-top:1.2mm!important;font-size:9pt;color:#555}
+.sheet-table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
+.sheet-table th,.sheet-table td{padding:0;text-align:center;font-weight:400}
+.sheet-table thead th{padding:0 1mm 2.2mm;font-size:7.5pt;font-weight:700;letter-spacing:.12em;text-transform:uppercase;border-bottom:.8pt solid #111}
+.sheet-table thead th.marker,.sheet-table tbody td.marker{color:#777}
+.sheet-table thead th.col-day{text-align:left;padding-left:2mm}
+.sheet-table tbody tr{border-bottom:.4pt solid #cfcfca}
+.sheet-table tr.friday{background:#f1f1ec}
+.sheet-week .sheet-table tbody th,.sheet-week .sheet-table tbody td{height:21mm;font-size:14pt}
+.sheet-week .sheet-table tbody th{text-align:left;padding-left:2mm}
+.sheet-week .wd{display:block;font:normal 14pt/1.2 var(--serif)}
+.sheet-week .dm{display:block;margin-top:1mm;font-size:8pt;color:#666}
+.sheet-month .sheet-table tbody th,.sheet-month .sheet-table tbody td{height:5.55mm;font-size:9.5pt}
+.sheet-month .sheet-table tbody th{text-align:left;padding-left:2mm;white-space:nowrap}
+.sheet-month .wd{display:inline-block;width:9mm;color:#666}
+.sheet-month tr.friday .wd{color:#111;font-weight:700}
+.sheet-month .col-hijri{text-align:left;white-space:nowrap;color:#555}
+.sheet-month thead th.col-hijri{color:#111}
+.sheet-month .hm{font-size:7.5pt;color:#888}
+.sheet-notes{margin-top:3.5mm}
+.sheet-notes p{margin:0 0 .8mm;font-size:7.5pt;color:#666}
+.sheet-foot{display:flex;justify-content:space-between;align-items:flex-end;gap:12mm;margin-top:7mm;padding-top:5mm;border-top:.4pt solid #bbb;break-inside:avoid}
+.sheet-foot-text p{margin:0;font-size:8pt;line-height:1.65;color:#555}
+.sheet-foot-text .sheet-foot-name{margin-bottom:.8mm;font:normal 12pt/1.3 var(--serif);color:#111}
+.sheet-foot-text .sheet-url{margin-top:1.6mm;color:#111;font-weight:700;letter-spacing:.02em}
+.sheet-qr{margin:0;display:flex;flex-direction:column;align-items:center;gap:1.6mm;flex:none}
+.sheet-qr svg{width:21mm;height:21mm;display:block}
+.sheet-qr figcaption{max-width:30mm;font-size:7pt;line-height:1.3;color:#666;text-align:center}
+.sheet-calendar{width:100%;border-collapse:collapse;table-layout:fixed}
+.sheet-calendar th{padding:0 0 2.2mm;font-size:7.5pt;font-weight:700;letter-spacing:.12em;text-transform:uppercase;border-bottom:.8pt solid #111}
+.sheet-calendar td{height:21mm;padding:2mm 2.2mm;vertical-align:top;border:.4pt solid #cfcfca}
+.sheet-calendar td.empty{background:#fafaf7}
+.sheet-calendar td.friday{background:#f6f6f1}
+.sheet-calendar td.occasion{background:#ecefe8}
+.sheet-calendar .hd{display:block;font:normal 17pt/1 var(--serif)}
+.sheet-calendar .gd{display:block;margin-top:1mm;font-size:7.5pt;color:#666}
+.sheet-calendar .oc{margin-top:1.2mm;font-size:6.8pt;line-height:1.25;overflow:hidden;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical}
+.sheet-occasions{margin-top:5mm;break-inside:avoid}
+.sheet-occasions h2{margin:0 0 1.5mm;font:normal 11pt var(--serif)}
+.sheet-occasions ul{margin:0;padding:0;list-style:none;columns:2;column-gap:8mm}
+.sheet-occasions li{display:flex;gap:3mm;padding:.9mm 0;border-bottom:.3pt solid #ddd;font-size:8pt;break-inside:avoid}
+.sheet-occasions li span:first-child{flex:none;width:30mm;color:#555;font-variant-numeric:tabular-nums}
+/* Equal columns for the times; the day columns take what their text needs. */
+.sheet-table{table-layout:fixed}
+.sheet-week .sheet-table .col-day{width:24%}
+.sheet-month .sheet-table .col-day{width:13%}
+.sheet-month .sheet-table .col-hijri{width:19%}
+/* A month is 28-31 rows: tighter top, so a 31-day month fits US Letter as well as A4. */
+.sheet-month .sheet-title{margin:5.5mm 0 4.5mm}
+.sheet-month .sheet-title h1{font-size:26pt}
+.sheet-month .sheet-table tbody th,.sheet-month .sheet-table tbody td{height:5.2mm}
+.sheet-month .sheet-foot{margin-top:5mm;padding-top:4mm}
+.sheet-occasions ul{columns:1}
+.sheet-occasions li span:first-child{width:52mm}
+/* Room for nine time columns (Imsak on) without labels touching. */
+.sheet-table thead th{font-size:7pt;letter-spacing:.07em;padding-left:.5mm;padding-right:.5mm}
+.sheet-week .sheet-table .col-day{width:22%}
+.sheet-month .sheet-table .col-day{width:12%}
+.sheet-month .sheet-table .col-hijri{width:17%}
+/* Long city names: smaller title, and the period never breaks mid-range. */
+.sheet-title>div:first-child{min-width:0}
+.sheet-period{flex:none;white-space:nowrap}
+.sheet-title.long h1{font-size:23pt}
+.sheet-month .sheet-title.long h1{font-size:21pt}

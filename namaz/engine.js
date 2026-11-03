@@ -72,6 +72,20 @@
     return result;
   }
 
+  // The schedule for a civil date (yyyy-mm-dd) at this place: the app's schedule at local noon
+  // that day, which is the day's own schedule (the midnight-to-Fajr rollover is hours away).
+  function computeOn(lat, lon, zone, settings, date) {
+    const [y, m, d] = date.split('-').map(Number);
+    const guess = Date.UTC(y, m - 1, d, 12);
+    const first = guess - zoneOffsetMs(zone, guess);
+    return compute(lat, lon, zone, settings, guess - zoneOffsetMs(zone, first));
+  }
+  function zoneOffsetMs(zone, utcMs) {
+    const parts = new Intl.DateTimeFormat('en-US', { timeZone: zone, hourCycle: 'h23', year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' }).formatToParts(new Date(utcMs));
+    const v = type => Number(parts.find(p => p.type === type).value);
+    return Date.UTC(v('year'), v('month') - 1, v('day'), v('hour'), v('minute'), v('second')) - Math.floor(utcMs / 1000) * 1000;
+  }
+
   // The Hijri month (the app's crescent-visibility calendar) containing a civil date.
   function hijriMonth(dateStr, lat, lon, zone) {
     const month = parse(kotlin().hijriMonth(dateStr, lat, lon, zone));
@@ -193,7 +207,7 @@
     return zoneFor(lat, lon);
   }
 
-  window.NamazEngine = { occasions, strings, ready, compute, hijriMonth, searchCities, prepareSearch, zoneFor, zoneAt, loadScript, HIJRI_MONTHS };
+  window.NamazEngine = { occasions, strings, ready, compute, computeOn, hijriMonth, searchCities, prepareSearch, zoneFor, zoneAt, loadScript, HIJRI_MONTHS };
   // The engine is preloaded by the page; start it once the page is idle so the first
   // timetable after picking a city is instant.
   const warm = () => ready().catch(() => {});
