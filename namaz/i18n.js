@@ -332,7 +332,9 @@
       document.querySelector('meta[name="description"]')?.setAttribute('content', t('description'));
     }
     const select = document.querySelector('#lang-select');
-    if (select) { select.value = lang; select.setAttribute('aria-label', t('language')); }
+    if (select) { select.value = lang; select.setAttribute('aria-label', t('language')); select.title = t('language'); }
+    const code = document.querySelector('.lang-code');
+    if (code) code.textContent = lang.toUpperCase();
   }
 
   function set(next) {
@@ -343,7 +345,9 @@
     document.dispatchEvent(new CustomEvent('namaz:lang', { detail: lang }));
   }
 
-  // The switcher: a small select in the header, named in each language's own words.
+  // The switcher: a globe and the language's code in the header. An invisible native select
+  // sits on top, so a tap opens the phone's own picker, listing each language in its own words.
+  const GLOBE = '<svg class="lang-globe" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="9.5"/><path d="M2.5 12h19M12 2.5c2.6 2.6 3.9 5.8 3.9 9.5s-1.3 6.9-3.9 9.5M12 2.5C9.4 5.1 8.1 8.3 8.1 12s1.3 6.9 3.9 9.5"/></svg>';
   function mountSwitcher() {
     const slot = document.querySelector('#lang-switch');
     if (!slot) return;
@@ -352,7 +356,8 @@
     select.className = 'lang-select';
     for (const [code, name] of Object.entries(LANGS)) select.append(new Option(name, code));
     select.addEventListener('change', () => set(select.value));
-    slot.replaceChildren(select);
+    slot.innerHTML = `${GLOBE}<span class="lang-code" aria-hidden="true"></span>`;
+    slot.append(select);
   }
 
   window.NamazI18n = {

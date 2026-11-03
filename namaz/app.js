@@ -206,8 +206,8 @@ function showTimes(payload){
   const nextId=payload.rows.find(row=>prayers.includes(row.id)&&row.time.getTime()>now)?.id;
   document.querySelector('#prayer-rows').innerHTML=payload.rows.map(row=>{
     const cls=[['SUNRISE','SUNSET','IMSAK'].includes(row.id)?'marker':'',row.id===nextId?'next':''].filter(Boolean).join(' ');
-    const t=clock(row.time);
-    return `<tr${cls?` class="${cls}"`:''}><th scope="row">${prayerName(row.id)}${row.id===nextId?`<span class="next-tag">${t('next')}</span>`:''}</th><td>${t.time}${t.period?`<span class="period">${t.period}</span>`:''}</td></tr>`;
+    const shown=clock(row.time);
+    return `<tr${cls?` class="${cls}"`:''}><th scope="row">${prayerName(row.id)}${row.id===nextId?`<span class="next-tag">${t('next')}</span>`:''}</th><td>${shown.time}${shown.period?`<span class="period">${shown.period}</span>`:''}</td></tr>`;
   }).join('');
 }
 clockToggle.addEventListener('change',()=>{rememberPreferences();if(shownTimes)showTimes(shownTimes)});
