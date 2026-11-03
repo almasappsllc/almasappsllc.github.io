@@ -4,7 +4,7 @@
   <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Shia Ja'fari prayer times for your location. Print the timetable or save it as a PDF.">
   <title>Shia Namaz | Prayer times for your city</title>
-  <link rel="stylesheet" href="styles.css?v=9971739d29">
+  <link rel="stylesheet" href="styles.css?v=4e0dd78189">
 </head>
 <body>
   <header class="site-header">
@@ -39,21 +39,17 @@
     </section>
 
     <section id="schedule-screen" class="schedule-screen" hidden>
-      <div class="page-heading"><div><h1>Prayer times</h1></div><button class="text-button" id="change-city" type="button">Change city</button></div>
       <div class="date-block">
-        <p id="selected-location" class="selected-location"></p>
-        <p id="gregorian-date" class="gregorian-date"></p>
-        <p id="hijri-date" class="hijri-date"></p>
-        <p class="hijri-note">Hijri date is an estimate and can differ with local moon sighting.</p>
+        <div class="place-heading"><h1 id="selected-location" class="selected-location"></h1><button class="text-button" id="change-city" type="button">Change city</button></div>
+        <p id="selected-region" class="selected-region"></p>
+        <p class="date-line"><span id="gregorian-date" class="gregorian-date"></span><span class="dot" aria-hidden="true">·</span><span id="hijri-date" class="hijri-date"></span></p>
         <p id="method-line" class="method-line"></p>
       </div>
       <div id="table-message" class="message" role="status" hidden></div>
       <table id="prayer-table" class="prayer-table">
-        <thead><tr><th>Prayer</th><th>Time</th></tr></thead>
         <tbody id="prayer-rows"></tbody>
       </table>
-      <div class="table-actions"><button class="button" id="print-table" type="button">Print timetable</button><button class="button button-quiet" id="print-hijri" type="button">Print Hijri calendar</button></div>
-      <p class="print-note">In the print window, choose your printer or “Save as PDF”.</p>
+      <div class="table-actions"><button class="text-button" id="print-table" type="button">Print timetable</button><button class="text-button" id="print-hijri" type="button">Print Hijri calendar</button></div>
       <section id="hijri-calendar" class="hijri-calendar" hidden aria-label="Printable Hijri calendar">
         <p class="eyebrow">SHIA NAMAZ · HIJRI CALENDAR</p>
         <h2 id="calendar-title"></h2>
@@ -63,16 +59,9 @@
         <div id="calendar-events" class="calendar-events" hidden><h3>Occasions this month</h3><ul id="calendar-event-list"></ul><p id="calendar-events-note" class="calendar-events-note"></p></div>
         <p class="calendar-note">Hijri dates are estimates and may differ with local moon sighting.</p>
       </section>
-      <aside class="app-cta" aria-label="Get the Shia Namaz app">
-        <img src="icon.png" alt="" width="56" height="56">
-        <div class="app-cta-text"><h2>Get reminders at these times</h2><p>The Shia Namaz app gives you these Ja'fari times every day, with prayer reminders, Qibla and the Hijri calendar.</p></div>
-        <div class="app-cta-buttons">
-          <a class="store-button" data-store="ios" href="https://apps.apple.com/app/namaz-shia-prayer-qibla/id6817066991" target="_blank" rel="noopener"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/></svg><span><small>Download on the</small>App Store</span></a>
-          <a class="store-button" data-store="android" href="https://play.google.com/store/apps/details?id=com.namaz.prayertimes" target="_blank" rel="noopener"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M22.018 13.298l-3.919 2.218-3.515-3.493 3.543-3.521 3.891 2.202a1.49 1.49 0 0 1 0 2.594zM1.337.924a1.486 1.486 0 0 0-.112.568v21.017c0 .217.045.419.124.6l11.155-11.087L1.337.924zm12.207 10.065l3.258-3.238L3.45.195a1.466 1.466 0 0 0-.946-.179l11.04 10.973zm0 2.067l-11 10.933c.298.036.612-.016.906-.183l13.324-7.54-3.23-3.21z"/></svg><span><small>Get it on</small>Google Play</span></a>
-        </div>
-      </aside>
       <details class="settings-details">
         <summary>Calculation settings</summary>
+        <p class="settings-help">The Hijri date follows the app’s moon-sighting calculation for your location and can differ from local announcements by a day.</p>
         <label for="method">Method</label>
         <select id="method"><option value="QUM">Qom</option><option value="TEHRAN">Tehran</option><option value="CUSTOM">Custom angles</option></select>
         <p class="settings-help">Use the method recommended by your mosque.</p>
@@ -99,9 +88,9 @@
     <a href="mailto:almasappsllc@gmail.com?subject=Shia%20Namaz%20website%20feedback">Contact me</a>
     <span>© 2026 Almas Apps</span>
   </footer>
-  <script src="vendor/tz-lookup.js?v=9971739d29" defer></script>
-  <script src="vendor/qrcode.js?v=9971739d29" defer></script>
-  <script src="engine.js?v=9971739d29" defer></script>
-  <script src="app.js?v=9971739d29" defer></script>
+  <script src="vendor/tz-lookup.js?v=4e0dd78189" defer></script>
+  <script src="vendor/qrcode.js?v=4e0dd78189" defer></script>
+  <script src="engine.js?v=4e0dd78189" defer></script>
+  <script src="app.js?v=4e0dd78189" defer></script>
 </body>
 </html>

@@ -177,15 +177,17 @@ async function calculateTimes(){
     const result=NamazEngine.compute(selectedPlace.lat,selectedPlace.lon,zone,{method:methodSelect.value,fajrAngle:params.get('fajrAngle'),ishaAngle:params.get('ishaAngle'),maghribAngle:params.get('maghribAngle'),highLat:params.get('highLat'),showImsak:params.get('showImsak')==='true',imsakOffset:params.get('imsakOffset'),offsets:Object.fromEntries([...document.querySelectorAll('[data-adjust]')].map(input=>[input.dataset.adjust,input.value]))});
     const payload={date:result.date,zone,hijri:result.hijri,rows:result.rows,approximated:result.approximated,maghribApproximated:result.maghribApproximated};
     const clock=new Intl.DateTimeFormat(undefined,{hour:'numeric',minute:'2-digit',timeZone:payload.zone});
-    const rows=payload.rows.map(row=>`<tr><th scope="row">${names[row.id]||row.id}</th><td>${clock.format(new Date(row.time))}</td></tr>`).join('');
-    document.querySelector('#selected-location').textContent=selectedPlace.label;
+    const prayers=['FAJR','DHUHR','ASR','MAGHRIB','ISHA'],now=Date.now();
+    const nextId=payload.rows.find(row=>prayers.includes(row.id)&&new Date(row.time).getTime()>now)?.id;
+    const rows=payload.rows.map(row=>{const cls=[['SUNRISE','SUNSET','IMSAK'].includes(row.id)?'marker':'',row.id===nextId?'next':''].filter(Boolean).join(' ');return `<tr${cls?` class="${cls}"`:''}><th scope="row">${names[row.id]||row.id}${row.id===nextId?'<span class="next-tag">Next</span>':''}</th><td>${clock.format(new Date(row.time))}</td></tr>`}).join('');
+    const [placeName,...placeRest]=selectedPlace.label.split(', ');document.querySelector('#selected-location').textContent=placeName;document.querySelector('#selected-region').textContent=placeRest.join(', ');
     const [year,month,day]=payload.date.split('-').map(Number);
     document.querySelector('#gregorian-date').textContent=new Intl.DateTimeFormat(undefined,{weekday:'long',year:'numeric',month:'long',day:'numeric',timeZone:'UTC'}).format(new Date(Date.UTC(year,month-1,day,12)));
     document.querySelector('#hijri-date').textContent=`${payload.hijri.day} ${payload.hijri.monthName} ${payload.hijri.year} AH`;
     document.querySelector('#hijri-date').dataset.civilDate=payload.date;
     document.querySelector('#prayer-rows').innerHTML=rows;
     tableMessage.hidden=true;
-    document.querySelector('#method-line').textContent=`${methodLabel()} · Times in ${zone.replace(/_/g,' ')}`;
+    document.querySelector('#method-line').textContent=`${methodLabel()} · ${zone.replace(/_/g,' ')} time`;
     const note=document.querySelector('#approximation-note');note.hidden=!payload.approximated;note.textContent=payload.maghribApproximated?'At this time of year, the sun does not reach the Maghrib angle. Maghrib is set to the deepest point of the night.':'At this time of year, the sun does not reach one of the selected angles. The calculation uses the high-latitude rule above.';
   }catch(error){tableMessage.textContent=error.message}
 }
@@ -201,5 +203,3 @@ let saved=null;try{saved=JSON.parse(localStorage.getItem('namaz-site-page')||'nu
 if(linked){if(saved)restorePreferences(saved);if(['QUM','TEHRAN'].includes(linked.method))methodSelect.value=linked.method;document.querySelector('#custom-angles').hidden=methodSelect.value!=='CUSTOM';let zoneOk=false;try{if(linked.zone){new Intl.DateTimeFormat(undefined,{timeZone:linked.zone});zoneOk=true}}catch{}selectPlace({lat:linked.lat,lon:linked.lon,label:linked.label,zone:zoneOk?linked.zone:null});history.replaceState(null,'',location.pathname)}
 else if(restorePreferences(saved)){openSchedule();calculateTimes()}
 
-// Put the visitor's own store first.
-try{const ua=navigator.userAgent;const store=/iPhone|iPad|iPod|Macintosh/.test(ua)&&!/Android/.test(ua)?'ios':/Android/.test(ua)?'android':null;if(store)for(const el of document.querySelectorAll(`.store-button[data-store="${store}"]`))el.classList.add('preferred')}catch{}
