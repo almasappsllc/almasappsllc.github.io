@@ -102,6 +102,18 @@
       notes: [...table.notes, t('sheet_hijri_note')] });
   }
 
+  // A Hijri month's days as a timetable, in the month sheet's layout: a city page's Ramadan.
+  function hijriDays(ctx) {
+    const payload = NamazEngine.hijriMonth(ctx.date, ctx.place.lat, ctx.place.lon, ctx.zone);
+    const dates = payload.days.map(day => day.date);
+    const table = daysTable(ctx, dates, { compact: true });
+    const span = format({ day: 'numeric', month: 'short', year: 'numeric' }), first = civil(dates[0]), last = civil(dates[dates.length - 1]);
+    const { city, region } = place(ctx);
+    return sheet(ctx, { kind: 'month', title: city, titleSub: region, side: `${payload.monthName} ${payload.year} ${t('ah')}`,
+      sideSub: span.formatRange ? span.formatRange(first, last) : `${span.format(first)} – ${span.format(last)}`, meta: prayerMeta(ctx), body: table.html,
+      notes: [...table.notes, t('sheet_hijri_note_city')] });
+  }
+
   async function hijri(ctx) {
     const payload = NamazEngine.hijriMonth(ctx.date, ctx.place.lat, ctx.place.lon, ctx.zone);
     const offset = civil(payload.days[0].date).getUTCDay();
@@ -133,10 +145,10 @@
     return sheet(ctx, { kind: 'hijri', title: `${payload.monthName} ${payload.year} ${t('ah')}`, titleSub: gregorianSpan, side: city, sideSub: region,
       body: `<div class="cal" style="--weeks:${cells.length / 7}">${head}${days}</div>`, notes });
   }
-  // kind: 'week' | 'month' | 'hijri'. ctx: { place, zone, settings, methodLabel, h24, date, link, siteUrl }
+  // kind: 'week' | 'month' | 'hijri' | 'hijri-days'. ctx: { place, zone, settings, methodLabel, h24, date, link, siteUrl }
   async function print(kind, ctx) {
     await NamazEngine.ready();
-    const html = kind === 'week' ? week(ctx) : kind === 'month' ? month(ctx) : await hijri(ctx);
+    const html = kind === 'week' ? week(ctx) : kind === 'month' ? month(ctx) : kind === 'hijri-days' ? hijriDays(ctx) : await hijri(ctx);
     const target = document.querySelector('#print-sheet');
     target.innerHTML = html;
     // Let the QR image and icon settle before the print dialog snapshots the page.

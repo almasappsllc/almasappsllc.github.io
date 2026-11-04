@@ -174,8 +174,10 @@ for(const button of document.querySelectorAll('[data-print]'))button.addEventLis
   try{
     await printTools();
     const zone=timeZoneInput.value.trim();
-    await NamazPrint.print(button.dataset.print,{place:selectedPlace,zone,settings:computeSettings(),methodLabel:methodLabel(),h24:clockToggle.checked,
-      date:document.querySelector('#hijri-date').dataset.civilDate||localDateInZone(zone),link:shareLink(),siteUrl});
+    // A city page's Ramadan button prints that Hijri month's days, from its first day.
+    const ramadan=button.dataset.print==='ramadan';
+    await NamazPrint.print(ramadan?'hijri-days':button.dataset.print,{place:selectedPlace,zone,settings:computeSettings(),methodLabel:methodLabel(),h24:clockToggle.checked,
+      date:ramadan?button.dataset.date:document.querySelector('#hijri-date').dataset.civilDate||localDateInZone(zone),link:shareLink(),siteUrl});
   }catch(error){tableMessage.hidden=false;tableMessage.textContent=error.message}
   finally{button.disabled=false;label.textContent=text}
 });
@@ -221,7 +223,24 @@ function showTimes(payload){
     return `<tr${cls?` class="${cls}"`:''}><th scope="row">${prayerName(row.id)}${row.id===nextId?`<span class="next-tag">${t('next')}</span>`:''}</th><td>${shown.time}${shown.period?`<span class="period">${shown.period}</span>`:''}</td></tr>`;
   }).join('');
 }
-clockToggle.addEventListener('change',()=>{rememberPreferences();if(shownTimes)showTimes(shownTimes)});
+clockToggle.addEventListener('change',()=>{rememberPreferences();if(shownTimes)showTimes(shownTimes);showRamadan()});
+// A city page's Ramadan table (build-pages.js writes it with the Qom method) in the visitor's
+// own settings and clock, with an Imsak column when they have Imsak on.
+function showRamadan(){
+  const table=document.querySelector('#ramadan-table');
+  if(!table||!onPageCity()||!window.NamazKotlin)return;
+  const zone=timeZoneInput.value.trim(),settings=computeSettings(),clock=NamazEngine.clock(zone,clockToggle.checked);
+  const cell=time=>{const shown=clock(time);return `${shown.time}${shown.period?`<span class="period">${shown.period}</span>`:''}`};
+  try{
+    for(const row of table.querySelectorAll('tbody tr')){
+      const result=NamazEngine.computeOn(selectedPlace.lat,selectedPlace.lon,zone,settings,row.dataset.date),at=id=>result.rows.find(r=>r.id===id)?.time;
+      row.querySelector('.imsak').innerHTML=settings.showImsak?cell(at('IMSAK')):'';
+      row.querySelector('.fajr').innerHTML=cell(at('FAJR'));row.querySelector('.maghrib').innerHTML=cell(at('MAGHRIB'));
+    }
+    for(const el of table.querySelectorAll('.imsak'))el.hidden=!settings.showImsak;
+    document.querySelector('#ramadan-method').textContent=methodLabel();
+  }catch{}
+}
 async function calculateTimes(){
   if(!selectedPlace)return;
   const zone=timeZoneInput.value.trim();
@@ -240,6 +259,7 @@ async function calculateTimes(){
     endPending();
     labelPrintChoices(payload);
     const note=document.querySelector('#approximation-note');note.hidden=!payload.approximated;note.textContent=payload.maghribApproximated?t('approx_maghrib'):t('approx_angle');
+    whenIdle(showRamadan);
   }catch(error){endPending();document.querySelector('#prayer-rows').querySelectorAll('tr.pending').forEach(row=>row.remove());tableMessage.hidden=false;tableMessage.textContent=error.message}
 }
 
