@@ -25,12 +25,21 @@ if(NamazI18n.lang!=='en')clockToggle.checked=true;
 
 function methodLabel(){return t('method_line_'+(['QUM','TEHRAN','CUSTOM'].includes(methodSelect.value)?methodSelect.value:'QUM'))}
 const siteUrl=(location.host+location.pathname).replace(/index\.html$/,'').replace(/\/$/,'');
-function shareLink(){
-  const url=new URL(location.href.split(/[?#]/)[0]);
-  if(selectedPlace){url.searchParams.set('lat',Number(selectedPlace.lat).toFixed(3));url.searchParams.set('lon',Number(selectedPlace.lon).toFixed(3));url.searchParams.set('city',selectedPlace.label);const zone=timeZoneInput.value.trim();if(zone!==NamazEngine.zoneFor(selectedPlace.lat,selectedPlace.lon))url.searchParams.set('zone',zone);if(methodSelect.value!=='QUM'&&methodSelect.value!=='CUSTOM')url.searchParams.set('method',methodSelect.value)}
-  if(NamazI18n.lang!=='en')url.searchParams.set('lang',NamazI18n.lang);
+// A city page (/london/, built by namaz/tools/build-pages.js) names its city in the HTML.
+const pageCity=(()=>{try{return JSON.parse(document.querySelector('#page-city')?.textContent||'null')}catch{return null}})();
+// Whether the timetable on screen is the city page's own: its city in its time zone.
+const onPageCity=()=>!!(pageCity&&selectedPlace&&selectedPlace.lat===pageCity.lat&&selectedPlace.lon===pageCity.lon&&timeZoneInput.value.trim()===pageCity.zone);
+// A link to the timetable on screen, for the printed QR code or another language's page. A
+// city page's own city needs only its address; any other place goes in ?lat=&lon=&city=. The
+// language is in the address (/az/), so it needs no parameter.
+function shareLink(base=location.href,ownPage=onPageCity()){
+  const url=new URL(base.split(/[?#]/)[0]);
+  if(selectedPlace&&ownPage){if(methodSelect.value==='TEHRAN')url.searchParams.set('method','TEHRAN')}
+  else if(selectedPlace){url.searchParams.set('lat',Number(selectedPlace.lat).toFixed(3));url.searchParams.set('lon',Number(selectedPlace.lon).toFixed(3));url.searchParams.set('city',selectedPlace.label);const zone=timeZoneInput.value.trim();if(zone!==NamazEngine.zoneFor(selectedPlace.lat,selectedPlace.lon))url.searchParams.set('zone',zone);if(methodSelect.value!=='QUM'&&methodSelect.value!=='CUSTOM')url.searchParams.set('method',methodSelect.value)}
   return url.toString();
 }
+// Switching language keeps the city on screen, unless the new page is this city page's own version.
+NamazI18n.carry=(href,hasOwnVersion)=>selectedPlace&&!scheduleScreen.hidden?shareLink(href,hasOwnVersion&&onPageCity()):href;
 function showError(message){locationError.textContent=message;locationError.hidden=false}
 function clearError(){locationError.textContent='';locationError.hidden=true}
 function localDateInZone(zone){
@@ -56,7 +65,8 @@ function printTools(){return Promise.all([NamazEngine.loadScript('vendor/qrcode.
 function rememberPreferences(){
   if(!selectedPlace)return;
   const preferences={
-    place:selectedPlace,method:methodSelect.value,fajrAngle:document.querySelector('#fajr-angle').value,
+    // A city page doesn't replace the visitor's own saved city (only a first visit saves it).
+    place:onPageCity()&&savedPlace?savedPlace:selectedPlace,method:methodSelect.value,fajrAngle:document.querySelector('#fajr-angle').value,
     ishaAngle:document.querySelector('#isha-angle').value,maghribAngle:document.querySelector('#maghrib-angle').value,
     highLat:document.querySelector('#high-lat').value,zone:timeZoneInput.value,
     showImsak:document.querySelector('#show-imsak').checked,imsakOffset:document.querySelector('#imsak-offset').value,clock24:clockToggle.checked,
@@ -152,7 +162,8 @@ document.querySelector('#import-coordinates').addEventListener('click',()=>{
   document.querySelector('#latitude').value=values[0];document.querySelector('#longitude').value=values[1];applyCoordinates();
 });
 
-document.querySelector('#change-city').addEventListener('click',()=>{openLocation();citySearch.value='';citySearch.focus()});
+// A city page's other city is on the home page's search.
+document.querySelector('#change-city').addEventListener('click',()=>{if(pageCity)return location.assign(document.querySelector('.brand').getAttribute('href'));openLocation();citySearch.value='';citySearch.focus()});
 methodSelect.addEventListener('change',()=>{document.querySelector('#custom-angles').hidden=methodSelect.value!=='CUSTOM'});
 document.querySelector('#show-imsak').addEventListener('change',()=>{document.querySelector('#imsak-offset-wrap').hidden=!document.querySelector('#show-imsak').checked});
 document.querySelector('#update-times').addEventListener('click',()=>calculateTimes());
@@ -240,7 +251,9 @@ function placeFromLink(){
 }
 const linked=placeFromLink();
 let saved=null;try{saved=JSON.parse(localStorage.getItem('namaz-site-page')||'null')}catch{}
+var savedPlace=saved?.place||null;
 if(linked){if(saved)restorePreferences(saved);if(['QUM','TEHRAN'].includes(linked.method))methodSelect.value=linked.method;document.querySelector('#custom-angles').hidden=methodSelect.value!=='CUSTOM';let zoneOk=false;try{if(linked.zone){new Intl.DateTimeFormat(undefined,{timeZone:linked.zone});zoneOk=true}}catch{}selectPlace({lat:linked.lat,lon:linked.lon,label:linked.label,zone:zoneOk?linked.zone:null});history.replaceState(null,'',location.pathname)}
+else if(pageCity){if(saved)restorePreferences(saved);const method=new URLSearchParams(location.search).get('method');if(method==='QUM'||method==='TEHRAN')methodSelect.value=method;document.querySelector('#custom-angles').hidden=methodSelect.value!=='CUSTOM';selectPlace({...pageCity});if(location.search)history.replaceState(null,'',location.pathname)}
 else{restorePreferences(saved);openLocation();nameSavedLocation()}
 // A city saved before locations were named ("My location") gets its town's name.
 function nameSavedLocation(){
@@ -255,12 +268,3 @@ function nameSavedLocation(){
 }
 document.querySelector('#saved-city').addEventListener('click',()=>{openSchedule();calculateTimes()});
 
-
-// A language change redraws what is on screen in the new language, without recalculating
-// anything the visitor typed.
-document.addEventListener('namaz:lang',()=>{
-  buildAdjustments();
-  const locate=document.querySelector('#locate');if(!locate.disabled)locate.textContent=t('use_location');
-  if(!scheduleScreen.hidden&&selectedPlace)calculateTimes();
-  else if(citySearch.value.trim().length>=2)citySearch.dispatchEvent(new Event('input'));
-});

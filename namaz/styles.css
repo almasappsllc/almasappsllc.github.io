@@ -166,6 +166,23 @@ main{max-width:1040px}
    stretches to take the room and the app line sits at the foot of the paper. Rules are
    drawn by each cell, never collapsed, and none is thinner than .75pt: collapsed and
    hairline borders drop out of print previews. */
+/* The app, in the page under the times; then, on city pages, notes and links to other cities
+   (namaz/tools/build-pages.js). */
+.app-cta{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 16px;margin-top:22px;padding:14px 16px;border:1px solid var(--line);border-radius:8px;background:#fbfbf8}
+.app-cta p{margin:0;font-size:14px;line-height:1.45}
+.app-cta strong{color:var(--green-dark)}
+.app-cta-links{display:flex;gap:8px;flex:none}
+.cta-link{display:inline-flex;align-items:center;height:34px;padding:0 14px;border:1px solid var(--green);border-radius:17px;color:var(--green-dark);font-size:14px;font-weight:700;text-decoration:none}
+.cta-link:hover{background:#e8eee9}
+.schedule-screen.is-loading .app-cta{opacity:.45}
+.city-about{margin-top:34px;padding-top:18px;border-top:1px solid var(--line)}
+.city-about p{margin:0 0 12px;font-size:15px;line-height:1.65}
+.city-about a,.city-index a{color:var(--green-dark)}
+.city-index{margin-top:30px}
+.location-screen .city-index{margin-top:40px;padding-top:18px;border-top:1px solid var(--line)}
+.city-group h3{margin:14px 0 4px;font-size:13px;font-weight:700;color:var(--muted)}
+.city-group p{margin:0;display:flex;flex-wrap:wrap;gap:4px 14px;font-size:15px;line-height:1.6}
+@media(max-width:420px){.app-cta-links{width:100%}.cta-link{flex:1;justify-content:center}}
 .print-sheet{display:none}
 @media print{
   @page{margin:0}

@@ -1,6 +1,8 @@
-// The site's languages. The language is picked once per visit: ?lang= in the link, then the
-// visitor's last choice on this device, then the browser's language (reviewed languages
-// only, see REVIEWED), then English.
+// The site's languages. Each timetable page has its own address per language (/, /az/, /tr/,
+// /de/, built by namaz/tools/build-pages.js with this file's text already in the HTML) and
+// says which in <html data-page-lang>. The English home page's head script sends a visitor
+// on to their language's page: ?lang= in the link, then their last choice on this device,
+// then the browser's language (reviewed languages only, see REVIEWED).
 //
 // Azerbaijani and Turkish prayer names, Hijri months, method names and the messages marked
 // "app" are the Shia Namaz app's own reviewed strings (data/strings/<lang>.json). Everything
@@ -11,6 +13,7 @@
   const LOCALES = { en: undefined, az: 'az-Latn-AZ', tr: 'tr-TR', de: 'de-DE' };
   // Languages the browser's own setting may pick. A language joins once a native reader has
   // reviewed its text; until then it is reachable only by the switcher or a ?lang= link.
+  // The home page's head script (namaz/templates/timetable.html) lists the same codes.
   const REVIEWED = new Set(['en', 'az', 'tr', 'de']);  // az, tr, de reviewed 2026-11-03
 
   const T = {
@@ -44,6 +47,7 @@
       include_imsak: 'Include Imsak', imsak_minutes: 'Minutes before Fajr',
       adjust_summary: 'Adjust individual times', adjust_help: 'Add or subtract minutes to match a local timetable.',
       update: 'Update timetable', privacy: 'Privacy policy', contact: 'Contact me',
+      app_cta_note: 'Reminders at each prayer, and it works offline.',
       p_IMSAK: 'Imsak', p_FAJR: 'Fajr', p_SUNRISE: 'Sunrise', p_DHUHR: 'Dhuhr', p_ASR: 'Asr', p_SUNSET: 'Sunset',
       p_MAGHRIB: 'Maghrib', p_ISHA: 'Isha', p_MIDNIGHT: "Shari'i midnight", p_MIDNIGHT_short: 'Midnight',
       ah: 'AH',
@@ -303,6 +307,8 @@
 
   const STORE_KEY = 'namaz-site-lang';
   function pick() {
+    const fixed = document.documentElement.dataset.pageLang;
+    if (fixed && LANGS[fixed]) return fixed;
     try { const q = new URLSearchParams(location.search).get('lang'); if (q && LANGS[q]) { try { localStorage.setItem(STORE_KEY, q); } catch {} return q; } } catch {}
     try { const s = localStorage.getItem(STORE_KEY); if (s && LANGS[s]) return s; } catch {}
     for (const tag of navigator.languages || [navigator.language || 'en']) {
@@ -323,14 +329,11 @@
 
   function apply(root = document) {
     document.documentElement.lang = lang;
+    // Titles and descriptions are written into each page's HTML (a city page has its own).
     for (const el of root.querySelectorAll('[data-i18n]')) el.textContent = t(el.dataset.i18n);
     for (const el of root.querySelectorAll('[data-i18n-html]')) el.innerHTML = t(el.dataset.i18nHtml);
     for (const el of root.querySelectorAll('[data-i18n-placeholder]')) el.placeholder = t(el.dataset.i18nPlaceholder);
     for (const el of root.querySelectorAll('[data-i18n-aria]')) el.setAttribute('aria-label', t(el.dataset.i18nAria));
-    if (document.body?.classList.contains('app')) {
-      document.title = t('title');
-      document.querySelector('meta[name="description"]')?.setAttribute('content', t('description'));
-    }
     const summary = document.querySelector('#lang-switch summary');
     if (summary) {
       summary.setAttribute('aria-label', `${t('language')}: ${LANGS[lang]}`);
@@ -342,17 +345,25 @@
     }
   }
 
+  // Another language is another page: this page's own version in that language when there is
+  // one (its hreflang links), otherwise that language's home page. The choice is remembered,
+  // so the English home page doesn't send the visitor straight back. A page showing a city
+  // without its own version passes the city on (NamazI18n.carry, set by app.js).
+  const alternates = () => Object.fromEntries([...document.querySelectorAll('link[rel="alternate"][hreflang]')]
+    .map(link => [link.getAttribute('hreflang'), new URL(link.getAttribute('href'), location.href).pathname]));
+  const homeOf = code => (code === 'en' ? '/' : `/${code}/`);
+  function hrefFor(code) { return alternates()[code] || homeOf(code); }
   function set(next) {
     if (!LANGS[next] || next === lang) return;
-    lang = next;
-    try { localStorage.setItem(STORE_KEY, lang); } catch {}
-    apply();
-    document.dispatchEvent(new CustomEvent('namaz:lang', { detail: lang }));
+    try { localStorage.setItem(STORE_KEY, next); } catch {}
+    const own = !!alternates()[next];
+    const href = new URL(hrefFor(next), location.href).toString();
+    location.assign(api.carry ? api.carry(href, own) : href);
   }
 
   // The switcher: the translate mark and the language's code in the header, opening a short
   // menu of the languages, each named in its own words. It is a <details> (header.js closes it
-  // on a click elsewhere or Escape); each item is a ?lang= link, handled here without a reload.
+  // on a click elsewhere or Escape); each item links to that language's page (set, above).
   // The mark is Material Icons' "translate" (Apache License 2.0).
   const TRANSLATE = '<svg class="lang-mark" width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.87 15.07l-2.54-2.51.03-.03c1.74-1.94 2.98-4.17 3.71-6.53H17V4h-7V2H8v2H1v1.99h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11.76-2.04zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2l-4.5-12zm-2.62 7l1.62-4.33L19.12 17h-3.24z"/></svg>';
   const CHEVRON = '<svg class="menu-chevron" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>';
@@ -361,23 +372,26 @@
     const slot = document.querySelector('#lang-switch');
     if (!slot) return;
     const items = Object.entries(LANGS).map(([code, name]) =>
-      `<li><a href="?lang=${code}" lang="${code}" hreflang="${code}" data-lang="${code}"><span>${name}</span>${CHECK}</a></li>`).join('');
+      `<li><a href="${hrefFor(code)}" lang="${code}" hreflang="${code}" data-lang="${code}"><span>${name}</span>${CHECK}</a></li>`).join('');
     slot.innerHTML = `<summary class="lang-button">${TRANSLATE}<span class="lang-code"></span>${CHEVRON}</summary><ul class="menu-list">${items}</ul>`;
     slot.addEventListener('click', event => {
       const link = event.target instanceof Element ? event.target.closest('a[data-lang]') : null;
       if (!(link instanceof HTMLAnchorElement)) return;
       event.preventDefault();
       slot.removeAttribute('open');
-      set(link.dataset.lang);
+      if (link.dataset.lang !== lang) set(link.dataset.lang);
     });
   }
 
-  window.NamazI18n = {
+  /** @type {NamazI18nApi} */
+  const api = {
     get lang() { return lang; },
     get locale() { return LOCALES[lang]; },
     langs: LANGS, t, allOf, set, apply, dateFormat,
     hijriMonth: month => (HIJRI[lang] || HIJRI.en)[month - 1],
+    strings: T, carry: null,
   };
+  window.NamazI18n = api;
   mountSwitcher();
   apply();
 })();
