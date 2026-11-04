@@ -13,8 +13,8 @@
   <meta property="og:image" content="https://shianamaz.com/icon.png">
   <meta name="description" content="Ja'fari (Shia) prayer times for New York, United States, today: Fajr, Dhuhr, Asr, Maghrib after sunset, Isha and Shari'i midnight. Print a week, a month or the Hijri month.">
   <title>New York Shia prayer times (Ja'fari) | Shia Namaz</title>
-  <link rel="stylesheet" href="styles.css?v=a566000e87">
-  <link rel="preload" href="vendor/namaz-engine.js?v=a566000e87" as="script">
+  <link rel="stylesheet" href="styles.css?v=bc29275140">
+  <link rel="preload" href="vendor/namaz-engine.js?v=bc29275140" as="script">
 </head>
 <body class="app">
   <header class="site-header">
@@ -102,14 +102,11 @@
         <button class="button update-button" id="update-times" type="button" data-i18n="update">Update timetable</button>
       </details>
       <p id="approximation-note" class="approximation" hidden></p>
-      <section class="city-about" aria-labelledby="city-about-heading">
-        <h2 id="city-about-heading" class="print-heading">About these times</h2>
-        <p>These are Ja'fari (Shia) prayer times for New York, United States, from the Shia Namaz app's own engine. They use the Qom method unless you pick another under Calculation settings.</p>
-        <p>Maghrib here comes about 16 to 20 minutes after sunset, depending on the time of year: Ja'fari practice waits until the redness in the eastern sky has passed overhead. <a href="/articles/why-maghrib-after-sunset.html">Why Maghrib is after sunset</a></p>
-        <p>Midnight on this page is Shari'i midnight, halfway between Maghrib and the next Fajr. <a href="/articles/what-sharii-midnight-means.html">What Shari'i midnight means</a></p>
-        <p>If your mosque or marja' gives different times, follow them. You can match their timetable under Calculation settings.</p>
+      <section class="city-about" aria-label="Maghrib in New York">
+        <p>In New York, Maghrib comes 16 to 21 minutes after sunset through the year. <a href="/articles/why-maghrib-after-sunset.html">Why Maghrib is after sunset</a></p>
+        <p>If your mosque's times differ, you can match them under Calculation settings.</p>
       </section>
-      <nav class="city-index" aria-labelledby="city-index-heading"><h2 id="city-index-heading" class="print-heading">Other cities</h2><div class="city-group"><h3>United Kingdom</h3><p><a href="/london/">London</a> <a href="/birmingham/">Birmingham</a> <a href="/manchester/">Manchester</a> <a href="/leicester/">Leicester</a> <a href="/bradford/">Bradford</a> <a href="/leeds/">Leeds</a> <a href="/glasgow/">Glasgow</a> <a href="/cardiff/">Cardiff</a> <a href="/newcastle/">Newcastle upon Tyne</a> <a href="/southampton/">Southampton</a></p></div><div class="city-group"><h3>United States</h3><p><a href="/los-angeles/">Los Angeles</a> <a href="/houston/">Houston</a> <a href="/dallas/">Dallas</a> <a href="/chicago/">Chicago</a> <a href="/dearborn/">Dearborn</a> <a href="/philadelphia/">Philadelphia</a> <a href="/washington/">Washington</a> <a href="/seattle/">Seattle</a> <a href="/san-jose/">San Jose</a> <a href="/atlanta/">Atlanta</a></p></div><div class="city-group"><h3>Canada</h3><p><a href="/toronto/">Toronto</a> <a href="/mississauga/">Mississauga</a> <a href="/montreal/">Montréal</a> <a href="/vancouver/">Vancouver</a> <a href="/calgary/">Calgary</a> <a href="/ottawa/">Ottawa</a> <a href="/hamilton/">Hamilton</a> <a href="/winnipeg/">Winnipeg</a></p></div><div class="city-group"><h3>Australia</h3><p><a href="/sydney/">Sydney</a> <a href="/melbourne/">Melbourne</a></p></div></nav>
+      <nav class="city-index" aria-labelledby="city-index-heading"><h2 id="city-index-heading" class="print-heading">Other cities</h2><div class="city-group"><h3>United Kingdom</h3><p><a href="/london/">London</a> <a href="/birmingham/">Birmingham</a> <a href="/manchester/">Manchester</a> <a href="/leicester/">Leicester</a> <a href="/bradford/">Bradford</a> <a href="/leeds/">Leeds</a> <a href="/glasgow/">Glasgow</a> <a href="/cardiff/">Cardiff</a> <a href="/newcastle/">Newcastle upon Tyne</a> <a href="/southampton/">Southampton</a></p></div><div class="city-group"><h3>United States</h3><p><a href="/los-angeles/">Los Angeles</a> <a href="/houston/">Houston</a> <a href="/dallas/">Dallas</a> <a href="/chicago/">Chicago</a> <a href="/dearborn/">Dearborn</a> <a href="/philadelphia/">Philadelphia</a> <a href="/washington/">Washington</a> <a href="/seattle/">Seattle</a> <a href="/san-jose/">San Jose</a> <a href="/atlanta/">Atlanta</a></p></div><div class="city-group"><h3>Canada</h3><p><a href="/toronto/">Toronto</a> <a href="/mississauga/">Mississauga</a> <a href="/montreal/">Montréal</a> <a href="/vancouver/">Vancouver</a> <a href="/calgary/">Calgary</a> <a href="/ottawa/">Ottawa</a> <a href="/hamilton/">Hamilton</a> <a href="/winnipeg/">Winnipeg</a></p></div><div class="city-group"><h3>Australia</h3><p><a href="/sydney/">Sydney</a> <a href="/melbourne/">Melbourne</a></p></div><div class="city-group"><h3>Pakistan</h3><p><a href="/karachi/">Karachi</a> <a href="/lahore/">Lahore</a> <a href="/islamabad/">Islamabad</a> <a href="/quetta/">Quetta</a></p></div><div class="city-group"><h3>India</h3><p><a href="/mumbai/">Mumbai</a> <a href="/lucknow/">Lucknow</a> <a href="/hyderabad/">Hyderabad</a> <a href="/delhi/">Delhi</a></p></div><div class="city-group"><h3>Iraq</h3><p><a href="/baghdad/">Baghdad</a> <a href="/karbala/">Karbala</a> <a href="/najaf/">Najaf</a> <a href="/basra/">Basra</a></p></div><div class="city-group"><h3>Iran</h3><p><a href="/tehran/">Tehran</a> <a href="/qom/">Qom</a> <a href="/mashhad/">Mashhad</a></p></div><div class="city-group"><h3>Azerbaijan</h3><p><a href="/baku/">Baku</a></p></div></nav>
     </section>
   </main>
   <div id="print-sheet" class="print-sheet"></div>
@@ -119,10 +116,10 @@
     <span>© 2026 Almas Apps</span>
   </footer>
   <script type="application/json" id="page-city">{"lat":40.714,"lon":-74.006,"label":"New York, New York, United States","zone":"America/New_York"}</script>
-  <script src="header.js?v=a566000e87" defer></script>
-  <script src="i18n.js?v=a566000e87" defer></script>
-  <script src="engine.js?v=a566000e87" defer></script>
-  <script src="print.js?v=a566000e87" defer></script>
-  <script src="app.js?v=a566000e87" defer></script>
+  <script src="header.js?v=bc29275140" defer></script>
+  <script src="i18n.js?v=bc29275140" defer></script>
+  <script src="engine.js?v=bc29275140" defer></script>
+  <script src="print.js?v=bc29275140" defer></script>
+  <script src="app.js?v=bc29275140" defer></script>
 </body>
 </html>
