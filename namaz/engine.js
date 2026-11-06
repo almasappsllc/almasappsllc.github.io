@@ -266,13 +266,14 @@
   }
 
   // Times as the page and the printed sheets show them: 12-hour (5:13, with AM/PM apart
-  // so the page can set it small, the sheets leave it out) or 24-hour (05:13).
+  // so the page can set it small, the sheets leave it out) or 24-hour (05:13). Digits are
+  // always Western, in every language; AM/PM is the page's language's (ص/م in Arabic).
   function clock(zone, h24) {
     const formatter = new Intl.DateTimeFormat('en-US', { hour: 'numeric', minute: '2-digit', hourCycle: h24 ? 'h23' : 'h12', timeZone: zone });
     return time => {
       const parts = formatter.formatToParts(time), part = type => parts.find(p => p.type === type)?.value || '';
       return h24 ? { time: `${part('hour').padStart(2, '0')}:${part('minute')}`, period: '' }
-        : { time: `${Number(part('hour'))}:${part('minute')}`, period: part('dayPeriod').toUpperCase() };
+        : { time: `${Number(part('hour'))}:${part('minute')}`, period: t(`period_${part('dayPeriod').toUpperCase()}`, part('dayPeriod').toUpperCase()) };
     };
   }
 

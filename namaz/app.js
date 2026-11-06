@@ -20,8 +20,9 @@ function buildAdjustments(){
   document.querySelector('#time-adjustments').innerHTML=adjustmentRows.map(id=>`<label>${prayerName(id)}<input type="number" min="-120" max="120" step="1" value="${kept[id]||0}" data-adjust="${id}"></label>`).join('');
 }
 buildAdjustments();
-// Azerbaijan, Turkey and Germany read the 24-hour clock; a saved choice still wins.
-if(NamazI18n.lang!=='en')clockToggle.checked=true;
+// Azerbaijan, Turkey and Germany read the 24-hour clock; English and Arabic readers the
+// 12-hour one (ص/م in Arabic). A saved choice still wins.
+if(!['en','ar'].includes(NamazI18n.lang))clockToggle.checked=true;
 
 function methodLabel(){return t('method_line_'+(['QUM','TEHRAN','CUSTOM'].includes(methodSelect.value)?methodSelect.value:'QUM'))}
 const siteUrl=(location.host+location.pathname).replace(/index\.html$/,'').replace(/\/$/,'');

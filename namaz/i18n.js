@@ -1,5 +1,5 @@
 // The site's languages. Each timetable page has its own address per language (/, /az/, /tr/,
-// /de/, built by namaz/tools/build-pages.js with this file's text already in the HTML) and
+// /de/, /ar/, built by namaz/tools/build-pages.js with this file's text already in the HTML) and
 // says which in <html data-page-lang>. The English home page's head script sends a visitor
 // on to their language's page: ?lang= in the link, then their last choice on this device,
 // then the browser's language (reviewed languages only, see REVIEWED).
@@ -7,14 +7,19 @@
 // Azerbaijani and Turkish prayer names, Hijri months, method names and the messages marked
 // "app" are the Shia Namaz app's own reviewed strings (data/strings/<lang>.json). Everything
 // else here was written for the site and needs a native reader's review before it ships
-// (CLAUDE.md, FR-001); German has no app translation at all.
+// (CLAUDE.md, FR-001); German has no app translation at all. Arabic takes the same app strings
+// as Azerbaijani and Turkish, plus its site text (reviewed 2026-11-06), and reads right to left:
+// its page says dir="rtl" and styles.css uses start/end, not left/right.
 (() => {
-  const LANGS = { en: 'English', az: 'Azərbaycanca', tr: 'Türkçe', de: 'Deutsch' };
-  const LOCALES = { en: undefined, az: 'az-Latn-AZ', tr: 'tr-TR', de: 'de-DE' };
+  const LANGS = { en: 'English', az: 'Azərbaycanca', tr: 'Türkçe', de: 'Deutsch', ar: 'العربية' };
+  // Arabic dates in Western digits (5 نوفمبر), matching the times, which are always written so.
+  const LOCALES = { en: undefined, az: 'az-Latn-AZ', tr: 'tr-TR', de: 'de-DE', ar: 'ar-u-nu-latn' };
+  const RTL = new Set(['ar']);
   // Languages the browser's own setting may pick. A language joins once a native reader has
   // reviewed its text; until then it is reachable only by the switcher or a ?lang= link.
-  // The home page's head script (namaz/templates/timetable.html) lists the same codes.
-  const REVIEWED = new Set(['en', 'az', 'tr', 'de']);  // az, tr, de reviewed 2026-11-03
+  // The home page's head script (namaz/templates/timetable.html) lists the same codes (L), and
+  // every language in LANGS (A), which a ?lang= link or the visitor's last choice may pick.
+  const REVIEWED = new Set(['en', 'az', 'tr', 'de']);  // az, tr, de reviewed 2026-11-03; ar not yet
 
   const T = {
     en: {
@@ -50,7 +55,7 @@
       app_cta_note: 'Reminders at each prayer, and it works offline.',
       p_IMSAK: 'Imsak', p_FAJR: 'Fajr', p_SUNRISE: 'Sunrise', p_DHUHR: 'Dhuhr', p_ASR: 'Asr', p_SUNSET: 'Sunset',
       p_MAGHRIB: 'Maghrib', p_ISHA: 'Isha', p_MIDNIGHT: "Shari'i midnight", p_MIDNIGHT_short: 'Midnight',
-      ah: 'AH',
+      ah: 'AH', period_AM: 'AM', period_PM: 'PM',
       no_city: 'No matching city found. Try another spelling or enter coordinates.',
       loading_cities: 'Loading cities…',
       no_geolocation: 'Location is not available here. Type your city or enter coordinates.',
@@ -264,14 +269,84 @@
       sheet_approx_maghrib: 'An einigen dieser Tage erreicht die Sonne den Maghrib-Winkel nicht; Maghrib wird auf den tiefsten Punkt der Nacht gesetzt.',
       sheet_approx_angle: 'An einigen dieser Tage erreicht die Sonne einen der Winkel nicht; diese Zeiten folgen der Regel für hohe Breiten.',
     },
+    // Arabic: prayer names, Hijri months, methods, the high-latitude rules and the lines marked
+    // "app" are the app's own; the rest was written for the site and reviewed by a native speaker on 2026-11-06.
+    // ⁦...⁩ keep coordinates and minus signs in left-to-right order inside Arabic text,
+    // ⁨...⁩ a time-zone name; ‎ marks a minus sign's direction.
+    ar: {
+      title: 'Shia Namaz | أوقات الصلاة في مدينتك',
+      description: 'مواقيت الصلاة وفق المذهب الجعفري بحسب موقعك. اطبع الجدول أو احفظه بصيغة PDF.',
+      language: 'اللغة', // app
+      guides: 'الإرشادات',
+      nav_times: 'أوقات الصلاة', get_app_long: 'حمّل التطبيق', get_app_short: 'حمّل التطبيق',
+      your_city: 'مدينتك', show_times: 'عرض الأوقات',
+      heading: 'اعرف أوقات صلاتك',
+      intro_html: 'مواقيت الصلاة وفق المذهب الجعفري، محسوبة بمحرّك تطبيق Shia Namaz نفسه، مع <a href="articles/why-maghrib-after-sunset.html">احتساب وقت المغرب بعد غروب الشمس</a>. سنحتفظ باسم المدينة التي تختارها على هذا الجهاز.',
+      type_city: 'اكتب اسم مدينتك', search_placeholder: 'ابدأ بكتابة اسم مدينة', city_choices: 'المدن المقترحة',
+      use_location: 'استخدم موقعي',
+      finding_location: 'جارٍ تحديد موقعك…', // app
+      coords_summary: 'أدخل الإحداثيات أو الصقها',
+      coords_help_html: 'الصق إحداثيين عشريين، مثل <strong dir="ltr">33.3152, 44.3661</strong>، أو أدخلهما أدناه.',
+      paste_coords: 'الصق الإحداثيات', paste_placeholder: 'خط العرض، خط الطول', use_these: 'استخدمها',
+      latitude: 'خط العرض', longitude: 'خط الطول', use_entered: 'استخدم الإحداثيات المُدخلة',
+      change_city: 'غيّر المدينة', h24: 'نظام 24 ساعة',
+      next: 'التالي', // app
+      print_heading: 'اطبع جدول المواقيت', this_week: 'هذا الأسبوع', seven_days: '7 أيام',
+      this_month: 'هذا الشهر', every_day: 'كل يوم', hijri_month: 'الشهر الهجري', calendar: 'تقويم', preparing: 'جارٍ التحضير…',
+      settings: 'إعدادات الحساب',
+      hijri_help: 'يُحدَّد التاريخ الهجري وفق حساب التطبيق لرؤية الهلال في موقعك، وقد يختلف بيوم واحد عن التاريخ الذي تعلنه الجهات المحلية.',
+      method: 'طريقة الحساب',
+      method_QUM: 'قم', method_TEHRAN: 'طهران', method_CUSTOM: 'زوايا مخصّصة', // app
+      method_line_QUM: 'طريقة قم', method_line_TEHRAN: 'طريقة طهران', method_line_CUSTOM: 'زوايا مخصّصة',
+      zone_time: 'بتوقيت ⁨{zone}⁩',
+      method_help: 'استخدم طريقة الحساب التي يوصي بها مسجدك.',
+      fajr_angle: 'زاوية الفجر', isha_angle: 'زاوية العشاء', maghrib_angle: 'زاوية المغرب',
+      high_lat: 'قاعدة خطوط العرض العليا', hl_AUTO: 'تلقائي (موصى به)', hl_MIDDLE_OF_NIGHT: 'منتصف الليل',
+      hl_SEVENTH_OF_NIGHT: 'سُبع الليل', hl_TWILIGHT_ANGLE: 'بالزاوية', // app
+      time_zone: 'المنطقة الزمنية', zone_help: 'تُستخدم المنطقة الزمنية لجهازك افتراضيًا.',
+      include_imsak: 'إظهار الإمساك', imsak_minutes: 'عدد الدقائق قبل الفجر',
+      adjust_summary: 'تعديل كل وقت على حدة', adjust_help: 'أضف دقائق إلى الأوقات أو اطرح منها لمطابقتها مع جدول المواقيت المحلي.',
+      update: 'حدّث الجدول', privacy: 'سياسة الخصوصية', contact: 'تواصل معي',
+      app_cta_note: 'تنبيهات عند كل صلاة، ويعمل التطبيق دون اتصال بالإنترنت.',
+      // Prayer names: app
+      p_IMSAK: 'الإمساك', p_FAJR: 'الفجر', p_SUNRISE: 'الشروق', p_DHUHR: 'الظهر', p_ASR: 'العصر', p_SUNSET: 'الغروب',
+      p_MAGHRIB: 'المغرب', p_ISHA: 'العشاء', p_MIDNIGHT: 'منتصف الليل الشرعي', p_MIDNIGHT_short: 'منتصف الليل',
+      ah: 'هـ', period_AM: 'ص', period_PM: 'م',
+      no_city: 'لم يُعثر على مدينة. تحقق من الإملاء، أو اكتب الإحداثيات أدناه.', // app
+      loading_cities: 'جارٍ تحميل المدن…',
+      no_geolocation: 'تحديد الموقع غير متاح هنا. اكتب اسم مدينتك أو أدخل الإحداثيات.',
+      geolocation_failed: 'تعذّر تحديد موقعك. اكتب اسم مدينتك أو أدخل الإحداثيات بدلًا من ذلك.',
+      my_location: 'موقعي', coordinates_label: 'الإحداثيات ⁦{lat}, {lon}⁩',
+      enter_both: 'أدخل خط العرض وخط الطول كليهما.',
+      coords_range: 'أدخل خط عرض بين ‎-90 و90، وخط طول بين ‎-180 و180.',
+      paste_two: 'الصق رقمين عشريين: خط العرض، خط الطول.',
+      bad_zone: 'أدخل منطقة زمنية صحيحة، مثل Asia/Baghdad.',
+      approx_maghrib: 'في هذا الوقت من السنة، لا تبلغ الشمس زاوية المغرب، لذلك يُحدَّد وقت المغرب عند أقصى انخفاض للشمس تحت الأفق خلال الليل.',
+      approx_angle: 'في هذا الوقت من السنة، لا تبلغ الشمس إحدى الزوايا المختارة، لذلك تُستخدم في الحساب قاعدة خطوط العرض العليا المذكورة أعلاه.',
+      err_engine: 'تعذّر تحميل محرّك مواقيت الصلاة. حدّث الصفحة وحاول مرة أخرى.',
+      err_engine_net: 'تعذّر تحميل محرّك مواقيت الصلاة. تحقّق من اتصالك وحاول مرة أخرى.',
+      err_angle: 'يجب أن تكون زاوية {name} بين 1 و30 درجة.',
+      err_maghrib_angle: 'يجب أن تكون زاوية المغرب 0 أو بين 1 و30 درجة.',
+      err_imsak: 'يجب أن تتراوح المدة بين وقت الإمساك والفجر بين 0 و120 دقيقة.',
+      err_adjust: 'يجب أن تكون تعديلات الأوقات بين ‎-120 و120 دقيقة.',
+      err_search: 'البحث عن المدن غير متاح. تحقق من اتصالك، أو أدخل الإحداثيات.',
+      sheet_school: 'جعفري', get_app: 'حمّل التطبيق', on_stores: 'تطبيق Shia Namaz متاح على App Store وGoogle Play.',
+      col_day: 'اليوم', col_date: 'التاريخ', col_hijri: 'الهجري',
+      sheet_hijri_note: 'تُحدَّد التواريخ الهجرية وفق حسابات التطبيق لرؤية الهلال، وقد تختلف بيوم واحد عن التواريخ التي تعلنها الجهات المحلية.',
+      sheet_hijri_note_city: 'تُحدَّد التواريخ الهجرية وفق حسابات التطبيق لرؤية الهلال في هذه المدينة، وقد تختلف بيوم واحد عن التواريخ التي تعلنها الجهات المحلية.',
+      sheet_occasions_note: 'تُحدَّد المناسبات بالاستناد إلى الروايات الجعفرية المشهورة.',
+      sheet_approx_maghrib: 'في بعض هذه الأيام، لا تبلغ الشمس زاوية المغرب، لذلك يُحدَّد وقت المغرب عند أقصى انخفاض للشمس تحت الأفق خلال الليل.',
+      sheet_approx_angle: 'في بعض هذه الأيام، لا تبلغ الشمس إحدى الزوايا، لذلك تُحسب تلك الأوقات وفق قاعدة خطوط العرض العليا.',
+    },
   };
 
-  // Hijri months: English as the engine has them; Azerbaijani and Turkish from the app.
+  // Hijri months: English as the engine has them; Azerbaijani, Turkish and Arabic from the app.
   const HIJRI = {
     en: ['Muharram', 'Safar', 'Rabiʻ al-Awwal', 'Rabiʻ al-Thani', 'Jumada al-Ula', 'Jumada al-Akhira', 'Rajab', 'Shaʻban', 'Ramadan', 'Shawwal', 'Dhu al-Qaʻda', 'Dhu al-Hijja'],
     az: ['Məhərrəm', 'Səfər', 'Rəbiüləvvəl', 'Rəbiülaxır', 'Cəmadiyələvvəl', 'Cəmadiyəlaxır', 'Rəcəb', 'Şaban', 'Ramazan', 'Şəvval', 'Zilqədə', 'Zilhiccə'],
     tr: ['Muharrem', 'Safer', 'Rebiülevvel', 'Rebiülahir', 'Cemaziyelevvel', 'Cemaziyelahir', 'Recep', 'Şaban', 'Ramazan', 'Şevval', 'Zilkade', 'Zilhicce'],
     de: ['Muharram', 'Safar', 'Rabi al-Awwal', 'Rabi al-Thani', 'Dschumada al-Ula', 'Dschumada al-Akhira', 'Radschab', 'Schaban', 'Ramadan', 'Schawwal', 'Dhul-Qada', 'Dhul-Hiddscha'],
+    ar: ['محرّم', 'صفر', 'ربيع الأول', 'ربيع الثاني', 'جمادى الأولى', 'جمادى الآخرة', 'رجب', 'شعبان', 'رمضان', 'شوّال', 'ذو القعدة', 'ذو الحجة'],
   };
 
   // Dates. Browsers format German and Turkish dates themselves, but many ship without
@@ -329,6 +404,7 @@
 
   function apply(root = document) {
     document.documentElement.lang = lang;
+    document.documentElement.dir = RTL.has(lang) ? 'rtl' : 'ltr';
     // Titles and descriptions are written into each page's HTML (a city page has its own).
     for (const el of root.querySelectorAll('[data-i18n]')) el.textContent = t(el.dataset.i18n);
     for (const el of root.querySelectorAll('[data-i18n-html]')) el.innerHTML = t(el.dataset.i18nHtml);
@@ -387,6 +463,8 @@
   const api = {
     get lang() { return lang; },
     get locale() { return LOCALES[lang]; },
+    get dir() { return RTL.has(lang) ? 'rtl' : 'ltr'; },
+    rtl: [...RTL],
     langs: LANGS, t, allOf, set, apply, dateFormat,
     hijriMonth: month => (HIJRI[lang] || HIJRI.en)[month - 1],
     strings: T, carry: null,

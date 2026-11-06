@@ -1,11 +1,11 @@
-:root{--ink:#172b29;--muted:#60716d;--green:#276c59;--green-dark:#194b3f;--paper:#f7f7f2;--line:#cbd4ce;--white:#fff;--serif:Georgia,'Times New Roman',serif;--sans:Arial,Helvetica,sans-serif}*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.5 var(--sans)}[hidden]{display:none!important}.site-header{height:62px;padding:0 max(6vw,22px);display:flex;align-items:center;border-bottom:1px solid var(--line);background:#fbfbf8}.header-label{font-size:12px;font-weight:700;letter-spacing:.13em}.header-label i{font-style:normal;color:var(--green);padding:0 3px}.header-links{display:flex;align-items:center;gap:19px}.header-links a{color:var(--green-dark);font-size:12px;font-weight:700;text-decoration:none;white-space:nowrap}.header-links a:hover{text-decoration:underline}main{max-width:760px;margin:0 auto;padding:42px 24px 46px}.location-screen{max-width:580px;margin:20px auto}.eyebrow{margin:0 0 9px;color:var(--green);font-size:11px;font-weight:700;letter-spacing:.14em}.location-screen h1,.page-heading h1{font:normal clamp(36px,5vw,48px)/1.06 var(--serif);letter-spacing:-.035em;margin:0}.intro{color:var(--muted);margin:12px 0 26px}.location-label{display:block;font-size:13px;font-weight:700;margin-bottom:7px}input,select{width:100%;min-height:48px;border:1px solid #899991;border-radius:0;background:#fff;color:var(--ink);padding:0 12px;font:16px var(--sans)}input:focus,select:focus,button:focus-visible,summary:focus-visible{outline:2px solid var(--green);outline-offset:2px}#city-search{height:56px;font-size:18px}.city-suggestions{max-height:300px;overflow:auto;border:1px solid var(--line);background:#fff;margin-top:2px}.city-suggestions[hidden]{display:none}.city-option{width:100%;border:0;border-bottom:1px solid var(--line);background:#fff;padding:11px 13px;display:flex;flex-direction:column;align-items:flex-start;text-align:left;cursor:pointer;color:var(--ink);font:15px var(--sans)}.city-option:last-child{border-bottom:0}.city-option:hover,.city-option:focus{background:#edf2ed;outline:0}.city-option span{font-size:12px;color:var(--muted)}.suggestion-message{padding:10px 13px;margin:0;color:var(--muted);font-size:13px}.button{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:0 18px;border:1px solid var(--green);border-radius:0;background:var(--green);color:#fff;text-decoration:none;font:700 14px var(--sans);cursor:pointer}.button:hover{background:var(--green-dark)}.button-quiet{background:transparent;color:var(--green-dark)}.button-quiet:hover{background:#e8eee9}.locate-button{width:100%;margin-top:10px}.more-options,.settings-details{border-top:1px solid var(--line);margin-top:17px;padding-top:12px}.more-options summary,.settings-details summary,.adjustment-details summary{cursor:pointer;width:max-content;padding:3px 0;color:var(--green-dark);font-size:13px;font-weight:700}.settings-help{margin:7px 0 12px;color:var(--muted);font-size:12px}.more-options>label,.settings-details>label:not(.checkbox-row){display:block;margin:14px 0 6px;font-size:13px;font-weight:700}.paste-row{display:grid;grid-template-columns:1fr auto;gap:8px}.button-small{min-height:46px;padding:0 15px}.coordinate-grid,.custom-angle-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:12px 0}.coordinate-grid label,.custom-angle-grid label,.adjustment-grid label{display:grid;gap:5px;font-size:12px;font-weight:700;color:var(--muted)}.coordinate-grid input,.custom-angle-grid input,.adjustment-grid input{min-height:43px;font-size:15px}.custom-angle-grid{margin-top:10px}.adjustment-details{margin-top:15px;padding-top:12px;border-top:1px solid var(--line)}.adjustment-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.checkbox-row{display:flex;align-items:center;gap:9px;margin-top:16px;font-size:14px}.checkbox-row input{width:18px;min-height:18px;accent-color:var(--green)}#imsak-offset-wrap input{margin-top:6px}.update-button{width:100%;margin-top:18px}.message{padding:11px 13px;border-left:3px solid #bd8b37;background:#f0eadc;color:var(--ink);font-size:13px;margin:14px 0}.schedule-screen{max-width:600px;margin:0 auto}.page-heading{display:flex;align-items:flex-end;justify-content:space-between;gap:20px}.page-heading h1{font-size:40px}.text-button{padding:7px 0;border:0;border-bottom:1px solid var(--green);background:transparent;color:var(--green-dark);font:700 13px var(--sans);cursor:pointer;white-space:nowrap}.date-block{margin:24px 0 22px;padding:17px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}.selected-location{margin:0 0 3px;font-size:14px;font-weight:700;color:var(--green-dark)}.gregorian-date{margin:0;color:var(--muted);font-size:13px}.hijri-date{margin:8px 0 0;font:22px var(--serif)}.hijri-note{margin:2px 0 0;color:var(--muted);font-size:11px}.prayer-table{width:100%;border-collapse:collapse}.prayer-table th,.prayer-table td{padding:12px 8px;border-bottom:1px solid var(--line);text-align:left}.prayer-table thead th{color:var(--muted);font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;border-bottom:1px solid #899991}.prayer-table tbody th{font-weight:400}.prayer-table td{text-align:right;font-variant-numeric:tabular-nums}.table-actions{margin-top:20px}.table-actions .button{width:100%;min-height:52px;font-size:15px}.print-note{margin:8px 0 0;color:var(--muted);font-size:11px;text-align:center}.settings-details{margin-top:28px}.settings-details select,.settings-details>input{min-height:45px;font-size:15px}.settings-details .settings-help{margin-bottom:14px}.approximation{padding:11px 13px;border-left:3px solid #bd8b37;background:#f0eadc;font-size:13px;margin:14px 0}.site-footer{max-width:760px;margin:0 auto;padding:18px 24px 26px;border-top:1px solid var(--line);display:flex;align-items:center;justify-content:flex-end;gap:18px;color:var(--muted);font-size:12px}.site-footer span{color:var(--muted)}.site-footer a{color:var(--green-dark);text-decoration:none}.site-footer a:hover{text-decoration:underline}.blog-main{max-width:648px;min-height:calc(100vh - 145px);padding-top:50px}.blog-main h1{font:normal clamp(36px,5vw,48px)/1.06 var(--serif);letter-spacing:-.035em;margin:0}.blog-intro{color:var(--muted);margin:10px 0 30px}.blog-entry{border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:20px 0 24px}.blog-entry h2{font:26px/1.2 var(--serif);font-weight:400;margin:0 0 9px}.blog-entry h2 a{color:var(--ink);text-decoration:none}.blog-entry h2 a:hover,.blog-read-link:hover,.blog-back a:hover{text-decoration:underline}.blog-entry>p:not(.eyebrow){color:var(--muted);margin:0 0 14px}.blog-read-link,.blog-back a{color:var(--green-dark);font-size:13px;font-weight:700;text-decoration:none}.blog-back{margin-top:24px}
+:root{--ink:#172b29;--muted:#60716d;--green:#276c59;--green-dark:#194b3f;--paper:#f7f7f2;--line:#cbd4ce;--white:#fff;--serif:Georgia,'Times New Roman',serif;--sans:Arial,Helvetica,sans-serif}*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.5 var(--sans)}[hidden]{display:none!important}.site-header{height:62px;padding:0 max(6vw,22px);display:flex;align-items:center;border-bottom:1px solid var(--line);background:#fbfbf8}.header-label{font-size:12px;font-weight:700;letter-spacing:.13em}.header-label i{font-style:normal;color:var(--green);padding:0 3px}.header-links{display:flex;align-items:center;gap:19px}.header-links a{color:var(--green-dark);font-size:12px;font-weight:700;text-decoration:none;white-space:nowrap}.header-links a:hover{text-decoration:underline}main{max-width:760px;margin:0 auto;padding:42px 24px 46px}.location-screen{max-width:580px;margin:20px auto}.eyebrow{margin:0 0 9px;color:var(--green);font-size:11px;font-weight:700;letter-spacing:.14em}.location-screen h1,.page-heading h1{font:normal clamp(36px,5vw,48px)/1.06 var(--serif);letter-spacing:-.035em;margin:0}.intro{color:var(--muted);margin:12px 0 26px}.location-label{display:block;font-size:13px;font-weight:700;margin-bottom:7px}input,select{width:100%;min-height:48px;border:1px solid #899991;border-radius:0;background:#fff;color:var(--ink);padding:0 12px;font:16px var(--sans)}input:focus,select:focus,button:focus-visible,summary:focus-visible{outline:2px solid var(--green);outline-offset:2px}#city-search{height:56px;font-size:18px}.city-suggestions{max-height:300px;overflow:auto;border:1px solid var(--line);background:#fff;margin-top:2px}.city-suggestions[hidden]{display:none}.city-option{width:100%;border:0;border-bottom:1px solid var(--line);background:#fff;padding:11px 13px;display:flex;flex-direction:column;align-items:flex-start;text-align:start;cursor:pointer;color:var(--ink);font:15px var(--sans)}.city-option:last-child{border-bottom:0}.city-option:hover,.city-option:focus{background:#edf2ed;outline:0}.city-option span{font-size:12px;color:var(--muted)}.suggestion-message{padding:10px 13px;margin:0;color:var(--muted);font-size:13px}.button{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:0 18px;border:1px solid var(--green);border-radius:0;background:var(--green);color:#fff;text-decoration:none;font:700 14px var(--sans);cursor:pointer}.button:hover{background:var(--green-dark)}.button-quiet{background:transparent;color:var(--green-dark)}.button-quiet:hover{background:#e8eee9}.locate-button{width:100%;margin-top:10px}.more-options,.settings-details{border-top:1px solid var(--line);margin-top:17px;padding-top:12px}.more-options summary,.settings-details summary,.adjustment-details summary{cursor:pointer;width:max-content;padding:3px 0;color:var(--green-dark);font-size:13px;font-weight:700}.settings-help{margin:7px 0 12px;color:var(--muted);font-size:12px}.more-options>label,.settings-details>label:not(.checkbox-row){display:block;margin:14px 0 6px;font-size:13px;font-weight:700}.paste-row{display:grid;grid-template-columns:1fr auto;gap:8px}.button-small{min-height:46px;padding:0 15px}.coordinate-grid,.custom-angle-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:12px 0}.coordinate-grid label,.custom-angle-grid label,.adjustment-grid label{display:grid;gap:5px;font-size:12px;font-weight:700;color:var(--muted)}.coordinate-grid input,.custom-angle-grid input,.adjustment-grid input{min-height:43px;font-size:15px}.custom-angle-grid{margin-top:10px}.adjustment-details{margin-top:15px;padding-top:12px;border-top:1px solid var(--line)}.adjustment-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.checkbox-row{display:flex;align-items:center;gap:9px;margin-top:16px;font-size:14px}.checkbox-row input{width:18px;min-height:18px;accent-color:var(--green)}#imsak-offset-wrap input{margin-top:6px}.update-button{width:100%;margin-top:18px}.message{padding:11px 13px;border-inline-start:3px solid #bd8b37;background:#f0eadc;color:var(--ink);font-size:13px;margin:14px 0}.schedule-screen{max-width:600px;margin:0 auto}.page-heading{display:flex;align-items:flex-end;justify-content:space-between;gap:20px}.page-heading h1{font-size:40px}.text-button{padding:7px 0;border:0;border-bottom:1px solid var(--green);background:transparent;color:var(--green-dark);font:700 13px var(--sans);cursor:pointer;white-space:nowrap}.date-block{margin:24px 0 22px;padding:17px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}.selected-location{margin:0 0 3px;font-size:14px;font-weight:700;color:var(--green-dark)}.gregorian-date{margin:0;color:var(--muted);font-size:13px}.hijri-date{margin:8px 0 0;font:22px var(--serif)}.hijri-note{margin:2px 0 0;color:var(--muted);font-size:11px}.prayer-table{width:100%;border-collapse:collapse}.prayer-table th,.prayer-table td{padding:12px 8px;border-bottom:1px solid var(--line);text-align:start}.prayer-table thead th{color:var(--muted);font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;border-bottom:1px solid #899991}.prayer-table tbody th{font-weight:400}.prayer-table td{text-align:end;font-variant-numeric:tabular-nums}.table-actions{margin-top:20px}.table-actions .button{width:100%;min-height:52px;font-size:15px}.print-note{margin:8px 0 0;color:var(--muted);font-size:11px;text-align:center}.settings-details{margin-top:28px}.settings-details select,.settings-details>input{min-height:45px;font-size:15px}.settings-details .settings-help{margin-bottom:14px}.approximation{padding:11px 13px;border-inline-start:3px solid #bd8b37;background:#f0eadc;font-size:13px;margin:14px 0}.site-footer{max-width:760px;margin:0 auto;padding:18px 24px 26px;border-top:1px solid var(--line);display:flex;align-items:center;justify-content:flex-end;gap:18px;color:var(--muted);font-size:12px}.site-footer span{color:var(--muted)}.site-footer a{color:var(--green-dark);text-decoration:none}.site-footer a:hover{text-decoration:underline}.blog-main{max-width:648px;min-height:calc(100vh - 145px);padding-top:50px}.blog-main h1{font:normal clamp(36px,5vw,48px)/1.06 var(--serif);letter-spacing:-.035em;margin:0}.blog-intro{color:var(--muted);margin:10px 0 30px}.blog-entry{border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:20px 0 24px}.blog-entry h2{font:26px/1.2 var(--serif);font-weight:400;margin:0 0 9px}.blog-entry h2 a{color:var(--ink);text-decoration:none}.blog-entry h2 a:hover,.blog-read-link:hover,.blog-back a:hover{text-decoration:underline}.blog-entry>p:not(.eyebrow){color:var(--muted);margin:0 0 14px}.blog-read-link,.blog-back a{color:var(--green-dark);font-size:13px;font-weight:700;text-decoration:none}.blog-back{margin-top:24px}
 @media(max-width:600px){.site-header{height:56px;padding:0 18px}.header-label{font-size:10px;letter-spacing:.07em}.header-links{gap:10px}.header-links a{font-size:10px}main{padding:28px 20px 34px}.location-screen{margin:8px auto}.location-screen h1,.page-heading h1{font-size:37px}.page-heading{align-items:flex-start}.page-heading h1{font-size:34px}.adjustment-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.site-footer{padding:16px 20px 22px;gap:14px;flex-wrap:wrap}}
 
 /* Keep short pages anchored to the viewport and align the header consistently. */
 body{min-height:100vh;display:flex;flex-direction:column}
 main{flex:1 0 auto}
 .site-header{justify-content:space-between;gap:24px}
-.header-links{margin-left:auto}
+.header-links{margin-inline-start:auto}
 .site-footer{width:min(100%,760px);flex:0 0 auto}
 @media(max-width:600px){.site-header{gap:12px}.header-links{gap:10px}}
 @media(max-width:420px){.site-header{padding-left:14px;padding-right:14px;gap:8px}.header-label{font-size:9px;letter-spacing:.03em}.header-links{gap:7px}.header-links a{font-size:9px}}
@@ -16,7 +16,7 @@ main{max-width:1040px}
 .page-heading{justify-content:flex-start;align-items:flex-end;gap:16px}
 .adjustment-grid{display:flex;flex-direction:column;gap:8px}
 .adjustment-grid label{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:42px;padding:5px 0;border-bottom:1px solid var(--line);color:var(--ink);font-size:14px}
-.adjustment-grid input{width:112px;min-height:36px;text-align:right}
+.adjustment-grid input{width:112px;min-height:36px;text-align:end}
 @media(max-width:600px){.page-heading{gap:12px}}
 
 
@@ -24,21 +24,21 @@ main{max-width:1040px}
 .header-label.brand{display:inline-flex;align-items:center;gap:10px;color:var(--ink);text-decoration:none}
 .header-label.brand img{width:28px;height:28px;border-radius:7px;flex:none}
 .header-label.brand:hover span{text-decoration:underline}
-.trust{margin:-12px 0 26px;padding-left:12px;border-left:2px solid var(--green);color:var(--ink);font-size:13px}
+.trust{margin:-12px 0 26px;padding-inline-start:12px;border-inline-start:2px solid var(--green);color:var(--ink);font-size:13px}
 .trust a{color:var(--green-dark);font-weight:700}
 .breadcrumbs a{color:inherit}
 .site-footer{justify-content:center}
 .method-line{margin:8px 0 0;color:var(--muted);font-size:12px}
 @media(max-width:420px){.header-label.brand img{width:22px;height:22px}.header-label.brand{gap:6px}}
 
-.prayer-table thead th:last-child{text-align:right}
+.prayer-table thead th:last-child{text-align:end}
 
 /* App store buttons. */
 .header-links{gap:10px}
 .store-pill{display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 12px;border:1px solid var(--green);border-radius:16px;color:var(--green-dark);background:transparent}
 .store-pill:hover{background:#e8eee9;text-decoration:none!important}
 .store-pill svg{width:14px;height:14px;flex:none}
-.header-links>a:not(.store-pill){margin-right:6px}
+.header-links>a:not(.store-pill){margin-inline-end:6px}
 @media(max-width:600px){.store-pill{width:32px;padding:0;justify-content:center}.store-pill span{display:none}.store-pill svg{width:15px;height:15px}}
 
 
@@ -58,7 +58,7 @@ main{max-width:1040px}
 .prayer-table th,.prayer-table td{padding:13px 4px}
 .prayer-table tr.marker th,.prayer-table tr.marker td{color:var(--muted);font-size:14px;padding-top:9px;padding-bottom:9px}
 .prayer-table tr.next th,.prayer-table tr.next td{color:var(--green-dark);font-weight:700}
-.next-tag{margin-left:10px;padding:2px 7px;border-radius:9px;background:#e3ece6;color:var(--green-dark);font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;vertical-align:2px}
+.next-tag{margin-inline-start:10px;padding:2px 7px;border-radius:9px;background:#e3ece6;color:var(--green-dark);font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;vertical-align:2px}
 @media(max-width:600px){.schedule-screen .selected-location{font-size:34px}}
 @media(max-width:600px){.date-line{flex-direction:column;gap:2px}.date-line .dot{display:none}}
 
@@ -82,7 +82,7 @@ main{max-width:1040px}
 .prayer-table tr.marker th,.prayer-table tr.marker td{color:var(--muted)}
 
 /* A returning visitor's city, one tap from the search screen. */
-.saved-city{width:100%;display:flex;align-items:center;justify-content:space-between;gap:16px;margin:0 0 26px;padding:16px 18px;border:1px solid var(--green);background:#fff;color:var(--ink);text-align:left;cursor:pointer;font:inherit}
+.saved-city{width:100%;display:flex;align-items:center;justify-content:space-between;gap:16px;margin:0 0 26px;padding:16px 18px;border:1px solid var(--green);background:#fff;color:var(--ink);text-align:start;cursor:pointer;font:inherit}
 .saved-city:hover{background:#f1f6f2}
 .saved-city-text{display:flex;flex-direction:column;gap:2px;min-width:0}
 .saved-city-label{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--green)}
@@ -95,7 +95,7 @@ main{max-width:1040px}
 .print-options{margin-top:30px}
 .print-heading{margin:0 0 10px;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
 .print-choices{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
-.print-choice{display:flex;flex-direction:column;align-items:flex-start;gap:4px;min-height:74px;padding:14px 15px;border:1px solid var(--line);background:#fff;color:var(--ink);text-align:left;cursor:pointer;font:inherit;transition:border-color .15s,box-shadow .15s}
+.print-choice{display:flex;flex-direction:column;align-items:flex-start;gap:4px;min-height:74px;padding:14px 15px;border:1px solid var(--line);background:#fff;color:var(--ink);text-align:start;cursor:pointer;font:inherit;transition:border-color .15s,box-shadow .15s}
 .print-choice:hover{border-color:var(--green);box-shadow:inset 0 -2px 0 var(--green)}
 .print-choice strong{font:normal 18px/1.2 var(--serif);font-weight:400}
 .print-choice span{font-size:12px;color:var(--muted)}
@@ -131,7 +131,7 @@ main{max-width:1040px}
 .clock-switch input:checked+.switch-track{background:var(--green)}
 .clock-switch input:checked+.switch-track::after{transform:translateX(12px)}
 .clock-switch input:focus-visible+.switch-track{outline:2px solid var(--green);outline-offset:2px}
-.prayer-table td .period{margin-left:.35em;font-size:.65em;font-weight:400;letter-spacing:.04em;color:var(--muted)}
+.prayer-table td .period{margin-inline-start:.35em;font-size:.65em;font-weight:400;letter-spacing:.04em;color:var(--muted)}
 @media(prefers-reduced-motion:reduce){.switch-track,.switch-track::after{transition:none}}
 
 /* Guides: one narrow column of text and nothing else. */
@@ -188,12 +188,12 @@ main{max-width:1040px}
 .ramadan a{color:var(--green-dark)}
 .ramadan-scroll{overflow-x:auto;margin:16px 0 10px}
 .ramadan-table{width:100%;border-collapse:collapse;font-size:15px;font-variant-numeric:tabular-nums}
-.ramadan-table th,.ramadan-table td{padding:7px 6px;border-top:1px solid var(--line);text-align:right;white-space:nowrap}
+.ramadan-table th,.ramadan-table td{padding:7px 6px;border-top:1px solid var(--line);text-align:end;white-space:nowrap}
 .ramadan-table thead th{border-top:0;font-size:12px;font-weight:700;color:var(--muted)}
-.ramadan-table th:first-child,.ramadan-table td.ramadan-date{text-align:left}
+.ramadan-table th:first-child,.ramadan-table td.ramadan-date{text-align:start}
 .ramadan-table tbody th{font-weight:400;color:var(--muted);width:2.5em}
 .ramadan-table td.maghrib{color:var(--green-dark);font-weight:700}
-.ramadan-table .period{margin-left:.25em;font-size:.7em;font-weight:400;color:var(--muted)}
+.ramadan-table .period{margin-inline-start:.25em;font-size:.7em;font-weight:400;color:var(--muted)}
 .ramadan-print{width:100%;margin-top:10px}
 @media(max-width:420px){.app-cta-links{width:100%}.cta-link{flex:1;justify-content:center}}
 .print-sheet{display:none}
@@ -210,13 +210,13 @@ main{max-width:1040px}
 .sheet-head{display:flex;justify-content:space-between;align-items:center;gap:8mm}
 .sheet-brand{display:inline-flex;align-items:center;gap:2.2mm;font-size:7.5pt;font-weight:700;letter-spacing:.16em;text-transform:uppercase}
 .sheet-brand img{width:5mm;height:5mm;border-radius:1.2mm}
-.sheet-meta{font-size:8pt;color:#666;text-align:right}
+.sheet-meta{font-size:8pt;color:#666;text-align:end}
 .sheet-title{display:flex;justify-content:space-between;align-items:flex-end;gap:10mm;margin:8mm 0 6mm}
 .sheet-title>div:first-child{min-width:0}
 .sheet-title h1{margin:0;font:normal 30pt/1.05 var(--serif);letter-spacing:-.02em}
 .sheet-title.long h1{font-size:24pt}
 .sheet-title-sub{margin:2mm 0 0;font-size:10pt;color:#666}
-.sheet-side{flex:none;white-space:nowrap;text-align:right}
+.sheet-side{flex:none;white-space:nowrap;text-align:end}
 .sheet-side p{margin:0}
 .sheet-side-main{font:normal 15pt/1.2 var(--serif)}
 .sheet-side-sub{margin-top:1.2mm!important;font-size:9.5pt;color:#666}
@@ -227,11 +227,11 @@ main{max-width:1040px}
 .sheet-table{width:100%;border-collapse:separate;border-spacing:0;table-layout:fixed;font-variant-numeric:tabular-nums}
 .sheet-table th,.sheet-table td{padding:0;text-align:center;font-weight:400;border-bottom:.75pt solid #bdbdb6}
 .sheet-table thead th{height:8mm;padding:0 .5mm 2.2mm;vertical-align:bottom;font-size:7pt;font-weight:700;letter-spacing:.07em;text-transform:uppercase;border-bottom:1pt solid #111}
-.sheet-table thead th.col-day{text-align:left;padding-left:2mm}
+.sheet-table thead th.col-day{text-align:start;padding-inline-start:2mm}
 .sheet-table .marker{color:#8a8a8a}
 .sheet-week .sheet-table .col-day{width:22%}
 .sheet-week .sheet-table tbody th,.sheet-week .sheet-table tbody td{height:21mm;font-size:15pt}
-.sheet-week .sheet-table tbody th{text-align:left;padding-left:2mm}
+.sheet-week .sheet-table tbody th{text-align:start;padding-inline-start:2mm}
 .sheet-week .wd{display:block;font:normal 15pt/1.2 var(--serif)}
 .sheet-week .dm{display:block;margin-top:1mm;font-size:8.5pt;color:#666}
 .sheet-month .sheet-title{margin:6mm 0 4.5mm}
@@ -240,10 +240,10 @@ main{max-width:1040px}
 .sheet-month .sheet-table .col-day{width:12%}
 .sheet-month .sheet-table .col-hijri{width:17%}
 .sheet-month .sheet-table tbody th,.sheet-month .sheet-table tbody td{height:5.2mm;font-size:10pt}
-.sheet-month .sheet-table tbody th{text-align:left;padding-left:2mm;white-space:nowrap}
+.sheet-month .sheet-table tbody th{text-align:start;padding-inline-start:2mm;white-space:nowrap}
 .sheet-month .wd{display:inline-block;width:9mm;color:#666}
 .sheet-month tr.friday .wd{color:#111;font-weight:700}
-.sheet-month .col-hijri{text-align:left;white-space:nowrap;color:#555}
+.sheet-month .col-hijri{text-align:start;white-space:nowrap;color:#555}
 .sheet-month thead th.col-hijri{color:#111}
 .sheet-month .hm{font-size:7.5pt;color:#888}
 
@@ -251,8 +251,8 @@ main{max-width:1040px}
 .cal{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));grid-template-rows:auto repeat(var(--weeks),minmax(20mm,1fr))}
 .cal-head{padding:0 2.4mm 2mm;font-size:7.5pt;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#777;border-bottom:1pt solid #111}
 .cal-head.friday{color:#111}
-.cal-day{display:grid;grid-template-columns:1fr auto;grid-template-rows:auto 1fr;gap:0 2mm;min-width:0;padding:2.4mm 2.6mm;border-right:.9pt solid #a3a39b;border-bottom:.9pt solid #a3a39b}
-.cal-day.first{border-left:.9pt solid #a3a39b}
+.cal-day{display:grid;grid-template-columns:1fr auto;grid-template-rows:auto 1fr;gap:0 2mm;min-width:0;padding:2.4mm 2.6mm;border-inline-end:.9pt solid #a3a39b;border-bottom:.9pt solid #a3a39b}
+.cal-day.first{border-inline-start:.9pt solid #a3a39b}
 .cal .hd{font:normal 20pt/1 var(--serif)}
 .cal .gd{margin-top:.6mm;font-size:8pt;color:#777;white-space:nowrap}
 .cal .oc{grid-column:1/-1;align-self:end;font-size:7.5pt;line-height:1.3;color:#5f4713}
@@ -269,7 +269,7 @@ main{max-width:1040px}
 .site-header{height:68px}
 .header-label.brand img{width:30px;height:30px}
 .site-header .header-links{gap:24px}
-.site-header .header-links>a:not(.store-pill){margin-right:0}
+.site-header .header-links>a:not(.store-pill){margin-inline-end:0}
 .site-header .nav-link{display:inline-flex;align-items:center;height:44px;font-size:13px;border-bottom:2px solid transparent;box-sizing:border-box;padding-top:2px}
 .site-header .nav-link[aria-current="page"]{border-bottom-color:var(--green)}
 .site-header .nav-link:hover{text-decoration:none;border-bottom-color:var(--line)}
@@ -295,3 +295,29 @@ main{max-width:1040px}
 @media(max-width:600px){.site-header{height:60px}.site-header .header-links{gap:6px}.nav-times,.nav-divider{display:none!important}.site-header .nav-link{font-size:11px;padding:2px 6px 0}.lang-button{gap:4px;padding:0 6px;font-size:11px}.lang-button .menu-chevron{display:none}.app-button{height:36px;padding:0 12px;border-radius:18px;font-size:11px;gap:6px}.app-long{display:none}.app-short{display:inline}.header-label.brand img{width:28px;height:28px}}
 @media(max-width:360px){.site-header .header-links{gap:2px}.app-button svg{display:none}}
 @media print{.site-header{display:none}}
+
+/* Right to left (Arabic: <html dir="rtl">). The rules above use start/end, which follow the
+   page's direction; what start/end can't express is mirrored here. Arabic letters join, so
+   no letter-spacing on Arabic text (the Latin brand keeps its own). */
+[dir=rtl] .switch-track::after{left:auto;right:2px}
+[dir=rtl] .clock-switch input:checked+.switch-track::after{transform:translateX(-12px)}
+[dir=rtl] .menu-list{right:auto;left:0}
+[dir=rtl] .saved-city-go [aria-hidden]{display:inline-block;transform:scaleX(-1)}
+[dir=rtl] #paste-coordinates,[dir=rtl] .coordinate-grid input,[dir=rtl] .custom-angle-grid input,[dir=rtl] #time-zone,[dir=rtl] #imsak-offset,[dir=rtl] .adjustment-grid input{direction:ltr;text-align:right}
+[dir=rtl] .eyebrow,[dir=rtl] h1,[dir=rtl] h2,[dir=rtl] .prayer-table thead th,[dir=rtl] .next-tag,[dir=rtl] .saved-city-label,[dir=rtl] .saved-city strong,[dir=rtl] .print-heading,[dir=rtl] .prayer-table td .period,[dir=rtl] .sheet-table thead th,[dir=rtl] .cal-head,[dir=rtl] .lang-button{letter-spacing:0!important}
+/* Arabic letters read smaller than Latin ones at the same size: the smallest labels go up. */
+[dir=rtl] .print-heading,[dir=rtl] .saved-city-label{font-size:13px}
+[dir=rtl] .next-tag{font-size:12px}
+[dir=rtl] .prayer-table td .period{font-size:.8em}
+[dir=rtl] .location-label,[dir=rtl] .more-options summary,[dir=rtl] .settings-details summary,[dir=rtl] .adjustment-details summary{font-size:15px}
+[dir=rtl] .more-options>label,[dir=rtl] .settings-details>label:not(.checkbox-row),[dir=rtl] .coordinate-grid label,[dir=rtl] .custom-angle-grid label,[dir=rtl] .text-button{font-size:14px}
+[dir=rtl] .method-line,[dir=rtl] .clock-switch,[dir=rtl] .settings-help{font-size:14px}
+[dir=rtl] .site-header .nav-link,[dir=rtl] .app-button{font-size:14px}
+@media(max-width:600px){[dir=rtl] .site-header .nav-link,[dir=rtl] .app-button{font-size:13px}}
+.menu-list a[lang=ar]{font-size:16px!important}
+[dir=rtl] .sheet-table thead th{font-size:8.5pt}
+[dir=rtl] .cal-head,[dir=rtl] .sheet-notes,[dir=rtl] .sheet-foot p,[dir=rtl] .cal .oc,[dir=rtl] .sheet-month .hm{font-size:8.5pt}
+[dir=rtl] .sheet-meta,[dir=rtl] .cal .gd{font-size:9pt}
+/* Arabic weekday names are longer than the Latin abbreviations. */
+[dir=rtl] .sheet-month .sheet-table .col-day{width:16%}
+[dir=rtl] .sheet-month .wd{width:13mm}

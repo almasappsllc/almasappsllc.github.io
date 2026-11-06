@@ -5,6 +5,7 @@
 // sits at the foot of the paper.
 (() => {
   // Sheets print in the page's language (i18n.js); the column heads use the short names.
+  // Right to left (Arabic), the site's address is isolated so it keeps its place in the line.
   const t = (key, vars) => NamazI18n.t(key, vars);
   const name = id => {
     if (id === 'MIDNIGHT') return t('p_MIDNIGHT_short');
@@ -50,7 +51,7 @@
       <div class="sheet-body">${body}</div>
       ${notes.length ? `<p class="sheet-notes">${notes.map(esc).join(' ')}</p>` : ''}
       <footer class="sheet-foot">
-        <p><strong>${esc(t('get_app'))}</strong> <i>·</i> ${esc(t('on_stores'))} <i>·</i> ${esc(ctx.siteUrl)}</p>
+        <p><strong>${esc(t('get_app'))}</strong> <i>·</i> ${esc(t('on_stores'))} <i>·</i> ${NamazI18n.dir === 'rtl' ? `<bdi dir="ltr">${esc(ctx.siteUrl)}</bdi>` : esc(ctx.siteUrl)}</p>
         ${qr ? `<span class="sheet-qr">${qr}</span>` : ''}
       </footer>
     </article>`;
