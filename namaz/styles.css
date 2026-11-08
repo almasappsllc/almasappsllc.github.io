@@ -183,6 +183,8 @@ main{max-width:1040px}
 .location-screen .city-index{margin-top:40px;padding-top:18px;border-top:1px solid var(--line)}
 .city-group h3{margin:14px 0 4px;font-size:13px;font-weight:700;color:var(--muted)}
 .city-group p{margin:0;display:flex;flex-wrap:wrap;gap:4px 14px;font-size:15px;line-height:1.6}
+.city-all{margin:14px 0 0;font-size:14px;font-weight:700}
+.blog-intro a{color:var(--green-dark)}
 .ramadan{margin-top:34px;padding-top:18px;border-top:1px solid var(--line)}
 .section-heading{margin:0 0 12px;font:normal 28px/1.15 var(--serif);letter-spacing:-.02em}
 .ramadan p{margin:0 0 12px;font-size:15px;line-height:1.65}
