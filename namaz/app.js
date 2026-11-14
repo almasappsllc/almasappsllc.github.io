@@ -22,7 +22,7 @@ function buildAdjustments(){
 buildAdjustments();
 // Azerbaijan, Turkey and Germany read the 24-hour clock; English and Arabic readers the
 // 12-hour one (ص/م in Arabic). A saved choice still wins.
-if(!['en','ar'].includes(NamazI18n.lang))clockToggle.checked=true;
+if(!['en','ar','ur'].includes(NamazI18n.lang))clockToggle.checked=true;
 
 function methodLabel(){return t('method_line_'+(['QUM','TEHRAN','CUSTOM'].includes(methodSelect.value)?methodSelect.value:'QUM'))}
 const siteUrl=(location.host+location.pathname).replace(/index\.html$/,'').replace(/\/$/,'');

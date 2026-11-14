@@ -64,7 +64,8 @@
     const days = dates.map(date => NamazEngine.computeOn(ctx.place.lat, ctx.place.lon, ctx.zone, ctx.settings, date));
     const ids = days[0].rows.map(row => row.id);
     const time = clock(ctx.zone, ctx.h24);
-    const weekday = format({ weekday: compact ? 'short' : 'long' });
+    // Persian has no short weekday names; its calendars use one letter (ش ی د ...).
+    const weekday = format({ weekday: compact ? (NamazI18n.lang === 'fa' ? 'narrow' : 'short') : 'long' });
     const dayMonth = format({ day: 'numeric', month: 'short' });
     const head = `<thead><tr><th class="col-day" scope="col">${esc(t(compact ? 'col_date' : 'col_day'))}</th>${compact ? `<th class="col-hijri" scope="col">${esc(t('col_hijri'))}</th>` : ''}${ids.map(id => { const cls = [MARKERS.has(id) ? 'marker' : '', name(id).length > 8 && !name(id).includes(' ') ? 'long' : ''].filter(Boolean).join(' '); return `<th scope="col"${cls ? ` class="${cls}"` : ''}>${esc(name(id))}</th>`; }).join('')}</tr></thead>`;
     const rows = days.map((day, index) => {

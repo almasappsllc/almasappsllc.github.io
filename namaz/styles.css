@@ -317,7 +317,7 @@ main{max-width:1040px}
 [dir=rtl] .method-line,[dir=rtl] .clock-switch,[dir=rtl] .settings-help{font-size:14px}
 [dir=rtl] .site-header .nav-link,[dir=rtl] .app-button{font-size:14px}
 @media(max-width:600px){[dir=rtl] .site-header .nav-link,[dir=rtl] .app-button{font-size:13px}}
-.menu-list a[lang=ar]{font-size:16px!important}
+.menu-list a[lang=ar],.menu-list a[lang=fa],.menu-list a[lang=ur]{font-size:16px!important}
 [dir=rtl] .sheet-table thead th{font-size:8.5pt}
 [dir=rtl] .cal-head,[dir=rtl] .sheet-notes,[dir=rtl] .sheet-foot p,[dir=rtl] .cal .oc,[dir=rtl] .sheet-month .hm{font-size:8.5pt}
 [dir=rtl] .sheet-meta,[dir=rtl] .cal .gd{font-size:9pt}
