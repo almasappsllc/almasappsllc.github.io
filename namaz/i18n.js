@@ -25,7 +25,7 @@
   const T = {
     en: {
       title: 'Shia Namaz | Prayer times for your city',
-      description: "Shia Ja'fari prayer times for your location. Print the timetable or save it as a PDF.",
+      description: "Fast, free and private Shia Ja'fari prayer times for anywhere in the world. No sign-up, no ads. Print a weekly or monthly timetable or save it as a PDF.",
       language: 'Language', guides: 'Guides',
       nav_times: 'Prayer times', get_app_long: 'Get the app', get_app_short: 'Get app',
       your_city: 'Your city', show_times: 'Show times',
