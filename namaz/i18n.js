@@ -1,5 +1,5 @@
 // The site's languages. Each timetable page has its own address per language (/, /az/, /tr/,
-// /de/, /ar/, /fa/, /ur/, built by namaz/tools/build-pages.js with this file's text already in the HTML) and
+// /de/, /fr/, /ar/, /fa/, /ur/, /gu/, built by namaz/tools/build-pages.js with this file's text already in the HTML) and
 // says which in <html data-page-lang>. The English home page's head script sends a visitor
 // on to their language's page: ?lang= in the link, then their last choice on this device,
 // then the browser's language (reviewed languages only, see REVIEWED).
@@ -11,10 +11,10 @@
 // as Azerbaijani and Turkish, plus its site text (reviewed 2026-11-06), and reads right to left:
 // its page says dir="rtl" and styles.css uses start/end, not left/right.
 (() => {
-  const LANGS = { en: 'English', az: 'Azərbaycanca', tr: 'Türkçe', de: 'Deutsch', ar: 'العربية', fa: 'فارسی', ur: 'اردو' };
+  const LANGS = { en: 'English', az: 'Azərbaycanca', tr: 'Türkçe', de: 'Deutsch', fr: 'Français', ar: 'العربية', fa: 'فارسی', ur: 'اردو', gu: 'ગુજરાતી' };
   // Arabic, Persian and Urdu dates in Western digits (5 نوفمبر), matching the times, which are always
   // written so. Persian asks for the Gregorian calendar: the browser's default for fa is the solar one.
-  const LOCALES = { en: undefined, az: 'az-Latn-AZ', tr: 'tr-TR', de: 'de-DE', ar: 'ar-u-nu-latn', fa: 'fa-u-ca-gregory-nu-latn', ur: 'ur-u-nu-latn' };
+  const LOCALES = { en: undefined, az: 'az-Latn-AZ', tr: 'tr-TR', de: 'de-DE', fr: 'fr-FR', ar: 'ar-u-nu-latn', fa: 'fa-u-ca-gregory-nu-latn', ur: 'ur-u-nu-latn', gu: 'gu-IN' };
   const RTL = new Set(['ar', 'fa', 'ur']);
   // Languages the browser's own setting may pick. A language joins once a native reader has
   // reviewed its text; until then it is reachable only by the switcher or a ?lang= link.
@@ -478,9 +478,144 @@
       sheet_approx_maghrib: 'ان میں سے بعض دنوں میں سورج مغرب کے زاویے تک نہیں پہنچتا؛ ایسے میں مغرب کا وقت رات کے دوران سورج کے سب سے کم ارتفاع پر ہونے کے وقت مقرر کیا جاتا ہے۔',
       sheet_approx_angle: 'ان میں سے بعض دنوں میں سورج منتخب زاویوں میں سے کسی ایک تک نہیں پہنچتا؛ ایسے اوقات کا تعین بلند عرض بلد کے قاعدے کے مطابق کیا جاتا ہے۔',
     },
+    // Gujarati: prayer names, Hijri months, methods, the high-latitude rules and the lines marked
+    // "app" are the app's own (its Gujarati has had an editorial pass, not yet a native reader's);
+    // the rest was written for the site (2026-11-22) and awaits a native reader. Western digits.
+    gu: {
+      title: 'Shia Namaz | તમારા શહેર માટે નમાઝના સમય',
+      description: 'તમારા સ્થાન માટે જાફરી નમાઝના સમય. સમયપત્રક છાપો અથવા PDF તરીકે સાચવો.',
+      language: 'ભાષા', // app
+      guides: 'માર્ગદર્શિકાઓ',
+      nav_times: 'નમાઝના સમય', // app
+      get_app_long: 'એપ મેળવો', get_app_short: 'એપ',
+      your_city: 'તમારું શહેર', show_times: 'સમય બતાવો',
+      heading: 'તમારા નમાઝના સમય જુઓ',
+      intro_html: 'Shia Namaz એપની પોતાની ગણતરી મુજબ જાફરી સમય, <a href="/articles/why-maghrib-after-sunset">મગરિબ સૂર્યાસ્ત પછી</a>. અમે આ ઉપકરણ પર તમારું શહેર યાદ રાખીશું.',
+      type_city: 'તમારું શહેર લખો', search_placeholder: 'શહેરનું નામ લખવાનું શરૂ કરો', city_choices: 'શહેરના વિકલ્પો',
+      use_location: 'મારું સ્થાન વાપરો',
+      finding_location: 'તમારું સ્થાન શોધાઈ રહ્યું છે…', // app
+      coords_summary: 'નિર્દેશાંકો દાખલ કરો અથવા પેસ્ટ કરો',
+      coords_help_html: 'બે દશાંશ સંખ્યાઓ પેસ્ટ કરો, જેમ કે <strong>19.0760, 72.8777</strong>, અથવા નીચે લખો.',
+      paste_coords: 'નિર્દેશાંકો પેસ્ટ કરો', paste_placeholder: 'અક્ષાંશ, રેખાંશ', use_these: 'આ વાપરો',
+      latitude: 'અક્ષાંશ', longitude: 'રેખાંશ', // app
+      use_entered: 'દાખલ કરેલા નિર્દેશાંકો વાપરો',
+      change_city: 'શહેર બદલો',
+      h24: '24-કલાકનો સમય', next: 'આગામી', // app
+      print_heading: 'સમયપત્રક છાપો', this_week: 'આ અઠવાડિયું', seven_days: '7 દિવસ',
+      this_month: 'આ મહિનો', every_day: 'દરરોજ', hijri_month: 'હિજરી મહિનો', calendar: 'કૅલેન્ડર', preparing: 'તૈયાર થઈ રહ્યું છે…',
+      settings: 'ગણતરીની સેટિંગ્સ',
+      hijri_help: 'હિજરી તારીખ તમારા સ્થાન માટે એપની ચંદ્રદર્શનની ગણતરીને અનુસરે છે અને સ્થાનિક જાહેરાતથી એક દિવસ જુદી હોઈ શકે છે.',
+      method: 'પદ્ધતિ',
+      method_QUM: 'કુમ', method_TEHRAN: 'તેહરાન', method_CUSTOM: 'કસ્ટમ ખૂણા', // app
+      method_line_QUM: 'કુમ પદ્ધતિ', method_line_TEHRAN: 'તેહરાન પદ્ધતિ', method_line_CUSTOM: 'કસ્ટમ ખૂણા',
+      zone_time: '{zone} સમય',
+      method_help: 'તમારી મસ્જિદ જે પદ્ધતિની ભલામણ કરે તે વાપરો.',
+      fajr_angle: 'ફજરનો ખૂણો', isha_angle: 'ઇશાનો ખૂણો', maghrib_angle: 'મગરિબનો ખૂણો', // app
+      high_lat: 'ઉચ્ચ અક્ષાંશ નિયમ', hl_AUTO: 'આપમેળે (ભલામણ કરેલ)', hl_MIDDLE_OF_NIGHT: 'રાતનું મધ્ય',
+      hl_SEVENTH_OF_NIGHT: 'રાતનો સાતમો ભાગ', hl_TWILIGHT_ANGLE: 'ખૂણા-આધારિત', // app
+      time_zone: 'સમય ઝોન', zone_help: 'મૂળભૂત રીતે તમારા ઉપકરણનો સમય ઝોન વપરાય છે.',
+      include_imsak: 'ઇમ્સાક બતાવો', imsak_minutes: 'ફજર પહેલાં કેટલી મિનિટ',
+      adjust_summary: 'દરેક સમય અલગથી ગોઠવો', adjust_help: 'સ્થાનિક સમયપત્રક સાથે મેળ કરવા મિનિટ ઉમેરો અથવા બાદ કરો.',
+      update: 'સમયપત્રક અપડેટ કરો',
+      privacy: 'ગોપનીયતા નીતિ', contact: 'મારો સંપર્ક કરો', // app
+      app_cta_note: 'દરેક નમાઝના સમયે યાદ અપાવણી, અને ઇન્ટરનેટ વગર પણ ચાલે છે.',
+      // Prayer names: app (Shari'i midnight is the app's "અડધી રાત" with its "શરઈ")
+      p_IMSAK: 'ઇમ્સાક', p_FAJR: 'ફજર', p_SUNRISE: 'તુલૂ', p_DHUHR: 'ઝોહર', p_ASR: 'અસર', p_SUNSET: 'ગુરૂબ',
+      p_MAGHRIB: 'મગરિબ', p_ISHA: 'ઇશા', p_MIDNIGHT: 'શરઈ અડધી રાત', p_MIDNIGHT_short: 'અડધી રાત',
+      ah: 'હિ.',
+      no_city: 'કોઈ શહેર મળ્યું નહીં. જોડણી તપાસો, અથવા નીચે નિર્દેશાંકો દાખલ કરો.', // app
+      loading_cities: 'શહેરો લોડ થઈ રહ્યાં છે…',
+      no_geolocation: 'અહીં સ્થાન ઉપલબ્ધ નથી. તમારું શહેર લખો અથવા નિર્દેશાંકો દાખલ કરો.',
+      geolocation_failed: 'તમારું સ્થાન મળી શક્યું નહીં. તેના બદલે તમારું શહેર લખો અથવા નિર્દેશાંકો દાખલ કરો.',
+      my_location: 'મારું સ્થાન', coordinates_label: 'નિર્દેશાંકો {lat}, {lon}',
+      enter_both: 'અક્ષાંશ અને રેખાંશ બંને દાખલ કરો.',
+      coords_range: '-90 થી 90 વચ્ચે અક્ષાંશ અને -180 થી 180 વચ્ચે રેખાંશ દાખલ કરો.',
+      paste_two: 'બે દશાંશ સંખ્યાઓ પેસ્ટ કરો: અક્ષાંશ, રેખાંશ.',
+      bad_zone: 'માન્ય સમય ઝોન દાખલ કરો, જેમ કે Asia/Kolkata.',
+      approx_maghrib: 'વર્ષના આ સમયે સૂર્ય મગરિબના ખૂણા સુધી પહોંચતો નથી. મગરિબ રાતના સૌથી ઊંડા બિંદુ પર રાખવામાં આવે છે.',
+      approx_angle: 'વર્ષના આ સમયે સૂર્ય પસંદ કરેલા ખૂણાઓમાંથી એક સુધી પહોંચતો નથી. ગણતરી ઉપરનો ઉચ્ચ અક્ષાંશ નિયમ વાપરે છે.',
+      err_engine: 'નમાઝના સમયની ગણતરી લોડ થઈ નહીં. પેજ રિફ્રેશ કરો અને ફરી પ્રયાસ કરો.',
+      err_engine_net: 'નમાઝના સમયની ગણતરી લોડ થઈ નહીં. તમારું ઇન્ટરનેટ કનેક્શન તપાસો અને ફરી પ્રયાસ કરો.',
+      err_angle: '{name}નો ખૂણો 1 થી 30 ડિગ્રી વચ્ચે હોવો જોઈએ.',
+      err_maghrib_angle: 'મગરિબનો ખૂણો 0 અથવા 1 થી 30 ડિગ્રી વચ્ચે હોવો જોઈએ.',
+      err_imsak: 'ઇમ્સાક ફજર પહેલાં 0 થી 120 મિનિટ વચ્ચે હોવો જોઈએ.',
+      err_adjust: 'સમયનું સમાયોજન -120 થી 120 મિનિટ વચ્ચે હોવું જોઈએ.',
+      err_search: 'શહેર શોધ ઉપલબ્ધ નથી. તમારું કનેક્શન તપાસો, અથવા નિર્દેશાંકો દાખલ કરો.',
+      sheet_school: 'જાફરી', get_app: 'એપ મેળવો', on_stores: 'Shia Namaz, App Store અને Google Play પર',
+      col_day: 'દિવસ', col_date: 'તારીખ', col_hijri: 'હિજરી',
+      sheet_hijri_note: 'હિજરી તારીખો એપની ચંદ્રદર્શનની ગણતરીને અનુસરે છે અને સ્થાનિક જાહેરાતથી એક દિવસ જુદી હોઈ શકે છે.',
+      sheet_hijri_note_city: 'હિજરી તારીખો આ શહેર માટે એપની ચંદ્રદર્શનની ગણતરીને અનુસરે છે અને સ્થાનિક જાહેરાતથી એક દિવસ જુદી હોઈ શકે છે.',
+      sheet_occasions_note: 'પ્રસંગો સામાન્ય જાફરી રિવાયતોને અનુસરે છે.',
+      sheet_approx_maghrib: 'આમાંના કેટલાક દિવસોએ સૂર્ય મગરિબના ખૂણા સુધી પહોંચતો નથી; મગરિબ રાતના સૌથી ઊંડા બિંદુ પર રાખવામાં આવે છે.',
+      sheet_approx_angle: 'આમાંના કેટલાક દિવસોએ સૂર્ય ખૂણાઓમાંથી એક સુધી પહોંચતો નથી; તે સમય ઉચ્ચ અક્ષાંશ નિયમથી ગણાય છે.',
+    },
+    // French: no app translation, like German; written for the site (2026-11-22), awaits a native reader.
+    // A no-break space ( ) goes before ":" and ";", as French typesetting has it.
+    fr: {
+      title: 'Shia Namaz | Horaires de prière pour votre ville',
+      description: 'Horaires de prière ja‘farites pour votre position. Imprimez le calendrier ou enregistrez-le en PDF.',
+      language: 'Langue', guides: 'Guides',
+      nav_times: 'Horaires de prière', get_app_long: 'Télécharger l’app', get_app_short: 'App',
+      your_city: 'Votre ville', show_times: 'Afficher les horaires',
+      heading: 'Vos horaires de prière',
+      intro_html: 'Horaires ja‘farites calculés par le moteur de l’application Shia Namaz, avec <a href="/articles/why-maghrib-after-sunset">le Maghrib après le coucher du soleil</a>. Votre ville est enregistrée sur cet appareil.',
+      type_city: 'Saisissez votre ville', search_placeholder: 'Commencez à saisir le nom d’une ville', city_choices: 'Villes proposées',
+      use_location: 'Utiliser ma position', finding_location: 'Recherche de votre position…',
+      coords_summary: 'Saisir ou coller des coordonnées',
+      coords_help_html: 'Collez deux nombres décimaux, par exemple <strong>48.8566, 2.3522</strong>, ou saisissez-les ci-dessous.',
+      paste_coords: 'Coller des coordonnées', paste_placeholder: 'Latitude, longitude', use_these: 'Utiliser',
+      latitude: 'Latitude', longitude: 'Longitude', use_entered: 'Utiliser les coordonnées saisies',
+      change_city: 'Changer de ville', h24: '24 h', next: 'Prochaine',
+      print_heading: 'Imprimer un calendrier', this_week: 'Cette semaine', seven_days: '7 jours',
+      this_month: 'Ce mois-ci', every_day: 'Chaque jour', hijri_month: 'Mois hégirien', calendar: 'Calendrier', preparing: 'Préparation…',
+      settings: 'Paramètres de calcul',
+      hijri_help: 'La date hégirienne suit le calcul de visibilité du croissant fait par l’application pour votre position et peut différer d’un jour des annonces locales.',
+      method: 'Méthode', method_QUM: 'Qom', method_TEHRAN: 'Téhéran', method_CUSTOM: 'Angles personnalisés',
+      method_line_QUM: 'Méthode de Qom', method_line_TEHRAN: 'Méthode de Téhéran', method_line_CUSTOM: 'Angles personnalisés',
+      zone_time: 'Fuseau {zone}',
+      method_help: 'Utilisez la méthode recommandée par votre mosquée.',
+      fajr_angle: 'Angle du Fajr', isha_angle: 'Angle de l’Isha', maghrib_angle: 'Angle du Maghrib',
+      high_lat: 'Règle des hautes latitudes', hl_AUTO: 'Automatique (recommandé)', hl_MIDDLE_OF_NIGHT: 'Milieu de la nuit',
+      hl_SEVENTH_OF_NIGHT: 'Septième de la nuit', hl_TWILIGHT_ANGLE: 'Selon l’angle',
+      time_zone: 'Fuseau horaire', zone_help: 'Le fuseau horaire de votre appareil est utilisé par défaut.',
+      include_imsak: 'Afficher l’Imsak', imsak_minutes: 'Minutes avant le Fajr',
+      adjust_summary: 'Ajuster chaque horaire', adjust_help: 'Ajoutez ou retirez des minutes pour correspondre à un calendrier local.',
+      update: 'Mettre à jour le calendrier', privacy: 'Politique de confidentialité', contact: 'Me contacter',
+      app_cta_note: 'Un rappel à chaque prière, et elle fonctionne hors ligne.',
+      p_IMSAK: 'Imsak', p_FAJR: 'Fajr', p_SUNRISE: 'Lever du soleil', p_DHUHR: 'Dhuhr', p_ASR: 'Asr', p_SUNSET: 'Coucher du soleil',
+      p_MAGHRIB: 'Maghrib', p_ISHA: 'Isha', p_MIDNIGHT: 'Minuit shar‘i', p_MIDNIGHT_short: 'Minuit',
+      // Column heads on printed sheets, where the full words don't fit.
+      p_SUNRISE_sheet: 'Lever', p_SUNSET_sheet: 'Coucher',
+      ah: 'H',
+      no_city: 'Aucune ville trouvée. Essayez une autre orthographe ou saisissez des coordonnées.',
+      loading_cities: 'Chargement des villes…',
+      no_geolocation: 'La localisation n’est pas disponible ici. Saisissez votre ville ou des coordonnées.',
+      geolocation_failed: 'Impossible d’obtenir votre position. Saisissez plutôt votre ville ou des coordonnées.',
+      my_location: 'Ma position', coordinates_label: 'Coordonnées {lat}, {lon}',
+      enter_both: 'Saisissez la latitude et la longitude.',
+      coords_range: 'Saisissez une latitude entre -90 et 90 et une longitude entre -180 et 180.',
+      paste_two: 'Collez deux nombres décimaux : latitude, longitude.',
+      bad_zone: 'Saisissez un fuseau horaire valide, par exemple Europe/Paris.',
+      approx_maghrib: 'À cette période de l’année, le soleil n’atteint pas l’angle du Maghrib. Le Maghrib est fixé au point le plus profond de la nuit.',
+      approx_angle: 'À cette période de l’année, le soleil n’atteint pas l’un des angles choisis. Le calcul applique la règle des hautes latitudes ci-dessus.',
+      err_engine: 'Le moteur de calcul des horaires ne s’est pas chargé. Actualisez la page et réessayez.',
+      err_engine_net: 'Le moteur de calcul des horaires ne s’est pas chargé. Vérifiez votre connexion et réessayez.',
+      err_angle: '{name} : l’angle doit être compris entre 1 et 30 degrés.',
+      err_maghrib_angle: 'L’angle du Maghrib doit être 0 ou compris entre 1 et 30 degrés.',
+      err_imsak: 'L’Imsak doit tomber entre 0 et 120 minutes avant le Fajr.',
+      err_adjust: 'Les ajustements doivent être compris entre -120 et 120 minutes.',
+      err_search: 'La recherche de villes est indisponible. Vérifiez votre connexion ou saisissez des coordonnées.',
+      sheet_school: 'Ja‘farite', get_app: 'Télécharger l’app', on_stores: 'Shia Namaz sur l’App Store et Google Play',
+      col_day: 'Jour', col_date: 'Date', col_hijri: 'Hégire',
+      sheet_hijri_note: 'Les dates hégiriennes suivent le calcul de visibilité du croissant fait par l’application et peuvent différer d’un jour des annonces locales.',
+      sheet_hijri_note_city: 'Les dates hégiriennes suivent le calcul de visibilité du croissant fait par l’application pour cette ville et peuvent différer d’un jour des annonces locales.',
+      sheet_occasions_note: 'Les commémorations suivent les récits ja‘farites les plus répandus.',
+      sheet_approx_maghrib: 'Certains de ces jours, le soleil n’atteint pas l’angle du Maghrib ; le Maghrib est fixé au point le plus profond de la nuit.',
+      sheet_approx_angle: 'Certains de ces jours, le soleil n’atteint pas l’un des angles ; ces horaires suivent la règle des hautes latitudes.',
+    },
   };
 
-  // Hijri months: English as the engine has them; the others but German from the app.
+  // Hijri months: English as the engine has them; the others but German and French from the app.
   const HIJRI = {
     en: ['Muharram', 'Safar', 'Rabiʻ al-Awwal', 'Rabiʻ al-Thani', 'Jumada al-Ula', 'Jumada al-Akhira', 'Rajab', 'Shaʻban', 'Ramadan', 'Shawwal', 'Dhu al-Qaʻda', 'Dhu al-Hijja'],
     az: ['Məhərrəm', 'Səfər', 'Rəbiüləvvəl', 'Rəbiülaxır', 'Cəmadiyələvvəl', 'Cəmadiyəlaxır', 'Rəcəb', 'Şaban', 'Ramazan', 'Şəvval', 'Zilqədə', 'Zilhiccə'],
@@ -489,6 +624,8 @@
     ar: ['محرّم', 'صفر', 'ربيع الأول', 'ربيع الثاني', 'جمادى الأولى', 'جمادى الآخرة', 'رجب', 'شعبان', 'رمضان', 'شوّال', 'ذو القعدة', 'ذو الحجة'],
     fa: ['محرم', 'صفر', 'ربیع\u200cالاول', 'ربیع\u200cالثانی', 'جمادی\u200cالاول', 'جمادی\u200cالثانی', 'رجب', 'شعبان', 'رمضان', 'شوال', 'ذی\u200cالقعده', 'ذی\u200cالحجه'],
     ur: ['محرم', 'صفر', 'ربیع الاول', 'ربیع الثانی', 'جمادی الاول', 'جمادی الثانی', 'رجب', 'شعبان', 'رمضان', 'شوال', 'ذی القعدہ', 'ذی الحجہ'],
+    gu: ['મોહર્રમ', 'સફર', 'રબીઉલ અવ્વલ', 'રબીઉલ આખર', 'જમાદિલ અવ્વલ', 'જમાદિલ આખર', 'રજબ', 'શાબાન', 'રમઝાન', 'શવ્વાલ', 'ઝિલ્કાદ', 'ઝિલ્હજ'],
+    fr: ['Mouharram', 'Safar', 'Rabi‘ al-awwal', 'Rabi‘ ath-thani', 'Joumada al-oula', 'Joumada ath-thania', 'Rajab', 'Cha‘bane', 'Ramadan', 'Chawwal', 'Dhou al-qi‘da', 'Dhou al-hijja'],
   };
 
   // Dates. Browsers format German and Turkish dates themselves, but many ship without
