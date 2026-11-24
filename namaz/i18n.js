@@ -1,5 +1,5 @@
 // The site's languages. Each timetable page has its own address per language (/, /az/, /tr/,
-// /de/, /fr/, /ar/, /fa/, /ur/, /gu/, /hi/, /ru/, built by namaz/tools/build-pages.js with this file's text already in the HTML) and
+// /de/, /fr/, /ar/, /fa/, /ur/, /gu/, /hi/, /ru/, /sw/, built by namaz/tools/build-pages.js with this file's text already in the HTML) and
 // says which in <html data-page-lang>. The English home page's head script sends a visitor
 // on to their language's page: ?lang= in the link, then their last choice on this device,
 // then the browser's language (reviewed languages only, see REVIEWED).
@@ -11,16 +11,16 @@
 // as Azerbaijani and Turkish, plus its site text (reviewed 2026-11-06), and reads right to left:
 // its page says dir="rtl" and styles.css uses start/end, not left/right.
 (() => {
-  const LANGS = { en: 'English', az: 'Azərbaycanca', tr: 'Türkçe', de: 'Deutsch', fr: 'Français', ar: 'العربية', fa: 'فارسی', ur: 'اردو', gu: 'ગુજરાતી', hi: 'हिन्दी', ru: 'Русский' };
+  const LANGS = { en: 'English', az: 'Azərbaycanca', tr: 'Türkçe', de: 'Deutsch', fr: 'Français', ar: 'العربية', fa: 'فارسی', ur: 'اردو', gu: 'ગુજરાતી', hi: 'हिन्दी', ru: 'Русский', sw: 'Kiswahili' };
   // Arabic, Persian and Urdu dates in Western digits (5 نوفمبر), matching the times, which are always
   // written so. Persian asks for the Gregorian calendar: the browser's default for fa is the solar one.
-  const LOCALES = { en: undefined, az: 'az-Latn-AZ', tr: 'tr-TR', de: 'de-DE', fr: 'fr-FR', ar: 'ar-u-nu-latn', fa: 'fa-u-ca-gregory-nu-latn', ur: 'ur-u-nu-latn', gu: 'gu-IN', hi: 'hi-IN', ru: 'ru-RU' };
+  const LOCALES = { en: undefined, az: 'az-Latn-AZ', tr: 'tr-TR', de: 'de-DE', fr: 'fr-FR', ar: 'ar-u-nu-latn', fa: 'fa-u-ca-gregory-nu-latn', ur: 'ur-u-nu-latn', gu: 'gu-IN', hi: 'hi-IN', ru: 'ru-RU', sw: 'sw' };
   const RTL = new Set(['ar', 'fa', 'ur']);
   // Languages the browser's own setting may pick. A language joins once a native reader has
   // reviewed its text; until then it is reachable only by the switcher or a ?lang= link.
   // The home page's head script (namaz/templates/timetable.html) lists the same codes (L), and
   // every language in LANGS (A), which a ?lang= link or the visitor's last choice may pick.
-  // fr, gu, hi, ru: live but unreviewed since 2026-11-22; the owner's corrections are still to come
+  // fr, gu, hi, ru: live but unreviewed since 2026-11-22; sw since 2026-11-24; the owner's corrections are still to come
   // (sheets in namaz/content/translation-review/). Add each here once its corrections are in.
   const REVIEWED = new Set(['en', 'az', 'tr', 'de', 'ar', 'fa', 'ur']);  // az, tr, de reviewed 2026-11-03, ar 2026-11-06, fa, ur 2026-11-14
 
@@ -738,9 +738,71 @@
       sheet_approx_maghrib: 'В некоторые из этих дней солнце не опускается до угла магриба; магриб назначается на самую глубокую точку ночи.',
       sheet_approx_angle: 'В некоторые из этих дней солнце не достигает одного из углов; это время рассчитано по правилу высоких широт.',
     },
+    // Swahili: written for the site (2026-11-24), awaits a native reader. East African Shia usage:
+    // Alfajiri, Adhuhuri, Alasiri, Magharibi, Isha, as the app's Swahili (added the same day).
+    sw: {
+      title: 'Shia Namaz | Nyakati za sala katika mji wako',
+      description: "Nyakati za sala za Shia (Ja'fari) kwa mahali ulipo. Chapisha ratiba au uihifadhi kama PDF.",
+      language: 'Lugha', guides: 'Miongozo',
+      nav_times: 'Nyakati za sala', get_app_long: 'Pakua programu', get_app_short: 'Pakua',
+      your_city: 'Mji wako', show_times: 'Onyesha nyakati',
+      heading: 'Pata nyakati zako za sala',
+      intro_html: 'Nyakati za Ja’fari kutoka kwenye injini ya programu ya Shia Namaz yenyewe, <a href="/articles/why-maghrib-after-sunset">Magharibi baada ya machweo</a>. Tutakumbuka mji wako kwenye kifaa hiki.',
+      type_city: 'Andika mji wako', search_placeholder: 'Anza kuandika jina la mji', city_choices: 'Chaguo za miji',
+      use_location: 'Tumia mahali nilipo', finding_location: 'Inatafuta mahali ulipo…',
+      coords_summary: 'Weka au bandika viwianishi',
+      coords_help_html: 'Bandika namba mbili za desimali, kama <strong>-6.7924, 39.2083</strong>, au uziandike hapa chini.',
+      paste_coords: 'Bandika viwianishi', paste_placeholder: 'Latitudo, longitudo', use_these: 'Tumia hivi',
+      latitude: 'Latitudo', longitude: 'Longitudo', use_entered: 'Tumia viwianishi ulivyoweka',
+      change_city: 'Badilisha mji', h24: 'Saa 24', next: 'Inayofuata',
+      print_heading: 'Chapisha ratiba', this_week: 'Wiki hii', seven_days: 'Siku 7',
+      this_month: 'Mwezi huu', every_day: 'Kila siku', hijri_month: 'Mwezi wa Hijria', calendar: 'Kalenda', preparing: 'Inaandaa…',
+      settings: 'Mipangilio ya hesabu',
+      hijri_help: 'Tarehe ya Hijria inafuata hesabu ya programu ya kuonekana kwa mwezi mwandamo kwa mahali ulipo, na inaweza kutofautiana na matangazo ya eneo lako kwa siku moja.',
+      method: 'Mbinu', method_QUM: 'Qom', method_TEHRAN: 'Tehran', method_CUSTOM: 'Pembe zako',
+      method_line_QUM: 'Mbinu ya Qom', method_line_TEHRAN: 'Mbinu ya Tehran', method_line_CUSTOM: 'Pembe zako',
+      zone_time: 'Nyakati kwa saa za {zone}',
+      method_help: 'Tumia mbinu ambayo msikiti wako unapendekeza.',
+      fajr_angle: 'Pembe ya Alfajiri', isha_angle: 'Pembe ya Isha', maghrib_angle: 'Pembe ya Magharibi',
+      high_lat: 'Kanuni ya latitudo za juu', hl_AUTO: 'Kiotomatiki (inapendekezwa)', hl_MIDDLE_OF_NIGHT: 'Katikati ya usiku',
+      hl_SEVENTH_OF_NIGHT: 'Sehemu ya saba ya usiku', hl_TWILIGHT_ANGLE: 'Kwa pembe',
+      time_zone: 'Saa za eneo', zone_help: 'Kwa chaguo-msingi, saa za eneo za kifaa chako hutumika.',
+      include_imsak: 'Onyesha Imsak', imsak_minutes: 'Dakika kabla ya Alfajiri',
+      adjust_summary: 'Rekebisha kila wakati', adjust_help: 'Ongeza au punguza dakika ili ulingane na ratiba ya eneo lako.',
+      update: 'Sasisha ratiba', privacy: 'Sera ya faragha', contact: 'Wasiliana nami',
+      app_cta_note: 'Kikumbusho kila wakati wa sala, inafanya kazi bila intaneti.',
+      p_IMSAK: 'Imsak', p_FAJR: 'Alfajiri', p_SUNRISE: 'Macheo', p_DHUHR: 'Adhuhuri', p_ASR: 'Alasiri', p_SUNSET: 'Machweo',
+      p_MAGHRIB: 'Magharibi', p_ISHA: 'Isha', p_MIDNIGHT: 'Nusu ya usiku ya Kisharia', p_MIDNIGHT_short: 'Nusu ya usiku',
+      ah: 'H',
+      no_city: 'Hakuna mji uliopatikana. Jaribu tahajia nyingine au weka viwianishi.',
+      loading_cities: 'Inapakia miji…',
+      no_geolocation: 'Kutafuta mahali hakupatikani hapa. Andika mji au viwianishi.',
+      geolocation_failed: 'Hatukuweza kupata mahali ulipo. Andika mji au viwianishi.',
+      my_location: 'Mahali nilipo', coordinates_label: 'Viwianishi {lat}, {lon}',
+      enter_both: 'Weka latitudo na longitudo zote mbili.',
+      coords_range: 'Weka latitudo kati ya -90 na 90 na longitudo kati ya -180 na 180.',
+      paste_two: 'Bandika namba mbili za desimali: latitudo na longitudo.',
+      bad_zone: 'Weka saa za eneo sahihi, kama Africa/Dar_es_Salaam.',
+      approx_maghrib: 'Wakati huu wa mwaka jua halishuki hadi pembe ya Magharibi. Magharibi inawekwa kwenye sehemu yenye giza zaidi ya usiku.',
+      approx_angle: 'Wakati huu wa mwaka jua halifikii moja ya pembe ulizochagua. Hesabu inatumia kanuni ya latitudo za juu iliyo hapo juu.',
+      err_engine: 'Hesabu ya nyakati za sala haikuweza kupakiwa. Onyesha upya ukurasa na ujaribu tena.',
+      err_engine_net: 'Hesabu ya nyakati za sala haikuweza kupakiwa. Angalia muunganisho wako na ujaribu tena.',
+      err_angle: '{name}: pembe lazima iwe kati ya nyuzi 1 na 30.',
+      err_maghrib_angle: 'Pembe ya Magharibi lazima iwe 0 au kati ya nyuzi 1 na 30.',
+      err_imsak: 'Imsak lazima iwe dakika 0 hadi 120 kabla ya Alfajiri.',
+      err_adjust: 'Marekebisho lazima yawe kati ya dakika -120 na 120.',
+      err_search: 'Utafutaji wa miji haupatikani. Angalia muunganisho wako au weka viwianishi.',
+      sheet_school: "Ja'fari", get_app: 'Pakua programu', on_stores: 'Shia Namaz kwenye App Store na Google Play',
+      col_day: 'Siku', col_date: 'Tarehe', col_hijri: 'Hijria',
+      sheet_hijri_note: 'Tarehe za Hijria zinafuata hesabu ya programu ya kuonekana kwa mwezi mwandamo, na zinaweza kutofautiana na matangazo ya eneo lako kwa siku moja.',
+      sheet_hijri_note_city: 'Tarehe za Hijria zinafuata hesabu ya programu ya kuonekana kwa mwezi mwandamo kwa mji huu, na zinaweza kutofautiana na matangazo ya eneo lako kwa siku moja.',
+      sheet_occasions_note: "Matukio yanafuata riwaya za kawaida za Ja'fari.",
+      sheet_approx_maghrib: 'Katika baadhi ya siku hizi jua halishuki hadi pembe ya Magharibi; Magharibi inawekwa kwenye sehemu yenye giza zaidi ya usiku.',
+      sheet_approx_angle: 'Katika baadhi ya siku hizi jua halifikii moja ya pembe; nyakati hizo zimehesabiwa kwa kanuni ya latitudo za juu.',
+    },
   };
 
-  // Hijri months: English as the engine has them; the others but German, French, Hindi and Russian from the app.
+  // Hijri months: English as the engine has them; the others but German, French, Hindi, Russian and Swahili from the app.
   const HIJRI = {
     en: ['Muharram', 'Safar', 'Rabiʻ al-Awwal', 'Rabiʻ al-Thani', 'Jumada al-Ula', 'Jumada al-Akhira', 'Rajab', 'Shaʻban', 'Ramadan', 'Shawwal', 'Dhu al-Qaʻda', 'Dhu al-Hijja'],
     az: ['Məhərrəm', 'Səfər', 'Rəbiüləvvəl', 'Rəbiülaxır', 'Cəmadiyələvvəl', 'Cəmadiyəlaxır', 'Rəcəb', 'Şaban', 'Ramazan', 'Şəvval', 'Zilqədə', 'Zilhiccə'],
@@ -753,6 +815,7 @@
     fr: ['Mouharram', 'Safar', 'Rabi‘ al-awwal', 'Rabi‘ ath-thani', 'Joumada al-oula', 'Joumada ath-thania', 'Rajab', 'Cha‘bane', 'Ramadan', 'Chawwal', 'Dhou al-qi‘da', 'Dhou al-hijja'],
     hi: ['मुहर्रम', 'सफ़र', 'रबीउल अव्वल', 'रबीउस्सानी', 'जमादिल अव्वल', 'जमादिस्सानी', 'रजब', 'शाबान', 'रमज़ान', 'शव्वाल', 'ज़िल-क़ादा', 'ज़िल-हिज्जा'],
     ru: ['Мухаррам', 'Сафар', 'Раби аль-авваль', 'Раби ас-сани', 'Джумада аль-уля', 'Джумада ас-сания', 'Раджаб', 'Шаабан', 'Рамадан', 'Шавваль', 'Зуль-када', 'Зуль-хиджа'],
+    sw: ['Muharram', 'Safar', 'Rabiul Awwal', 'Rabiul Akhir', 'Jamadul Awwal', 'Jamadul Akhir', 'Rajab', 'Shaaban', 'Ramadhani', 'Shawwal', 'Dhul Qaada', 'Dhul Hijja'],
   };
 
   // Dates. Browsers format German and Turkish dates themselves, but many ship without

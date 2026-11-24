@@ -4,6 +4,9 @@
 // to this city's times. Each sheet fills the page: the table stretches and the app line
 // sits at the foot of the paper.
 (() => {
+  // Swahili weekdays, Sunday first, as its calendars abbreviate them: the browser's data has no
+  // short forms for sw and gives "Jumapili" for 'short'.
+  const SW_SHORT = ['Jpi', 'Jtt', 'Jnn', 'Jtn', 'Alh', 'Iju', 'Jmo'];
   // Sheets print in the page's language (i18n.js); the column heads use the short names.
   // Right to left (Arabic), the site's address is isolated so it keeps its place in the line.
   const t = (key, vars) => NamazI18n.t(key, vars);
@@ -65,7 +68,10 @@
     const ids = days[0].rows.map(row => row.id);
     const time = clock(ctx.zone, ctx.h24);
     // Persian has no short weekday names; its calendars use one letter (ش ی د ...).
-    const weekday = format({ weekday: compact ? (NamazI18n.lang === 'fa' ? 'narrow' : 'short') : 'long' });
+    // Swahili has no short ones either ("Jumapili"); its calendars abbreviate to three letters.
+    const weekday = compact && NamazI18n.lang === 'sw'
+      ? { format: d => SW_SHORT[d.getUTCDay()] }
+      : format({ weekday: compact ? (NamazI18n.lang === 'fa' ? 'narrow' : 'short') : 'long' });
     const dayMonth = format({ day: 'numeric', month: 'short' });
     const head = `<thead><tr><th class="col-day" scope="col">${esc(t(compact ? 'col_date' : 'col_day'))}</th>${compact ? `<th class="col-hijri" scope="col">${esc(t('col_hijri'))}</th>` : ''}${ids.map(id => { const cls = [MARKERS.has(id) ? 'marker' : '', name(id).length > 8 && !name(id).includes(' ') ? 'long' : ''].filter(Boolean).join(' '); return `<th scope="col"${cls ? ` class="${cls}"` : ''}>${esc(name(id))}</th>`; }).join('')}</tr></thead>`;
     const rows = days.map((day, index) => {
@@ -126,7 +132,7 @@
     const byDay = {};
     for (const item of occasions.items) (byDay[item.day] ||= []).push(item);
     const short = format({ day: 'numeric', month: 'short' });
-    const weekdays = Array.from({ length: 7 }, (_, i) => format({ weekday: 'short' }).format(new Date(Date.UTC(2023, 0, 1 + i, 12))));
+    const weekdays = Array.from({ length: 7 }, (_, i) => NamazI18n.lang === 'sw' ? SW_SHORT[i] : format({ weekday: 'short' }).format(new Date(Date.UTC(2023, 0, 1 + i, 12))));
     // A grid of boxes, each drawing its own right and bottom rule (the first column its left
     // rule too). Collapsed table borders drop out of Chrome's print preview at some scales.
     // Occasions are written in full at the foot of their day.
