@@ -54,7 +54,6 @@
       include_imsak: 'Include Imsak', imsak_minutes: 'Minutes before Fajr',
       adjust_summary: 'Adjust individual times', adjust_help: 'Add or subtract minutes to match a local timetable.',
       update: 'Update timetable', privacy: 'Privacy policy', contact: 'Contact me',
-      app_cta_note: 'Reminders at each prayer, and it works offline.',
       p_IMSAK: 'Imsak', p_FAJR: 'Fajr', p_SUNRISE: 'Sunrise', p_DHUHR: 'Dhuhr', p_ASR: 'Asr', p_SUNSET: 'Sunset',
       p_MAGHRIB: 'Maghrib', p_ISHA: 'Isha', p_MIDNIGHT: "Shari'i midnight", p_MIDNIGHT_short: 'Midnight',
       ah: 'AH', period_AM: 'AM', period_PM: 'PM',
@@ -309,7 +308,6 @@
       include_imsak: 'إظهار الإمساك', imsak_minutes: 'عدد الدقائق قبل الفجر',
       adjust_summary: 'تعديل كل وقت على حدة', adjust_help: 'أضف دقائق إلى الأوقات أو اطرح منها لمطابقتها مع جدول المواقيت المحلي.',
       update: 'حدّث الجدول', privacy: 'سياسة الخصوصية', contact: 'تواصل معي',
-      app_cta_note: 'تنبيهات عند كل صلاة، ويعمل التطبيق دون اتصال بالإنترنت.',
       // Prayer names: app
       p_IMSAK: 'الإمساك', p_FAJR: 'الفجر', p_SUNRISE: 'الشروق', p_DHUHR: 'الظهر', p_ASR: 'العصر', p_SUNSET: 'الغروب',
       p_MAGHRIB: 'المغرب', p_ISHA: 'العشاء', p_MIDNIGHT: 'منتصف الليل الشرعي', p_MIDNIGHT_short: 'منتصف الليل',
@@ -379,7 +377,6 @@
       include_imsak: 'نمایش زمان امساک', imsak_minutes: 'دقیقه پیش از فجر',
       adjust_summary: 'تنظیم جداگانه اوقات نماز', adjust_help: 'برای هماهنگی با جدول اوقات محلی، به هر وقت چند دقیقه اضافه کنید یا از آن کم کنید.',
       update: 'به‌روزرسانی جدول', privacy: 'سیاست حریم خصوصی', contact: 'تماس با من', // app
-      app_cta_note: 'برای هر نماز یادآوری دارد و بدون اینترنت هم کار می‌کند.',
       // Prayer names: app
       p_IMSAK: 'امساک', p_FAJR: 'فجر', p_SUNRISE: 'طلوع', p_DHUHR: 'ظهر', p_ASR: 'عصر', p_SUNSET: 'غروب',
       p_MAGHRIB: 'مغرب', p_ISHA: 'عشا', p_MIDNIGHT: 'نیمه‌شب شرعی', p_MIDNIGHT_short: 'نیمه‌شب',
@@ -448,7 +445,6 @@
       include_imsak: 'امساک دکھائیں', imsak_minutes: 'فجر سے کتنے منٹ پہلے',
       adjust_summary: 'ہر نماز کا وقت الگ سے ایڈجسٹ کریں', adjust_help: 'مقامی نظام الاوقات سے مطابقت کے لیے اوقات میں منٹ جمع یا منہا کریں۔',
       update: 'نظام الاوقات اپ ڈیٹ کریں', privacy: 'رازداری کی پالیسی', contact: 'مجھ سے رابطہ کریں', // app
-      app_cta_note: 'ہر نماز کے وقت یاد دہانی ملتی ہے، اور ایپ انٹرنیٹ کے بغیر بھی کام کرتی ہے۔',
       // Prayer names: app
       p_IMSAK: 'امساک', p_FAJR: 'فجر', p_SUNRISE: 'طلوع', p_DHUHR: 'ظہر', p_ASR: 'عصر', p_SUNSET: 'غروب',
       p_MAGHRIB: 'مغرب', p_ISHA: 'عشاء', p_MIDNIGHT: 'شرعی نصف شب', p_MIDNIGHT_short: 'نصف شب',
@@ -519,7 +515,6 @@
       adjust_summary: 'દરેક સમય અલગથી ગોઠવો', adjust_help: 'સ્થાનિક સમયપત્રક સાથે મેળ કરવા મિનિટ ઉમેરો અથવા બાદ કરો.',
       update: 'સમયપત્રક અપડેટ કરો',
       privacy: 'ગોપનીયતા નીતિ', contact: 'મારો સંપર્ક કરો', // app
-      app_cta_note: 'દરેક નમાઝના સમયે યાદ અપાવણી, અને ઇન્ટરનેટ વગર પણ ચાલે છે.',
       // Prayer names: app (Shari'i midnight is the app's "અડધી રાત" with its "શરઈ")
       p_IMSAK: 'ઇમ્સાક', p_FAJR: 'ફજર', p_SUNRISE: 'તુલૂ', p_DHUHR: 'ઝોહર', p_ASR: 'અસર', p_SUNSET: 'ગુરૂબ',
       p_MAGHRIB: 'મગરિબ', p_ISHA: 'ઇશા', p_MIDNIGHT: 'શરઈ અડધી રાત', p_MIDNIGHT_short: 'અડધી રાત',
@@ -582,7 +577,6 @@
       include_imsak: 'Afficher l’Imsak', imsak_minutes: 'Minutes avant le Fajr',
       adjust_summary: 'Ajuster chaque horaire', adjust_help: 'Ajoutez ou retirez des minutes pour correspondre aux horaires locaux.',
       update: 'Actualiser les horaires', privacy: 'Politique de confidentialité', contact: 'Me contacter',
-      app_cta_note: 'Un rappel à chaque prière, et elle fonctionne hors ligne.',
       p_IMSAK: 'Imsak', p_FAJR: 'Fajr', p_SUNRISE: 'Lever du soleil', p_DHUHR: 'Dhuhr', p_ASR: 'Asr', p_SUNSET: 'Coucher du soleil',
       p_MAGHRIB: 'Maghrib', p_ISHA: 'Isha', p_MIDNIGHT: 'Minuit shar‘i', p_MIDNIGHT_short: 'Minuit',
       // Column heads on printed sheets, where the full words don't fit.
@@ -646,7 +640,6 @@
       include_imsak: 'इम्साक दिखाएँ', imsak_minutes: 'फ़ज्र से कितने मिनट पहले',
       adjust_summary: 'हर समय अलग से बदलें', adjust_help: 'स्थानीय समय-सारणी से मिलाने के लिए मिनट जोड़ें या घटाएँ।',
       update: 'समय-सारणी अपडेट करें', privacy: 'गोपनीयता नीति', contact: 'मुझसे संपर्क करें',
-      app_cta_note: 'हर नमाज़ पर याद दिलाता है, और इंटरनेट के बिना भी चलता है।',
       p_IMSAK: 'इम्साक', p_FAJR: 'फ़ज्र', p_SUNRISE: 'तुलू', p_DHUHR: 'ज़ोहर', p_ASR: 'अस्र', p_SUNSET: 'ग़ुरूब',
       p_MAGHRIB: 'मग़रिब', p_ISHA: 'इशा', p_MIDNIGHT: 'शरई आधी रात', p_MIDNIGHT_short: 'आधी रात',
       ah: 'हि.',
@@ -707,7 +700,6 @@
       include_imsak: 'Показывать имсак', imsak_minutes: 'Минут до фаджра',
       adjust_summary: 'Настроить каждое время', adjust_help: 'Добавьте или вычтите минуты, чтобы время совпадало с местным расписанием.',
       update: 'Обновить расписание', privacy: 'Политика конфиденциальности', contact: 'Связаться со мной',
-      app_cta_note: 'Напоминания ко времени каждого намаза; приложение работает без интернета.',
       p_IMSAK: 'Имсак', p_FAJR: 'Фаджр', p_SUNRISE: 'Восход', p_DHUHR: 'Зухр', p_ASR: 'Аср', p_SUNSET: 'Закат',
       p_MAGHRIB: 'Магриб', p_ISHA: 'Иша', p_MIDNIGHT: 'Шариатская полночь', p_MIDNIGHT_short: 'Полночь',
       ah: 'г. х.',
@@ -769,7 +761,6 @@
       include_imsak: 'Onyesha Imsak', imsak_minutes: 'Dakika kabla ya Alfajiri',
       adjust_summary: 'Rekebisha kila wakati', adjust_help: 'Ongeza au punguza dakika ili nyakati zilingane na ratiba ya eneo lako.',
       update: 'Sasisha ratiba', privacy: 'Sera ya faragha', contact: 'Wasiliana nami',
-      app_cta_note: 'Vikumbusho wakati wa kila sala; inafanya kazi bila intaneti.',
       p_IMSAK: 'Imsak', p_FAJR: 'Alfajiri', p_SUNRISE: 'Macheo', p_DHUHR: 'Adhuhuri', p_ASR: 'Alasiri', p_SUNSET: 'Machweo',
       p_MAGHRIB: 'Magharibi', p_ISHA: 'Isha', p_MIDNIGHT: 'Nusu ya usiku ya Kisharia', p_MIDNIGHT_short: 'Nusu ya usiku',
       ah: 'H',
