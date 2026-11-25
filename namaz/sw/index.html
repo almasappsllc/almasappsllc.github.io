@@ -26,8 +26,8 @@
   <meta property="og:image" content="https://shianamaz.com/icon.png">
   <meta name="description" content="Nyakati za sala za Shia (Ja'fari) kwa mahali ulipo. Chapisha ratiba au uihifadhi kama PDF.">
   <title>Shia Namaz | Nyakati za sala katika mji wako</title>
-  <link rel="stylesheet" href="styles.css?v=804e68b3a5">
-  <link rel="preload" href="vendor/namaz-engine.js?v=804e68b3a5" as="script">
+  <link rel="stylesheet" href="styles.css?v=f67421b07c">
+  <link rel="preload" href="vendor/namaz-engine.js?v=f67421b07c" as="script">
 </head>
 <body class="app">
   <header class="site-header">
@@ -85,7 +85,7 @@
       <table id="prayer-table" class="prayer-table">
         <tbody id="prayer-rows"></tbody>
       </table>
-      <div class="app-cta"><p><strong data-i18n="get_app">Pakua programu</strong> <span data-i18n="app_cta_note">Kikumbusho kila wakati wa sala, inafanya kazi bila intaneti.</span></p><p class="app-cta-links"><a class="cta-link" href="https://apps.apple.com/app/namaz-shia-prayer-qibla/id6817066991?pt=129521517&amp;ct=home-sw&amp;mt=8" target="_blank" rel="noopener">App Store</a><a class="cta-link" href="https://play.google.com/store/apps/details?id=com.namaz.prayertimes&amp;referrer=utm_source%3Dshianamaz.com%26utm_medium%3Dweb%26utm_campaign%3Dhome-sw" target="_blank" rel="noopener">Google Play</a></p></div>
+      <div class="app-cta"><p><strong data-i18n="get_app">Pakua programu</strong> <span data-i18n="app_cta_note">Vikumbusho wakati wa kila sala; inafanya kazi bila intaneti.</span></p><p class="app-cta-links"><a class="cta-link" href="https://apps.apple.com/app/namaz-shia-prayer-qibla/id6817066991?pt=129521517&amp;ct=home-sw&amp;mt=8" target="_blank" rel="noopener">App Store</a><a class="cta-link" href="https://play.google.com/store/apps/details?id=com.namaz.prayertimes&amp;referrer=utm_source%3Dshianamaz.com%26utm_medium%3Dweb%26utm_campaign%3Dhome-sw" target="_blank" rel="noopener">Google Play</a></p></div>
       <section class="print-options" aria-labelledby="print-heading">
         <h2 id="print-heading" class="print-heading" data-i18n="print_heading">Chapisha ratiba</h2>
         <div class="print-choices">
@@ -98,7 +98,7 @@
         <summary data-i18n="settings">Mipangilio ya hesabu</summary>
         <p class="settings-help" data-i18n="hijri_help">Tarehe ya Hijria inafuata hesabu ya programu ya kuonekana kwa mwezi mwandamo kwa mahali ulipo, na inaweza kutofautiana na matangazo ya eneo lako kwa siku moja.</p>
         <label for="method" data-i18n="method">Mbinu</label>
-        <select id="method"><option value="QUM" data-i18n="method_QUM">Qom</option><option value="TEHRAN" data-i18n="method_TEHRAN">Tehran</option><option value="CUSTOM" data-i18n="method_CUSTOM">Pembe zako</option></select>
+        <select id="method"><option value="QUM" data-i18n="method_QUM">Qom</option><option value="TEHRAN" data-i18n="method_TEHRAN">Tehran</option><option value="CUSTOM" data-i18n="method_CUSTOM">Pembe maalum</option></select>
         <p class="settings-help" data-i18n="method_help">Tumia mbinu ambayo msikiti wako unapendekeza.</p>
         <div id="custom-angles" class="custom-angle-grid" hidden>
           <label for="fajr-angle"><span data-i18n="fajr_angle">Pembe ya Alfajiri</span><input id="fajr-angle" type="number" step="0.1" min="1" max="30" value="16"></label>
@@ -111,7 +111,7 @@
         <p class="settings-help" data-i18n="zone_help">Kwa chaguo-msingi, saa za eneo za kifaa chako hutumika.</p>
         <label class="checkbox-row"><input id="show-imsak" type="checkbox"> <span data-i18n="include_imsak">Onyesha Imsak</span></label>
         <label id="imsak-offset-wrap" for="imsak-offset" hidden><span data-i18n="imsak_minutes">Dakika kabla ya Alfajiri</span><input id="imsak-offset" type="number" min="0" max="120" step="1" value="0"></label>
-        <details class="adjustment-details"><summary data-i18n="adjust_summary">Rekebisha kila wakati</summary><p class="settings-help" data-i18n="adjust_help">Ongeza au punguza dakika ili ulingane na ratiba ya eneo lako.</p><div id="time-adjustments" class="adjustment-grid"></div></details>
+        <details class="adjustment-details"><summary data-i18n="adjust_summary">Rekebisha kila wakati</summary><p class="settings-help" data-i18n="adjust_help">Ongeza au punguza dakika ili nyakati zilingane na ratiba ya eneo lako.</p><div id="time-adjustments" class="adjustment-grid"></div></details>
         <button class="button update-button" id="update-times" type="button" data-i18n="update">Sasisha ratiba</button>
       </details>
       <p id="approximation-note" class="approximation" hidden></p>
@@ -123,10 +123,10 @@
     <a href="mailto:almasappsllc@gmail.com?subject=Shia%20Namaz%20website%20feedback" data-i18n="contact">Wasiliana nami</a>
     <span>© 2026 Almas Apps</span>
   </footer>
-  <script src="header.js?v=804e68b3a5" defer></script>
-  <script src="i18n.js?v=804e68b3a5" defer></script>
-  <script src="engine.js?v=804e68b3a5" defer></script>
-  <script src="print.js?v=804e68b3a5" defer></script>
-  <script src="app.js?v=804e68b3a5" defer></script>
+  <script src="header.js?v=f67421b07c" defer></script>
+  <script src="i18n.js?v=f67421b07c" defer></script>
+  <script src="engine.js?v=f67421b07c" defer></script>
+  <script src="print.js?v=f67421b07c" defer></script>
+  <script src="app.js?v=f67421b07c" defer></script>
 </body>
 </html>

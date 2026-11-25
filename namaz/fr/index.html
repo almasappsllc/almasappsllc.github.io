@@ -21,13 +21,13 @@
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Shia Namaz">
   <meta property="og:title" content="Shia Namaz | Horaires de prière pour votre ville">
-  <meta property="og:description" content="Horaires de prière ja‘farites pour votre position. Imprimez le calendrier ou enregistrez-le en PDF.">
+  <meta property="og:description" content="Horaires de prière selon le rite ja‘farite pour votre position. Imprimez les horaires ou enregistrez-les en PDF.">
   <meta property="og:url" content="https://shianamaz.com/fr/">
   <meta property="og:image" content="https://shianamaz.com/icon.png">
-  <meta name="description" content="Horaires de prière ja‘farites pour votre position. Imprimez le calendrier ou enregistrez-le en PDF.">
+  <meta name="description" content="Horaires de prière selon le rite ja‘farite pour votre position. Imprimez les horaires ou enregistrez-les en PDF.">
   <title>Shia Namaz | Horaires de prière pour votre ville</title>
-  <link rel="stylesheet" href="styles.css?v=804e68b3a5">
-  <link rel="preload" href="vendor/namaz-engine.js?v=804e68b3a5" as="script">
+  <link rel="stylesheet" href="styles.css?v=f67421b07c">
+  <link rel="preload" href="vendor/namaz-engine.js?v=f67421b07c" as="script">
 </head>
 <body class="app">
   <header class="site-header">
@@ -50,10 +50,10 @@
     <section id="location-screen" class="location-screen">
       <button id="saved-city" class="saved-city" type="button" hidden>
         <span class="saved-city-text"><span class="saved-city-label" data-i18n="your_city">Votre ville</span><strong id="saved-city-name"></strong><span id="saved-city-region"></span></span>
-        <span class="saved-city-go"><span data-i18n="show_times">Afficher les horaires</span> <span aria-hidden="true">→</span></span>
+        <span class="saved-city-go"><span data-i18n="show_times">Voir les horaires</span> <span aria-hidden="true">→</span></span>
       </button>
       <h1 data-i18n="heading">Vos horaires de prière</h1>
-      <p class="intro" data-i18n-html="intro_html">Horaires ja‘farites calculés par le moteur de l’application Shia Namaz, avec <a href="/articles/why-maghrib-after-sunset">le Maghrib après le coucher du soleil</a>. Votre ville est enregistrée sur cet appareil.</p>
+      <p class="intro" data-i18n-html="intro_html">Horaires calculés selon le rite ja‘farite par le moteur de l’application Shia Namaz, avec <a href="/articles/why-maghrib-after-sunset">le Maghrib après le coucher du soleil</a>. Votre ville est enregistrée sur cet appareil.</p>
       <label class="location-label" for="city-search" data-i18n="type_city">Saisissez votre ville</label>
       <div class="search-field">
         <input id="city-search" type="search" autocomplete="off" role="combobox" aria-autocomplete="list" aria-controls="city-suggestions" aria-expanded="false" placeholder="Commencez à saisir le nom d’une ville" data-i18n-placeholder="search_placeholder">
@@ -87,7 +87,7 @@
       </table>
       <div class="app-cta"><p><strong data-i18n="get_app">Télécharger l’app</strong> <span data-i18n="app_cta_note">Un rappel à chaque prière, et elle fonctionne hors ligne.</span></p><p class="app-cta-links"><a class="cta-link" href="https://apps.apple.com/app/namaz-shia-prayer-qibla/id6817066991?pt=129521517&amp;ct=home-fr&amp;mt=8" target="_blank" rel="noopener">App Store</a><a class="cta-link" href="https://play.google.com/store/apps/details?id=com.namaz.prayertimes&amp;referrer=utm_source%3Dshianamaz.com%26utm_medium%3Dweb%26utm_campaign%3Dhome-fr" target="_blank" rel="noopener">Google Play</a></p></div>
       <section class="print-options" aria-labelledby="print-heading">
-        <h2 id="print-heading" class="print-heading" data-i18n="print_heading">Imprimer un calendrier</h2>
+        <h2 id="print-heading" class="print-heading" data-i18n="print_heading">Imprimer les horaires</h2>
         <div class="print-choices">
           <button class="print-choice" type="button" data-print="week"><strong data-i18n="this_week">Cette semaine</strong><span id="print-week-span" data-i18n="seven_days">7 jours</span></button>
           <button class="print-choice" type="button" data-print="month"><strong data-i18n="this_month">Ce mois-ci</strong><span id="print-month-span" data-i18n="every_day">Chaque jour</span></button>
@@ -111,8 +111,8 @@
         <p class="settings-help" data-i18n="zone_help">Le fuseau horaire de votre appareil est utilisé par défaut.</p>
         <label class="checkbox-row"><input id="show-imsak" type="checkbox"> <span data-i18n="include_imsak">Afficher l’Imsak</span></label>
         <label id="imsak-offset-wrap" for="imsak-offset" hidden><span data-i18n="imsak_minutes">Minutes avant le Fajr</span><input id="imsak-offset" type="number" min="0" max="120" step="1" value="0"></label>
-        <details class="adjustment-details"><summary data-i18n="adjust_summary">Ajuster chaque horaire</summary><p class="settings-help" data-i18n="adjust_help">Ajoutez ou retirez des minutes pour correspondre à un calendrier local.</p><div id="time-adjustments" class="adjustment-grid"></div></details>
-        <button class="button update-button" id="update-times" type="button" data-i18n="update">Mettre à jour le calendrier</button>
+        <details class="adjustment-details"><summary data-i18n="adjust_summary">Ajuster chaque horaire</summary><p class="settings-help" data-i18n="adjust_help">Ajoutez ou retirez des minutes pour correspondre aux horaires locaux.</p><div id="time-adjustments" class="adjustment-grid"></div></details>
+        <button class="button update-button" id="update-times" type="button" data-i18n="update">Actualiser les horaires</button>
       </details>
       <p id="approximation-note" class="approximation" hidden></p>
     </section>
@@ -123,10 +123,10 @@
     <a href="mailto:almasappsllc@gmail.com?subject=Shia%20Namaz%20website%20feedback" data-i18n="contact">Me contacter</a>
     <span>© 2026 Almas Apps</span>
   </footer>
-  <script src="header.js?v=804e68b3a5" defer></script>
-  <script src="i18n.js?v=804e68b3a5" defer></script>
-  <script src="engine.js?v=804e68b3a5" defer></script>
-  <script src="print.js?v=804e68b3a5" defer></script>
-  <script src="app.js?v=804e68b3a5" defer></script>
+  <script src="header.js?v=f67421b07c" defer></script>
+  <script src="i18n.js?v=f67421b07c" defer></script>
+  <script src="engine.js?v=f67421b07c" defer></script>
+  <script src="print.js?v=f67421b07c" defer></script>
+  <script src="app.js?v=f67421b07c" defer></script>
 </body>
 </html>

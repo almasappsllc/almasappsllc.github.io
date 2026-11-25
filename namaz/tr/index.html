@@ -26,8 +26,8 @@
   <meta property="og:image" content="https://shianamaz.com/icon.png">
   <meta name="description" content="Bulunduğunuz yer için Caferi namaz vakitleri. Çizelgeyi yazdırın veya PDF olarak kaydedin.">
   <title>Shia Namaz | Şehriniz için namaz vakitleri</title>
-  <link rel="stylesheet" href="styles.css?v=804e68b3a5">
-  <link rel="preload" href="vendor/namaz-engine.js?v=804e68b3a5" as="script">
+  <link rel="stylesheet" href="styles.css?v=f67421b07c">
+  <link rel="preload" href="vendor/namaz-engine.js?v=f67421b07c" as="script">
 </head>
 <body class="app">
   <header class="site-header">
@@ -53,7 +53,7 @@
         <span class="saved-city-go"><span data-i18n="show_times">Vakitleri göster</span> <span aria-hidden="true">→</span></span>
       </button>
       <h1 data-i18n="heading">Namaz vakitlerinizi öğrenin</h1>
-      <p class="intro" data-i18n-html="intro_html">Shia Namaz uygulamasının kendi hesaplamasıyla Caferi vakitler, <a href="/articles/why-maghrib-after-sunset">Mağrib güneş battıktan sonra</a>. Şehrinizi bu cihazda hatırlarız.</p>
+      <p class="intro" data-i18n-html="intro_html">Caferi namaz vakitleri Shia Namaz uygulamasının kendi hesaplamasıyla bulunur; <a href="/articles/why-maghrib-after-sunset">Mağrib vakti gün batımından sonradır</a>. Şehrinizi bu cihazda hatırlarız.</p>
       <label class="location-label" for="city-search" data-i18n="type_city">Şehrinizi yazın</label>
       <div class="search-field">
         <input id="city-search" type="search" autocomplete="off" role="combobox" aria-autocomplete="list" aria-controls="city-suggestions" aria-expanded="false" placeholder="Bir şehir adı yazmaya başlayın" data-i18n-placeholder="search_placeholder">
@@ -109,8 +109,8 @@
         <select id="high-lat"><option value="AUTO" data-i18n="hl_AUTO">Otomatik (önerilen)</option><option value="MIDDLE_OF_NIGHT" data-i18n="hl_MIDDLE_OF_NIGHT">Gecenin ortası</option><option value="SEVENTH_OF_NIGHT" data-i18n="hl_SEVENTH_OF_NIGHT">Gecenin yedide biri</option><option value="TWILIGHT_ANGLE" data-i18n="hl_TWILIGHT_ANGLE">Açı tabanlı</option></select>
         <label for="time-zone" data-i18n="time_zone">Saat dilimi</label><input id="time-zone" type="text" placeholder="America/Toronto">
         <p class="settings-help" data-i18n="zone_help">Varsayılan olarak cihazınızın saat dilimi kullanılır.</p>
-        <label class="checkbox-row"><input id="show-imsak" type="checkbox"> <span data-i18n="include_imsak">İmsak'ı göster</span></label>
-        <label id="imsak-offset-wrap" for="imsak-offset" hidden><span data-i18n="imsak_minutes">Fecr'den kaç dakika önce</span><input id="imsak-offset" type="number" min="0" max="120" step="1" value="0"></label>
+        <label class="checkbox-row"><input id="show-imsak" type="checkbox"> <span data-i18n="include_imsak">İmsakı göster</span></label>
+        <label id="imsak-offset-wrap" for="imsak-offset" hidden><span data-i18n="imsak_minutes">Fecr vaktinden kaç dakika önce</span><input id="imsak-offset" type="number" min="0" max="120" step="1" value="0"></label>
         <details class="adjustment-details"><summary data-i18n="adjust_summary">Vakitleri tek tek ayarlayın</summary><p class="settings-help" data-i18n="adjust_help">Yerel bir çizelgeye uymak için dakika ekleyin veya çıkarın.</p><div id="time-adjustments" class="adjustment-grid"></div></details>
         <button class="button update-button" id="update-times" type="button" data-i18n="update">Çizelgeyi güncelle</button>
       </details>
@@ -123,10 +123,10 @@
     <a href="mailto:almasappsllc@gmail.com?subject=Shia%20Namaz%20website%20feedback" data-i18n="contact">İletişim</a>
     <span>© 2026 Almas Apps</span>
   </footer>
-  <script src="header.js?v=804e68b3a5" defer></script>
-  <script src="i18n.js?v=804e68b3a5" defer></script>
-  <script src="engine.js?v=804e68b3a5" defer></script>
-  <script src="print.js?v=804e68b3a5" defer></script>
-  <script src="app.js?v=804e68b3a5" defer></script>
+  <script src="header.js?v=f67421b07c" defer></script>
+  <script src="i18n.js?v=f67421b07c" defer></script>
+  <script src="engine.js?v=f67421b07c" defer></script>
+  <script src="print.js?v=f67421b07c" defer></script>
+  <script src="app.js?v=f67421b07c" defer></script>
 </body>
 </html>
