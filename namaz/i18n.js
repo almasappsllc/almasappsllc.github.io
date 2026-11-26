@@ -25,8 +25,8 @@
 
   const T = {
     en: {
-      title: 'Shia Namaz | Prayer times for your city',
-      description: "Shia Ja'fari prayer times for your location. Print the timetable or save it as a PDF.",
+      title: 'Shia Namaz Time Today | Shia Prayer Times for Your City',
+      description: "Today's Shia namaz timing for your location (Ja'fari): Fajr, Dhuhr, Asr, Maghrib after sunset, Isha and midnight. Print a monthly timetable.",
       language: 'Language', guides: 'Guides',
       nav_times: 'Prayer times', get_app_long: 'Get the app', get_app_short: 'Get app',
       your_city: 'Your city', show_times: 'Show times',
