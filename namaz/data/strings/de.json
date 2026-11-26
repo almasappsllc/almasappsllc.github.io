@@ -1,6 +1,6 @@
 {
 "ev_islamic_new_year": "Islamisches Neujahr",
-"ev_tasua": "Tasu‘a, der Vorabend von Aschura",
+"ev_tasua": "Tasu‘a, der Tag vor Aschura",
 "ev_ashura": "Aschura: Martyrium von Imam al-Husain (a)",
 "ev_sajjad_martyrdom": "Martyrium von Imam al-Sajjad (a)",
 "ev_arbaeen": "Arbain von Imam al-Husain (a)",
@@ -27,7 +27,7 @@
 "ev_ramadan_start": "1. Ramadan, Beginn des Fastens",
 "ev_khadija_death": "Ableben von Sayyida Khadidscha (a)",
 "ev_hasan_birth": "Geburt von Imam al-Hasan (a)",
-"ev_ali_striking": "Imam Ali (a) wird im Mihrab getroffen",
+"ev_ali_striking": "Imam Ali (a) wird im Mihrab durch einen Schwerthieb verwundet",
 "ev_ali_martyrdom": "Martyrium von Imam Ali (a)",
 "ev_qadr": "Lailat al-Qadr (23. Nacht)",
 "ev_eid_fitr": "Id al-Fitr",

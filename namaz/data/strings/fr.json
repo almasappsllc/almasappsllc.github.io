@@ -11,8 +11,8 @@
 "ev_mawlid": "Naissance du Prophète Muhammad (s) et de l’imam al-Sadiq (as)",
 "ev_askari_birth": "Naissance de l’imam al-Hasan al-‘Askari (as)",
 "ev_masuma_birth": "Naissance de Sayyida Fatima al-Ma‘suma (as)",
-"ev_fatima_martyrdom_first": "Martyre de Sayyida Fatima al-Zahra (as), premier récit",
-"ev_fatima_martyrdom_second": "Martyre de Sayyida Fatima al-Zahra (as), second récit",
+"ev_fatima_martyrdom_first": "Martyre de Sayyida Fatima al-Zahra (as), selon la première tradition",
+"ev_fatima_martyrdom_second": "Martyre de Sayyida Fatima al-Zahra (as), selon la seconde tradition",
 "ev_fatima_birth": "Naissance de Sayyida Fatima al-Zahra (as)",
 "ev_baqir_birth": "Naissance de l’imam al-Baqir (as)",
 "ev_jawad_birth": "Naissance de l’imam al-Jawad (as)",
@@ -40,5 +40,5 @@
 "ev_hadi_birth": "Naissance de l’imam al-Hadi (as)",
 "ev_ghadir": "Aïd al-Ghadir",
 "ev_mubahala": "Jour de la Mubahala",
-"calendar_events_note": "Les dates des occasions suivent les récits ja‘farites les plus répandus, et certaines occasions ont plusieurs dates possibles."
+"calendar_events_note": "Les dates des fêtes et des commémorations se fondent sur les traditions ja‘farites les plus répandues. Certaines figurent à plusieurs dates dans le calendrier."
 }
