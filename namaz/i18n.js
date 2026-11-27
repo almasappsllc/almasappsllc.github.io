@@ -26,7 +26,7 @@
   const T = {
     en: {
       title: 'Shia Namaz Time Today | Shia Prayer Times for Your City',
-      description: "Today's Shia namaz timing for your location (Ja'fari): Fajr, Dhuhr, Asr, Maghrib after sunset, Isha and midnight. Print a monthly timetable.",
+      description: "Today's Shia namaz timing for your city (Ja'fari): Fajr, Dhuhr, Asr, Maghrib after sunset, Isha and Shari'i midnight. Print a free weekly or monthly timetable.",
       language: 'Language', guides: 'Guides',
       nav_times: 'Prayer times', get_app_long: 'Get the app', get_app_short: 'Get app',
       your_city: 'Your city', show_times: 'Show times',
